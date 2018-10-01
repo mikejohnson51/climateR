@@ -1,4 +1,4 @@
-getMACA = function(AOI, param, model, scenario, sdate, edate = NULL, write.path = "/Users/mikejohnson/Documents/WRF_Hydro/output/"){
+getMACA = function(AOI, param, model, scenario, sdate, edate = NULL, write = NULL){
 
 base = "https://cida.usgs.gov/thredds/dodsC/macav2metdata_daily_future?"
 
@@ -32,7 +32,10 @@ xx = paste0( xx , ",time[",dates[1], ":1:", tail(dates, 1), "],lat[", min.lat , 
 
 r = ncdf4::nc_open(paste0(base, xx))
 
-return(r)
+if(!is.null(write)) { write_nc(r, write_path = write)} else {
+  ncdf4::nc_close(r)
+  return(r)
+}
 }
 
 
