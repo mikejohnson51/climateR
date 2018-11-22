@@ -1,11 +1,24 @@
 Package: climateR
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: climateR
+Description: A set of functions subset climate data to an area of interest.
+Version: 0.0.1
+Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "mike.johnson@geog.ucsb.edu")
+Maintainer: Mike Johnson <jmj00@ucsb.edu>
+BugReports: https://github.com/mikejohnson51/HydroData/issues
+URL: https://github.com/mikejohnson51/HydroData
+Depends:
+    R(>= 3.3.0),
+    AOI
+Imports:
+    magrittr,
+    ncdf4,
+    sp,
+    raster
+VignetteBuilder: knitr
+Remotes: mikejohnson51/AOI
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.0
+Suggests: testthat, knitr
