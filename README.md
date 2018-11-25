@@ -1,5 +1,7 @@
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
 
+*** IN DVELOPMENT: FOR TIME BEING FUNCTION CAN COME, GO and CHANGE ***
+
 Get point and gridded Climate Data in R from multiple sources. 
 
 1. gridMET
