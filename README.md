@@ -1,4 +1,4 @@
-# climateR <img src="man/figures/logo.png" width=200 height = 150 align="right" />
+# climateR <img src="man/figures/logo.png" width=230 align="right" />
 
 Get point and gridded Climate Data in R from multiple sources. 
 
@@ -16,7 +16,7 @@ To get a climate product, an area of interest must be defined:
 ```r
 AOI = getAOI(list("UCSB", 100, 100))
 ```
-\<img src="man/figures/logo.png" width=200 height = 200 align="center" />
+<img src="man/figures/logo.png" width="100">
 
 Here we are loading a spatial polygon for the state of California. More examples of contruting AOI calls can be found here.
 
