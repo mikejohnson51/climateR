@@ -1,19 +1,18 @@
 Package: climateR
 Type: Package
 Title: climateR
-Description: A set of functions subset climate data to an area of interest.
-Version: 0.0.1
-Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "mike.johnson@geog.ucsb.edu")
+Description: A set of functions to subset climate data to an area of interest.
+Version: 0.0.2
+Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "jmj00@ucsb.edu")
 Maintainer: Mike Johnson <jmj00@ucsb.edu>
-BugReports: https://github.com/mikejohnson51/HydroData/issues
-URL: https://github.com/mikejohnson51/HydroData
+BugReports: https://github.com/mikejohnson51/climateR/issues
+URL: https://github.com/mikejohnson51/climateR
 Depends:
     R(>= 3.3.0),
     AOI
 Imports:
     magrittr,
     ncdf4,
-    sp,
     raster
 VignetteBuilder: knitr
 Remotes: mikejohnson51/AOI
