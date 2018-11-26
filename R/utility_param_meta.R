@@ -401,6 +401,44 @@ bcsd = data.frame(
 
   stringsAsFactors = F
 
+),
+
+terraclim = data.frame(
+
+  common.name = c('aet', 'water_deficit',
+                  'palmer', 'pet',
+                  'prcp', 'q',
+                  'soilm', 'srad',
+                  'swe', 'tmax',
+                  'tmin', 'vp',
+                  'vpd', 'wind'),
+
+  call = c('aet', 'def',
+           'PDSI', 'pet',
+           'ppt', 'q',
+           'soil', 'srad',
+           'swe', 'tmax',
+           'tmin', 'vap',
+           'vpd', 'ws'),
+
+  description = c('Actual Evapotranspiration', 'Climatic Water Deficit',
+                  'Palmer Drought Severity Index', 'Reference Evapotranspiration',
+                  'Accumulated Precipitation', 'Runoff',
+                  'Soil Moisture at End of Month', 'Downward Shortwave Radiation Flux at the Surface',
+                  'Snow Water Equivalent at End of Month', 'Maximum 2-m Temperature',
+                  'Minimum 2-m Temperature', '2-m Vapor Pressure',
+                  'Mean Vapor Pressure Deficit', 'Wind Speed at 10-m'),
+
+  units = c('mm', 'mm',
+            '', 'mm',
+            'mm', 'mm',
+            'mm', 'W/m2',
+            'mm', 'C',
+            'C', 'kPa',
+            'kPa', 'm/s'),
+
+  stringsAsFactors = F
+
 )
 
 
