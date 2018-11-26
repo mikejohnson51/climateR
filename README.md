@@ -5,19 +5,20 @@
 
 Get point and gridded Climate Data in R from multiple sources. 
 
-|**Number**|**Dataset**   | **Description**                                            | **Dates**         |
-|----------|--------------| -----------------------------------------------------------|-------------------|
-|1         | **GridMET**  | Gridded Meteorological Data.                               | 1979-Yesterday    |
-|2         | **Daymet**   | Daily Surface Weather and Climatological Summaries         | 1980-2017.        |
-|3         | **TopoWX**   | Topoclimatic Daily Air Temperature Dataset                 | 1948-2016.        |
-|4         | **PRISM**    | Parameter-elevation Regressions on Independent Slopes      | 1981-(Yesterday-1)|
-|5         | **MACA**     | Multivariate Adaptive Constructed Analogs                  | 1950-2099         |
-|6         | **LOCA**     | Localized Constructed Analogs                              | 1950-2100         |
-|7         | **BCCA**     | Bias Corrected Constructed Analogs                         | 1950-2100         |
-|8         | **NCEP**     | National Centers for Ecological Prediction.                | **In progress**   |
-|9         | **SARRD**    | Statistical Asynchronous Regional Regression               | 1960-2100         |
-|10        | **BCSD**     | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
-|11        | **OSSEB**    | Operational Simplified Surface Energy Balance              | 2000-2015         |
+|**Number**|**Dataset**          | **Description**                                            | **Dates**         |
+|----------|---------------------| -----------------------------------------------------------|-------------------|
+|1         | **GridMET**         | Gridded Meteorological Data.                               | 1979-Yesterday    |
+|2         | **Daymet**          | Daily Surface Weather and Climatological Summaries         | 1980-2017.        |
+|3         | **TopoWX**          | Topoclimatic Daily Air Temperature Dataset                 | 1948-2016.        |
+|4         | **PRISM**           | Parameter-elevation Regressions on Independent Slopes      | 1981-(Yesterday-1)|
+|5         | **MACA**            | Multivariate Adaptive Constructed Analogs                  | 1950-2099         |
+|6         | **LOCA**            | Localized Constructed Analogs                              | 1950-2100         |
+|7         | **BCCA**            | Bias Corrected Constructed Analogs                         | 1950-2100         |
+|8         | **NCEP**            | National Centers for Ecological Prediction.                | **In progress**   |
+|9         | **SARRD**           | Statistical Asynchronous Regional Regression               | 1960-2100         |
+|10        | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
+|11        | **OSSEB**           | Operational Simplified Surface Energy Balance              | 2000-2015         |
+|12        | **TerraClimate**    | Operational Simplified Surface Energy Balance              | 1958-Current year |
 
 Operational Simplified Surface Energy Balance
 
