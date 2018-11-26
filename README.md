@@ -24,7 +24,7 @@ To get a climate product, an area of interest must be defined:
 ```r
 AOI = getAOI(state = "CA")
 ```
-<img src="man/figures/ca_AOI.png" width="400">
+<img src="man/figures/ca_AOI.png" width="200">
 
 Here we are loading a spatial polygon for the state of California. More examples of contruting AOI calls can be found [here](https://mikejohnson51.github.io/AOI/).
 
@@ -44,7 +44,7 @@ r = raster::stack(p$tmax, p$tmin)
 names(r) = c('tmax', 'tmin')
 rasterVis::levelplot(r)
 ```
-<img src="man/figures/prism_ex.png" width="800" align = "center">
+<img src="man/figures/prism_ex.png" width="400" align = "center">
 
 Some sources are  downscaled Global Climate Models (GCMs). These allow you to query future forecasted ensemble members. One example is from the MACA dataset:
 
@@ -67,7 +67,7 @@ r = raster::stack(m$prcp_rcp45, m$prcp_rcp85)
 names(r) = paste0(c(rep("RCP45_", 2), rep("RCP85_", 2)), unique(substring(names(r), 2, 11)))
 rasterVis::levelplot(r, par.settings = rasterTheme(region=sequential_hcl(10, power=2.2)))
 ```
-<img src="man/figures/scenario_ex.png" width="800">
+<img src="man/figures/scenario_ex.png" width="400">
 
 Large scale data grabs are also quite efficient
 
@@ -86,7 +86,7 @@ title(main = "Solar Radiation 2017-06-29\n4km Resolution")
 sp::plot(g$AOI, add = T)
 ```
 
-<img src="man/figures/conus_ex.png" width="800">
+<img src="man/figures/conus_ex.png" width="400">
 
 Getting ensemble averages is also quite simple:
 
@@ -114,7 +114,7 @@ names(s) = c(models, "Ensemble")
 levelplot(s, par.settings = RdBuTheme)
 ```
 
-<img src="man/figures/ensemble_ex.png" width="800">
+<img src="man/figures/ensemble_ex.png" width="400">
 
 Statistics are not limited to mean: 
 
@@ -122,5 +122,5 @@ Statistics are not limited to mean:
 stats= stack(max(s), min(s), mean(s), max(s) - min(s), calc(s, sd), sum((s - mean(s))^2) / 5)
 names(stats) = c("Ensemble Max", "Ensemble Min", "Ensemble Mean",  "Ensemble Range",  "Ensemble SD",  "Ensemble Variance")
 ```
-<img src="man/figures/stats_ex.png" width="800">
+<img src="man/figures/stats_ex.png" width="400">
 
