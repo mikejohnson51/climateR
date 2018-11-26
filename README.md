@@ -5,16 +5,18 @@
 
 Get point and gridded Climate Data in R from multiple sources. 
 
-1. gridMET - Gridded Meteorological Data; 
-2. daymet  - Daily Surface Weather and Climatological Summaries 
-3. TopoWX  - Topoclimatic Daily Air Temperature Dataset 
-4. PRISM   - Parameter-elevation Regressions on Independent Slopes 
-5. MACA    - Multivariate Adaptive Constructed Analogs
-6. LOCA    - Localized Constructed Analogs
-7. BCCA    - Bias Corrected Constructed Analogs
-8. NCEP    - Parameter-elevation Regressions on Independent Slopes 
-9. SARRD   - Statistical Asynchronous Regional Regression
-10. BCSD - Bias Corrected Spatially Downscaled VIC - CMIP5 Monthly Hydrology Projections
+|**Number**|**Dataset**   | **Description**                                            | **Dates**         |
+|----------|--------------| -----------------------------------------------------------|-------------------|
+|1         | **GridMET**  | Gridded Meteorological Data.                               | 1979-Yesterday    |
+|2         | **Daymet**   | Daily Surface Weather and Climatological Summaries         | 1980-2017.        |
+|3         | **TopoWX**   | Topoclimatic Daily Air Temperature Dataset                 | 1948-2016.        |
+|4         | **PRISM**    | Parameter-elevation Regressions on Independent Slopes      | 1981-(Yesterday-1)|
+|5         | **MACA**     | Multivariate Adaptive Constructed Analogs                  | 1950-2099         |
+|6         | **LOCA**     | Localized Constructed Analogs                              | 1950-2100         |
+|7         | **BCCA**     | Bias Corrected Constructed Analogs                         | 1950-2100         |
+|8         | **NCEP**     | National Centers for Ecological Prediction.                | **In progress**   |
+|9         | **SARRD**    | Statistical Asynchronous Regional Regression               | 1960-2100         |
+|10        | **BCSD**     | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
 
 
 The climateR package works off the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. This framework is also used in [HydroData](https://github.com/mikejohnson51/HydroData), and [NWM](https://github.com/mikejohnson51/nwm). 
