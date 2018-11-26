@@ -1,6 +1,3 @@
-termlibrary(raster)
-library(ncdf4)
-
 download.url = function(url){
 
   destdir <- normalizePath(paste0(tempdir(), "/."))

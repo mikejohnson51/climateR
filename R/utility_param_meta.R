@@ -249,7 +249,7 @@ maca = data.frame(
 
 
 
-    description = c(   'Maximum daily temperature near surface',
+    description = c('Maximum daily temperature near surface',
                     'Minimum daily temperature near surface',
                     'Maximum daily relative humidity near surface',
                     'Minimum daily relative humdity near surface',
@@ -355,13 +355,62 @@ bcca = data.frame(
                   'Minimum daily temperature near surface',
                   'Precipitation Rate'),
 
-  units = c("K", "K", "mm/d"),
+  units = c("K", "K", "mm/day"),
+
+  stringsAsFactors = F
+
+),
+
+sarrd = data.frame(
+
+  common.name = c('tmax', 'tmin', 'prcp'),
+
+  call = c('tmax','tmin', 'pr'),
+
+  description = c('Maximum daily temperature near surface',
+                  'Minimum daily temperature near surface',
+                  'Precipitation Rate'),
+
+  units = c("C", "C", "mm/day"),
+
+  stringsAsFactors = F
+
+),
+
+bcsd = data.frame(
+
+  common.name = c('baseflow', 'et', 'petnatveg', 'petshort',
+                  'pettall', 'petvegnocr', 'petwater', 'rhum',
+                  'rnet', 'smc', 'surface_runoff', 'swe',
+                  'total_runoff'),
+
+  call = c('baseflow', 'et', 'petnatveg', 'petshort',
+           'pettall', 'petvegnocr', 'petwater', 'rhum',
+           'rnet', 'smc', 'surface_runoff', 'swe',
+           'total_runoff'),
+
+  description = c('baseflow', 'et', 'petnatveg', 'petshort',
+                  'pettall', 'petvegnocr', 'petwater', 'rhum',
+                  'rnet', 'smc', 'surface_runoff', 'swe',
+                  'total_runoff'),
+
+  units = c('mm/month', 'mm/month', 'mm/month', 'mm/month',
+            'mm/month', 'mm/month', 'mm/month', 'percent',
+            'W/m2', 'mm', 'mm/month', 'mm',
+            'mm/month'),
 
   stringsAsFactors = F
 
 )
 
+
+
+
+
+
+
 )
+
 
 
 

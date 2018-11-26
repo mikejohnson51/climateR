@@ -9,12 +9,12 @@ if(grepl(paste('raster', 'Spatial', 'sf', sep = "|"), class(AOI))) {
 
   bb = AOI::bbox_st(AOI)
 
-  if(sum(c(
-    bb$xmin > min(grid$long),
-    bb$xmax < max(grid$long),
-    bb$ymin > min(grid$lat),
-    bb$ymax < max(grid$lat)
-    )) != 4) {stop('AOI not within ', toupper(service), ' domain')}
+  # if(sum(c(
+  #   bb$xmin > min(grid$long),
+  #   bb$xmax < max(grid$long),
+  #   bb$ymin > min(grid$lat),
+  #   bb$ymax < max(grid$lat)
+  #   )) != 4) {stop('AOI not within ', toupper(service), ' domain')}
 
   g = list(
     ymax = max(which.min(abs(grid$lat  - bb$ymax)), which.min(abs(grid$lat  - bb$ymin))),
@@ -24,8 +24,8 @@ if(grepl(paste('raster', 'Spatial', 'sf', sep = "|"), class(AOI))) {
   )
 
   g[['type']] = 'grid'
-  g[['lat.call']] = paste0('[', g$ymin, ':1:', g$ymax, ']')
-  g[['lon.call']] = paste0('[', g$xmin, ':1:', g$xmax, ']')
+  g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')
+  g[['lon.call']] = paste0('[', g$xmin- 1, ':1:', g$xmax - 1, ']')
   g[['e']] = raster::extent(range(grid$long[c(g$xmin:g$xmax)]), range(grid$lat[c(g$ymin:g$ymax)]))
   g[['AOI']] = AOI
 

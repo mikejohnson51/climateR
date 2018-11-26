@@ -1,3 +1,10 @@
+AOI = getAOI(state = "CA")
+            model = "CCSM4"
+            param = 'prcp'
+            scenario = c('rcp45', 'rcp85')
+            startDate = "2080-06-29"
+            endDate = "2080-06-30"
+
 getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, endDate = NULL){
 
   d = define.dates(startDate, endDate)
@@ -5,7 +12,7 @@ getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
   versions = list()
 
   future = d[(as.Date(d$date) > as.Date("2005-12-31")),]
-  f.date.index = future$date - as.Date('2006-01-01')
+  f.date.index = future$date -  as.Date('2006-01-01')
 
 
   if(length(future$date) != 0){
@@ -62,34 +69,34 @@ for(i in 1:NROW(p)){
 
     nc_close(nc)
 
-    tt = process.var(group = tt, g = g, var, dates = curr$dates, param = paste0(p$common.name[i], "_", curr$ver))
+    s = process.var(group = s, g = g, var, dates = curr$dates, param = paste0(p$common.name[i], "_", curr$ver))
   }
 
-  names = names(tt)
-  curr.names = names[grepl(p$common.name[i], names)]
-  hist = which(grepl('historic', curr.names))
-  rcp45 = which(grepl('45', curr.names))
-  rcp85 = which(grepl('85', curr.names))
+  # names = names(tt)
+  # curr.names = names[grepl(p$common.name[i], names)]
+  # hist = which(grepl('historic', curr.names))
+  # rcp45 = which(grepl('45', curr.names))
+  # rcp85 = which(grepl('85', curr.names))
 
-  ## build RCP45
-
-  if(all(length(hist) != 0, length(rcp45) != 0)) {
-    s[[paste0(p$common.name[i], "_rcp45")]] = stack(tt[[hist]], tt[[rcp45]])
-  } else if(length(rcp45) !=0) {
-    s[[paste0(p$common.name[i], "_rcp45")]] = tt[[rcp45]]
-  }
-
-  ## build RCP85
-
-  if(all(length(hist) != 0, length(rcp85) != 0)) {
-    s[[paste0(p$common.name[i], "_rcp85")]] = stack(tt[[hist]], tt[[rcp85]])
-  } else if(length(rcp45) !=0) {
-    s[[paste0(p$common.name[i], "_rcp45")]] = tt[[rcp45]]
-  }
-
-  ## build historical
-
-  if(all(length(rcp45) == 0, length(rcp85) == 0, length(hist) != 0 )) { s[[paste0(p$common.name[i], "_historical")]] = tt[[hist]] }
+  # ## build RCP45
+  #
+  # if(all(length(hist) != 0, length(rcp45) != 0)) {
+  #   s[[paste0(p$common.name[i], "_rcp45")]] = stack(tt[[hist]], tt[[rcp45]])
+  # } else if(length(rcp45) !=0) {
+  #   s[[paste0(p$common.name[i], "_rcp45")]] = tt[[rcp45]]
+  # }
+  #
+  # ## build RCP85
+  #
+  # if(all(length(hist) != 0, length(rcp85) != 0)) {
+  #   s[[paste0(p$common.name[i], "_rcp85")]] = stack(tt[[hist]], tt[[rcp85]])
+  # } else if(length(rcp45) !=0) {
+  #   s[[paste0(p$common.name[i], "_rcp45")]] = tt[[rcp45]]
+  # }
+  #
+  # ## build historical
+  #
+  # if(all(length(rcp45) == 0, length(rcp85) == 0, length(hist) != 0 )) { s[[paste0(p$common.name[i], "_historical")]] = tt[[hist]] }
 
   }
 

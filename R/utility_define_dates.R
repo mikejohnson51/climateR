@@ -1,5 +1,11 @@
+#' @title Days in Month
+#' @description From a date, return the number of days in that month
+#' @param date character starting date in the form YYYY-MM-DD.
+#' @return the number of days in current month
+#' @keywords internal
 
 .numberOfDays <- function(date) {
+  if(class(date) != 'Date') { date = as.Date(date) }
   m <- format(date, format="%m")
 
   while (format(date, format="%m") == m) {
@@ -9,18 +15,29 @@
   return(as.integer(format(date - 1, format="%d")))
 }
 
-#' Title
-#'
-#' @param startDate
-#' @param endDate
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#'
+#' @title Months between dates
+#' @description Find the number of months between dates
+#' @param startDate character starting date in the form YYYY-MM-DD.
+#' @return the number of days in current month
+#' @keywords internal
 
-define.dates= function(startDate, endDate, baseDate = NULL){
+.numberOfMonths = function(date, baseDate) {
+  .monnb <- function(d) { lt <- as.POSIXlt(as.Date(d, origin = "1900-01-01"))
+  lt$year*12 + lt$mon }
+
+  return(.monnb(date) - .monnb(baseDate))
+}
+
+#' @title Define Date Matrix
+#' @description From a user supplied start and end date gnerate the julien, string, and date representations of the data used in climateR
+#' @param startDate character starting date for data retrieval in the form YYYY-MM-DD.
+#' @param endDate character ending date for data retrieval in the form YYYY-MM-DD. Default is the startDate
+#' @param baseDate Used to define the first data of a data set in the form YYYY-MM-DD. Used to align data indeces
+#' @return a data.frame with date, year, julien, and string representations of the data range
+#' @keywords internal
+
+
+define.dates= function(startDate, endDate, baseDate = NULL, type = 'd'){
 
   if(is.null(endDate)){ endDate = startDate}
 
@@ -43,7 +60,11 @@ define.dates= function(startDate, endDate, baseDate = NULL){
     julien = as.numeric(format(dates, "%j"))
   )
 
-  if(!is.null(baseDate)) { dates$date.index = as.numeric(dates$date - as.Date(baseDate)) }
+  if(!is.null(baseDate)) {
+    dates$date.index = as.numeric(dates$date - as.Date(baseDate))
+    dates$month.index = .numberOfMonths(dates$date, baseDate)
+  }
+
   dates$string = format(dates$date, format = "%Y%m%d")
 
   return(dates)

@@ -12,7 +12,7 @@ getTopoWX = function(AOI, param, startDate, endDate = NULL){
     time = paste0("[", min(d$date.index) , ":1:", max(d$date.index), "]")
 
     nc = nc_open(paste0(base, call, time,
-                        if(g$type == 'point'){paste0('[', g$y, ':1:', g$y, ']')} else {paste0('[', g$ymax, ':1:', g$ymin, ']') },
+                        if(g$type == 'point'){paste0('[', g$y, ':1:', g$y, ']')} else {paste0('[', g$ymin, ':1:', g$ymax, ']') },
                         g$lon.call))
 
     var = ncvar_get(nc, call)

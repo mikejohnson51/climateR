@@ -1,3 +1,7 @@
+# AOI = getAOI(state = "conus")
+# param = 'srad'
+# startDate = "2017-06-29"
+
 getGridMET = function(AOI, param, startDate, endDate = NULL){
 
   d = define.dates(startDate, endDate, baseDate = '1979-01-01')

@@ -46,21 +46,21 @@ getBCCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
 
       ensemble  =  'r1i1p1'
 
-      nc = nc_open(paste0(base,
+      nc = ncdf4::nc_open(paste0(base,
                           curr$holding,
                           base1,
                           p$call[i],
                           base2,
-                          model,
-                          curr$ver,
+                          model, "_",
+                          curr$ver, "_",
                           ensemble,
                           curr$time.index,
                           g$lat.call,
                           g$lon.call))
 
-      var = ncvar_get(nc)
+      var = ncdf4::ncvar_get(nc)
 
-      nc_close(nc)
+      ncdf4::nc_close(nc)
 
       tt = process.var(group = tt, g = g, var, dates = curr$dates, param = paste0(p$common.name[i], "_", curr$ver))
     }
