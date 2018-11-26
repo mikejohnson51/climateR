@@ -25,7 +25,7 @@ To get a climate product, an area of interest must be defined:
 AOI = getAOI(state = "CA")
 ```
 <p align="center">
-<img src="man/figures/ca_AOI.png" width="200">
+<img src="man/figures/ca_AOI.png" width="400">
 </p>
 
 Here we are loading a spatial polygon for the state of California. More examples of contruting AOI calls can be found [here](https://mikejohnson51.github.io/AOI/).
@@ -47,7 +47,7 @@ names(r) = c('tmax', 'tmin')
 rasterVis::levelplot(r)
 ```
 <p align="center">
-<img src="man/figures/prism_ex.png" width="400" align = "center">
+<img src="man/figures/prism_ex.png" width="600">
 </p>
 
 Some sources are  downscaled Global Climate Models (GCMs). These allow you to query future forecasted ensemble members. One example is from the MACA dataset:
@@ -72,7 +72,7 @@ names(r) = paste0(c(rep("RCP45_", 2), rep("RCP85_", 2)), unique(substring(names(
 rasterVis::levelplot(r, par.settings = rasterTheme(region=sequential_hcl(10, power=2.2)))
 ```
 <p align="center">
-<img src="man/figures/scenario_ex.png" width="400">
+<img src="man/figures/scenario_ex.png" width="600">
 </p>
 
 Large scale data grabs are also quite efficient
@@ -93,7 +93,7 @@ sp::plot(g$AOI, add = T)
 ```
 
 <p align="center">
-<img src="man/figures/conus_ex.png" width="400">
+<img src="man/figures/conus_ex.png" width="600">
 </p>
 
 Getting ensemble averages is also quite simple:
@@ -122,7 +122,7 @@ names(s) = c(models, "Ensemble")
 levelplot(s, par.settings = RdBuTheme)
 ```
 <p align="center">
-<img src="man/figures/ensemble_ex.png" width="400">
+<img src="man/figures/ensemble_ex.png" width="600">
 </p>
 
 Statistics are not limited to mean: 
@@ -132,6 +132,6 @@ stats= stack(max(s), min(s), mean(s), max(s) - min(s), calc(s, sd), sum((s - mea
 names(stats) = c("Ensemble Max", "Ensemble Min", "Ensemble Mean",  "Ensemble Range",  "Ensemble SD",  "Ensemble Variance")
 ```
 <p align="center">
-<img src="man/figures/stats_ex.png" width="400">
+<img src="man/figures/stats_ex.png" width="600">
 </p>
 
