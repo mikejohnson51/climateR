@@ -17,7 +17,9 @@ Get point and gridded Climate Data in R from multiple sources.
 |8         | **NCEP**     | National Centers for Ecological Prediction.                | **In progress**   |
 |9         | **SARRD**    | Statistical Asynchronous Regional Regression               | 1960-2100         |
 |10        | **BCSD**     | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
+|11        | **OSSEB**    | Operational Simplified Surface Energy Balance              | 2000-2015         |
 
+Operational Simplified Surface Energy Balance
 
 The climateR package works off the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. This framework is also used in [HydroData](https://github.com/mikejohnson51/HydroData), and [NWM](https://github.com/mikejohnson51/nwm). 
 
