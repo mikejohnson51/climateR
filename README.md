@@ -1,7 +1,6 @@
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
 
-#### IN DEVELOPMENT: FOR THE TIME BEING FUNCTIONS CAN COME, GO and CHANGE
-#### Likley will not work yet on Window machines due to OPeNDAP NETCDF issues
+ClimateR looks to simplfy the stages of getting raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all call use require the same inputs. So far, this package is functional but **in development**. Rigourous checking has not been completed but will be soon. It will likley  not work on Window machines due to OPeNDAP NETCDF issues. A possible solution is [this](https://github.com/mdsumner/ncdf4) as a fix ... TODO
 
 Get point and gridded Climate Data in R from multiple sources. 
 
@@ -142,6 +141,13 @@ names(stats) = c("Ensemble Max", "Ensemble Min", "Ensemble Mean",  "Ensemble Ran
 
 Finally, not all datasets are USA focused. The TerraClimate Dataset offers global, monthly data up to the current year:
 
+```r
+w = AOI::world %>% getTerraClim(param = 'palmer', startDate = '2017-10-10')
+```
 <p align="center">
 <img src="man/figures/world_ex.png" width="600">
 </p>
+
+### Support:
+
+ClimateR is written by [Mike Johnson](https://mikejohnson51.github.io), a graduate Student at the [University of California, Santa Barbara](https://geog.ucsb.edu) in [Keith C. Clarke's](http://www.geog.ucsb.edu/~kclarke/) Lab, 2018 and is funded through the NOAA National Water Center (NWC) via the UCAR COMET Program (2017/18).
