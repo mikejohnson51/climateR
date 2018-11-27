@@ -139,13 +139,31 @@ names(stats) = c("Ensemble Max", "Ensemble Min", "Ensemble Mean",  "Ensemble Ran
 <img src="man/figures/stats_ex.png" width="600">
 </p>
 
-Finally, not all datasets are USA focused. The TerraClimate Dataset offers global, monthly data up to the current year:
+Not all datasets are USA focused. The TerraClimate Dataset offers global, monthly data up to the current year. Here we can get the PDSI (Palmer Index for October 2017):
 
 ```r
 w = AOI::world %>% getTerraClim(param = 'palmer', startDate = '2017-10-10')
 ```
 <p align="center">
 <img src="man/figures/world_ex.png" width="600">
+</p>
+
+Finally, data gathering is not limitied to areas and can be done as a time series for a point. Here we look for a 10-model ensemble for maximum temperture in Colorado Springs, Colorado from the LOCA downscaled dataset between Jan 1, 2030 and Decemeber 31, 2040.
+
+```r
+system.time({
+  ts = geocode('Colorado Springs') %>% 
+       getLOCA(param = 'tmax', model = 10, startDate = "2030-01-01", endDate = "2040-12-31")
+})
+> user  system elapsed 
+2.716   4.506  193.675 
+
+```
+
+In a little over 3 minutes we collected **40,180** data points (~208 per second). The results can be seen below:
+
+<p align="center">
+<img src="man/figures/timeseries_ex.png" width="800">
 </p>
 
 ### Support:

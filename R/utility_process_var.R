@@ -7,7 +7,11 @@
   return(tmp)
 }
 
-process.var = function(group, g, var, dates, param, fun = 'r', proj = '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'){
+process.var = function(group, g, var, dates, param, name = NULL, fun = 'r', proj = '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'){
+
+  if(g$type == 'point'){
+    group[[param]][[name]] = var
+  } else {
 
   ncol   = abs(g$xmax - g$xmin)  + 1
   nrow   = abs(g$ymax - g$ymin ) + 1
@@ -29,8 +33,9 @@ process.var = function(group, g, var, dates, param, fun = 'r', proj = '+proj=lon
     r = raster::stack(r)
     raster::extent(r) <- g$e
     raster::crs(r)    <- proj
-    group[[param]]    = r
+    group[[paste0(param,"_", name)]]    = r
 
+  }
   }
 
   return(group)

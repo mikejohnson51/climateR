@@ -2,17 +2,19 @@ getLOCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
 
     d = define.dates(startDate, endDate)
 
-    versions = list()
+    versions = data.frame(matrix(ncol = 5, nrow = 0))
 
     future = d[(as.Date(d$date) > as.Date("2005-12-31")),]
     f.date.index = future$date - as.Date('2006-01-01')
 
     if(length(future$date) != 0){
       for(i in scenario){
-        versions[[i]] = list(dates = future$date,
-                             time.index = paste0(paste0("[", min(f.date.index) , ":1:", max(f.date.index), "]")),
-                             calls = 'loca_future?',
-                             ver = i)
+       tmp = cbind(min.date = min(future$date),
+                   max.date = max(future$date),
+                   time.index = paste0(paste0("[", min(f.date.index) , ":1:", max(f.date.index), "]")),
+                   calls = 'loca_future?',
+                   ver = i)
+       versions[NROW(versions) + 1, ] = tmp
       }
     }
 
@@ -22,68 +24,50 @@ getLOCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
     if(length(historic$date) != 0){
       h.date.index = historic$date - as.Date('1950-01-01')
 
-      versions[['historic']] = list(dates = historic$date,
-                                    time.index = paste0(paste0("[", min(h.date.index) , ":1:", max(h.date.index), "]")),
-                                    calls      = 'loca_historical?',
-                                    ver        = 'historical')
+      tmp = cbind(min.date = min(historic$date),
+                  max.date = max(historic$date),
+                  time.index = paste0(paste0("[", min(h.date.index) , ":1:", max(h.date.index), "]")),
+                  calls      = 'loca_historical?',
+                  ver        = 'historical')
+
+      versions[NROW(versions) + 1, ] = tmp
     }
+
+    colnames(versions) = c("min.date","max.date", "time.index", "calls", "ver")
+    versions$min.date = as.Date(as.numeric(versions$min.date), "1970-01-01")
+    versions$max.date = as.Date(as.numeric(versions$max.date), "1970-01-01")
 
     g = define.grid(AOI,    service = 'loca')
     p = define.param(param, service = 'loca')
-    s = define.initial(g, d)
+    s = define.initial(g, d, p, dataset = "loca")
+    vals = define.config(dataset = "loca", model = model, ensemble = NA)
 
-    for(i in 1:NROW(p)){
+    tmp = expand.grid(min.date = versions$min.date, model = vals, call = p$call)
+    fin = merge(versions, tmp, "min.date")  %>% merge(p, "call") %>%  merge(model_meta$loca, "model")
+    fin = fin[fin$scenario %in% scenario,]
 
-      tt = define.initial(g, d)
-
-      for( v in 1:length(versions)){
-
-        curr = versions[[v]]
+    for(i in 1:NROW(fin)){
 
         base =  "https://cida.usgs.gov/thredds/dodsC/"
 
-        def  =  paste0(p$call[i], "_", model,ifelse(model == 'CCSM4', '_r6i1p1_', '_r1i1p1_'))
+        def  =  paste(fin$call[i],  fin$model[i], fin$ensemble[i], sep = "_")
 
-        nc = nc_open(paste0(base, curr$calls, def, curr$ver, curr$time.index, g$lat.call, g$lon.call))
+        nc = ncdf4::nc_open(paste0(base, fin$calls[i], def,  "_",fin$ver[i], fin$time.index[i], g$lat.call, g$lon.call))
 
-        var = ncvar_get(nc)
+        var = ncdf4::ncvar_get(nc)
 
-        nc_close(nc)
+        ncdf4::nc_close(nc)
 
-        tt = process.var(group = tt, g = g, var, dates = curr$dates, param = paste0(p$common.name[i], "_", curr$ver))
+        s = process.var(group = s, g = g, var, dates = seq.Date(fin$min.date[i], fin$max.date[i],1),
+                        param = fin$common.name[i], name = paste0(fin$ver[i], "_", fin$model[i]))
       }
-
-      names = names(tt)
-      curr.names = names[grepl(p$common.name[i], names)]
-      hist = which(grepl('historic', curr.names))
-      rcp45 = which(grepl('45', curr.names))
-      rcp85 = which(grepl('85', curr.names))
-
-      ## build RCP45
-
-      if(all(length(hist) != 0, length(rcp45) != 0)) {
-        s[[paste0(p$common.name[i], "_rcp45")]] = stack(tt[[hist]], tt[[rcp45]])
-      } else if(length(rcp45) !=0) {
-        s[[paste0(p$common.name[i], "_rcp45")]] = tt[[rcp45]]
-      }
-
-      ## build RCP85
-
-      if(all(length(hist) != 0, length(rcp85) != 0)) {
-        s[[paste0(p$common.name[i], "_rcp85")]] = stack(tt[[hist]], tt[[rcp85]])
-      } else if(length(rcp45) !=0) {
-        s[[paste0(p$common.name[i], "_rcp45")]] = tt[[rcp45]]
-      }
-
-      ## build historical
-
-      if(all(length(rcp45) == 0, length(rcp85) == 0, length(hist) != 0 )) { s[[paste0(p$common.name[i], "_historical")]] = tt[[hist]] }
-
-    }
-
-    if(g$type == 'grid') { s[['AOI']] = g$AOI }
 
     return(s)
 
 }
 
+# grid = getAOI(list('Colorado Springs', 100, 100)) %>% getLOCA(param = 'tmax', model = 2, startDate = "2030-01-03")
+# ts = geocode('Colorado Springs') %>% getLOCA(param = 'tmax', model = 2, startDate = "2030-01-01", endDate = "2030-12-31")
+# plot(ts )
+#
+# plot(stack(grid))

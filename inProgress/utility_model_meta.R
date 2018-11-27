@@ -1,3 +1,30 @@
+
+L = readLines("https://cida.usgs.gov/thredds/dodsC/loca_future.html")
+
+head(LLL, 10)
+LL = L[grepl("tasmax", L)]
+LLL = LL[grepl('checkbox', LL)]
+
+head(LLL)
+
+sub('(?<=\\get_dods_tasmax_).*$', '', LLL)
+
+gsub("Avenue.*$", "", a)
+
+gsub("get_dods_tasmax_.*$", "", LLL)
+
+yy = gsub('.{1}$', '', gsub("get_dods_tasmax_", "", gsub('.*(get_dods_tasmax_)', "\\1", LLL)))
+
+t1 = do.call(rbind, strsplit(yy, "_r"))
+t1[,2] = paste0("r", t1[,2])
+t1[,3] = paste0("r", t1[,3])
+t1 = data.frame(t1)
+colnames(t1) = c("model", "ensemble", "scenario")
+
+loca = t1
+
+
+
 L = readLines("https://cida.usgs.gov/thredds/dodsC/BCSD_mon_VIC.html")
 LL = L[grepl("baseflow", L)]
 LLL = LL[grepl('checkbox', LL)]
