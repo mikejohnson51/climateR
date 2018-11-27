@@ -140,3 +140,8 @@ names(stats) = c("Ensemble Max", "Ensemble Min", "Ensemble Mean",  "Ensemble Ran
 <img src="man/figures/stats_ex.png" width="600">
 </p>
 
+Finally, not all datasets are USA focused. The TerraClimate Dataset offers global, monthly data up to the current year:
+
+<p align="center">
+<img src="man/figures/world_ex.png" width="600">
+</p>
