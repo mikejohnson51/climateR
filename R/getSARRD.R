@@ -1,13 +1,13 @@
 getSARRD = function(AOI, param, model = 'CCSM', ensemble = 'a2', startDate = NULL, endDate = NULL){
 
-  config = define.config(dataset = "sarrd",  model = model, ensemble = ensemble)
   d    = define.dates(startDate, endDate, baseDate = '1959-12-01')
   g_pr = define.grid(AOI,   service = 'sarrd_pr')
   g_t  = define.grid( AOI,    service = 'sarrd_t')
   p    = define.param(param, service = 'sarrd')
   s    = define.initial(g_t, d)
+  k    = define.config(dataset = "sarrd",  model = model, ensemble = ensemble)
 
-  fin = expand.grid(model = config$model, ensemble = config$ensemble, param = p$call)
+  fin = expand.grid(model = k$model, ensemble = k$ensemble, param = p$call)
   fin = fin[!duplicated(fin),]
 
   for(i in 1:NROW(fin)){
@@ -35,7 +35,7 @@ getSARRD = function(AOI, param, model = 'CCSM', ensemble = 'a2', startDate = NUL
   var = ncdf4::ncvar_get(nc)
   ncdf4::nc_close(nc)
 
-  s = process.var(group = s, g = grid_curr, var,  dates = d$date, param = paste0(fin$param[i], "_", tolower(fin$model[i]), "_", fin$ensemble[i]))
+  s = process.var(group = s, g = grid_curr, var,  dates = d$date, param = fin$param[i], name = paste0(tolower(fin$model[i]), "_", fin$ensemble[i]))
 
   }
   return(s)

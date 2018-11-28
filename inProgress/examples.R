@@ -69,3 +69,40 @@ getNCEP = function(AOI, param, startDate, endDate){
 
 
 }
+
+
+# grid = getAOI(list('Colorado Springs', 100, 100)) %>% getLOCA(param = 'tmax', model = 2, startDate = "2030-01-03")
+system.time({
+  ts = geocode('Colorado Springs') %>% getLOCA(param = 'tmax', model = 10, startDate = "2030-01-01", endDate = "2040-12-31")
+})
+
+length(ts$tmax$rcp45_CanESM2) * 10 / 193.675
+user  system elapsed
+2.716   4.506 193.675
+
+# ts$tmax$`rcp45_ACCESS1-0` = ts$tmax$`rcp45_ACCESS1-0` - 273.15
+# ts$tmax$`rcp45_ACCESS1-3` = ts$tmax$`rcp45_ACCESS1-3` - 273.15
+
+
+
+mean = rowMeans(ts$tmax[,c(5:14)])
+matplot(y = ts$tmax[,c(5:14)], type = "l", col = sf::sf.colors(10), axes = F, xlab = "Date", ylab = "Max Temp (C)")
+title("LOCA 10-model ensemble of Max Temp\nColorado Springs, Colorado")
+axis(side = 1, at=seq(1, NROW(ts$tmax), 20), labels= ts$tmax$date[seq(1,NROW(ts$tmax), 20)], las = 1, cex = .0001)
+axis(side = 2, at     =      seq(min(ts$tmax[[6]]), max(ts$tmax[[6]]), 10),
+     labels= round(seq(min(ts$tmax[[6]]), max(ts$tmax[[6]]), 10)), las = 2)
+lines(mean, lwd =2, col = 'black')
+lines(lowess(ts$tmax$date, mean)$y, col="darkred", lwd = 4)
+
+legend(0, -16, legend=c("Ensemble Mean", "Lowess Trend"),
+       col=c("black", "darkred"), lty=1, cex=0.8, lwd = c(2,4),
+       box.lty=0)
+
+head(ts$tmax)
+
+dim(ts$tmax)
+
+
+plot(ts$tmax$`rcp45_HadGEM2-AO`, type = 'l')
+lines(ts$tmax$`rcp45_MPI-ESM-LR`, type = 'l', col = 'red')
+plot(stack(grid))

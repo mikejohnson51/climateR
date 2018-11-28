@@ -11,49 +11,42 @@ getDaymet = function(AOI, param, startDate, endDate = NULL){
 
   for(t in seq_along(y$year)){
     tmp = d[which(d$year == y$year[t]),]
-    y$minJul[t] = min(tmp$julien)
-    y$maxJul[t] = max(tmp$julien)
+    y$minJul[t]   = min(tmp$julien)
+    y$maxJul[t]   = max(tmp$julien)
     y$min.date[t] = min(tmp$date)
     y$max.date[t] = max(tmp$date)
   }
 
-  for(j in 1:NROW(p)){
+  tmp = expand.grid(year = y$year, call = p$call, stringsAsFactors = FALSE)
+  fin = merge(tmp, p, "call") %>% merge(y, "year")
 
-    tmp = define.initial(grid = g, date = d)
-    for(i in 1:NROW(y)){
+  for(i in 1:NROW(fin)){
 
-      nc = nc_open(paste0('https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/',
-                          '1328',
-                          '/',
-                          y$year[i],
+      nc = ncdf4::nc_open(paste0('https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/1328/',
+                          fin$year[i],
                           '/daymet_v3_',
-                          p$call[j],
+                          fin$call[i],
                           '_',
-                          y$year[i],
+                          fin$year[i],
                           '_na.nc4?',
-                          p$call[j],
-                          '[', y$minJul[i] -1 ,   ':1:', y$maxJul[i] -1, ']',
+                          fin$call[i],
+                          '[', fin$minJul[i] -1 ,   ':1:', fin$maxJul[i] -1, ']',
                           g$lat.call,
                           g$lon.call ))
 
-      var = ncvar_get(nc, p$call[j])
+      var = ncdf4::ncvar_get(nc)
 
-      nc_close(nc)
+      ncdf4::nc_close(nc)
 
-      dd = seq.Date(as.Date(y$min.date[i]), as.Date(y$max.date[i]), 1)
-      tmp = process.var(group = tmp, g = g, var, dates = dd, param = paste0(y$year[i], "_", p$call[j]), proj = daymet.proj, fun = 't')
-    }
-
-    index = which(grepl(p$call[j], names(tmp)))
-    l = list()
-
-    for(y in seq_along(index)){ l[[y]] = tmp[[y]]}
-    s[[p$call[j]]] = raster::stack(l)
-
+      s = process.var(group = s, g = g, var, dates = seq.Date(as.Date(fin$min.date[i]), as.Date(fin$max.date[i]), 1),
+                      param = fin$common.name[i], name = fin$year[i], proj = daymet.proj, fun = 't')
   }
 
-  if(g$type == 'grid') { s[['AOI']] = g$AOI }
-  return(s)
+  ss = define.initial(grid = g, date = d)
+
+  for(i in 1:NROW(p)){ ss[[p$common.name[i]]] = raster::stack(s[grepl(p$common.name[i], names(s))]) }
+
+  return(ss)
 }
 
 

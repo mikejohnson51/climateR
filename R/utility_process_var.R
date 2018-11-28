@@ -33,7 +33,7 @@ process.var = function(group, g, var, dates, param, name = NULL, fun = 'r', proj
     r = raster::stack(r)
     raster::extent(r) <- g$e
     raster::crs(r)    <- proj
-    group[[paste0(param,"_", name)]]    = r
+    group[[paste0(param, if(!is.null(name)){"_"}, name)]]  = r
 
   }
   }

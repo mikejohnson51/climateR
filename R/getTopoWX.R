@@ -5,28 +5,20 @@ getTopoWX = function(AOI, param, startDate, endDate = NULL){
   p = define.param(param, service = 'topowx')
   s = define.initial(g,d)
 
-  for(j in 1:NROW(p)){
+  for(i in 1:NROW(p)){
 
-    base = 'https://cida.usgs.gov/thredds/dodsC/topowx?'
-    call = p$call[j]
-    time = paste0("[", min(d$date.index) , ":1:", max(d$date.index), "]")
+    nc = ncdf4::nc_open(paste0('https://cida.usgs.gov/thredds/dodsC/topowx?',
+                               p$call[i],
+                               "[", min(d$date.index) , ":1:", max(d$date.index), "]",
+                               g$lat.call,
+                               g$lon.call))
 
-    nc = nc_open(paste0(base, call, time,
-                        if(g$type == 'point'){paste0('[', g$y, ':1:', g$y, ']')} else {paste0('[', g$ymin, ':1:', g$ymax, ']') },
-                        g$lon.call))
+    var = ncdf4::ncvar_get(nc)
 
-    var = ncvar_get(nc, call)
+    ncdf4::nc_close(nc)
 
-    nc_close(nc)
-
-    s = process.var(group = s, g = g, var, fun = 't', dates = d$date, param = param[j])
-
+    s = process.var(group = s, g = g, var, fun = 't', dates = d$date, param = param[i], name = NULL)
   }
 
-  if(g$type == 'grid') { s[['AOI']] = g$AOI }
-
   return(s)
-
 }
-
-

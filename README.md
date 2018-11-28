@@ -1,6 +1,6 @@
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
 
-ClimateR looks to simplfy the stages of getting raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all call use require the same inputs. So far, this package is functional but **in development**. Rigourous checking has not been completed but will be soon. It will likley  not work on Window machines due to OPeNDAP NETCDF issues. A possible solution is [this](https://github.com/mdsumner/ncdf4) as a fix ... TODO
+ClimateR looks to simplfy the steps needed to get raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all calls require the same inputs. At this time, it will likley not work on Window machines due to OPeNDAP/NETCDF issues. A possible solution is [this](https://github.com/mdsumner/ncdf4) ... TODO
 
 Get point and gridded Climate Data in R from multiple sources. 
 
@@ -17,9 +17,17 @@ Get point and gridded Climate Data in R from multiple sources.
 |9         | **SARRD**           | Statistical Asynchronous Regional Regression               | 1960-2100         |
 |10        | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
 |11        | **OSSEB**           | Operational Simplified Surface Energy Balance              | 2000-2015         |
-|12        | **TerraClimate**    | Operational Simplified Surface Energy Balance              | 1958-Current year |
+|12        | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958-Current year |
 
-Operational Simplified Surface Energy Balance
+# Installation
+
+```r
+install.packages("devtools")
+devtools::install_github("mikejohnson51/climateR")
+```
+
+
+# Examples
 
 The climateR package works off the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. This framework is also used in [HydroData](https://github.com/mikejohnson51/HydroData), and [NWM](https://github.com/mikejohnson51/nwm). 
 

@@ -5,37 +5,33 @@ getPRISM = function(AOI, param, startDate, endDate = NULL){
   p = define.param  (param, service = 'prism')
   s = define.initial(g, d)
 
-  for(i in 1:NROW(p)){
+  tmp = expand.grid(string = d$string, call = p$call)
+  fin = merge(tmp, p, "call") %>% merge(d, "string")
 
-    tmp = list()
-
-    for(j in 1:NROW(d)){
+  for(i in 1:NROW(fin)){
 
       base = 'http://convection.meas.ncsu.edu:8080/thredds/dodsC/prism/daily/combo/'
 
-      call = paste0(d$year[j], '/PRISM_combo_', d$string[j], '.nc?', p$call[i])
+      call = paste0(fin$year[i], '/PRISM_combo_', fin$string[i], '.nc?', fin$call[i], '[0:1:0]')
 
-      time = '[0:1:0]'
+      nc = ncdf4::nc_open(paste0(base, call, g$lat.call,  g$lon.call))
 
-      nc = ncdf4::nc_open(paste0(base, call, time, g$lat.call,  g$lon.call))
-
-      var = ncdf4::ncvar_get(nc, p$call[i])
+      var = ncdf4::ncvar_get(nc)
 
       ncdf4::nc_close(nc)
 
-      tmp[[j]] = var
-    }
-
-      if(g$type =='point'){
-        var = do.call(c, tmp)
-      } else {
-        var = array(unlist(tmp), dim = c((g$xmax - g$xmin) + 1, (g$ymax - g$ymin) + 1, length(tmp)))
-      }
-
-    s = process.var(group = s, g = g, var, fun = 't', dates = d$date, param = param[i], proj = "+init=epsg:4269")
+      s = process.var(group = s, g = g, var, fun = 't', dates = fin$date[i],
+                      param = fin$common.name[i], name = fin$date[i], proj = "+init=epsg:4269")
   }
 
-    if(g$type == 'grid') { s[['AOI']] = g$AOI }
+  ss = define.initial(grid = g, date = d)
 
-    return(s)
+  for(i in 1:NROW(p)){ ss[[p$common.name[i]]] = raster::stack(s[grepl(p$common.name[i], names(s))]) }
+
+  return(ss)
 }
+
+
+AOI = getAOI(state = "CO") %>% getPRISM(param = c('tmax', 'prcp'), startDate = "2017-12-30", endDate = '2018-01-10')
+
+rasterVis::levelplot(AOI$tmax)

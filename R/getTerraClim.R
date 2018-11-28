@@ -22,7 +22,7 @@ getTerraClim = function(AOI, param, startDate, endDate = NULL){
 
       ncdf4::nc_close(nc)
 
-    s = process.var(group = s, g = g, var, fun = 't', dates = d$date, param = param[i], proj = "+init=epsg:4269")
+    s = process.var(group = s, g = g, var, fun = 't', dates = d$date, param = p$common.name[i], name = NULL, proj = "+init=epsg:4269")
   }
 
   return(s)
