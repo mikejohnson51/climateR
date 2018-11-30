@@ -30,8 +30,3 @@ getPRISM = function(AOI, param, startDate, endDate = NULL){
 
   return(ss)
 }
-
-
-AOI = getAOI(state = "CO") %>% getPRISM(param = c('tmax', 'prcp'), startDate = "2017-12-30", endDate = '2018-01-10')
-
-rasterVis::levelplot(AOI$tmax)

@@ -18,6 +18,7 @@ Get point and gridded Climate Data in R from multiple sources.
 |10        | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
 |11        | **OSSEB**           | Operational Simplified Surface Energy Balance              | 2000-2015         |
 |12        | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958-Current year |
+|13        | **CHIRPS**          | Climate Hazards Group InfraRed Precipitation with Station  | 1980-Current year |
 
 # Installation
 
@@ -25,7 +26,6 @@ Get point and gridded Climate Data in R from multiple sources.
 install.packages("devtools")
 devtools::install_github("mikejohnson51/climateR")
 ```
-
 
 # Examples
 
