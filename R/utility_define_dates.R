@@ -39,6 +39,8 @@
 
 define.dates= function(startDate, endDate, baseDate = NULL, type = 'd'){
 
+  type = NULL
+
   if(is.null(endDate)){ endDate = startDate}
 
   if(nchar(startDate) == 4){ startDate = paste0(startDate, "-01-01") }

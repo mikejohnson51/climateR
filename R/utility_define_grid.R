@@ -9,13 +9,6 @@ if(grepl(paste('raster', 'Spatial', 'sf', sep = "|"), class(AOI))) {
 
   bb = AOI::bbox_st(AOI)
 
-  # if(sum(c(
-  #   bb$xmin > min(grid$long),
-  #   bb$xmax < max(grid$long),
-  #   bb$ymin > min(grid$lat),
-  #   bb$ymax < max(grid$lat)
-  #   )) != 4) {stop('AOI not within ', toupper(service), ' domain')}
-
   g = list(
     ymax = max(which.min(abs(grid$lat  - bb$ymax)), which.min(abs(grid$lat  - bb$ymin))),
     ymin = min(which.min(abs(grid$lat  - bb$ymax)), which.min(abs(grid$lat  - bb$ymin))),
