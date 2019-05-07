@@ -1,8 +1,7 @@
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
 
-ClimateR looks to simplfy the steps needed to get raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all calls require the same inputs. At this time, it will likley not work on Window machines due to OPeNDAP/NETCDF issues. A possible solution is [this](https://github.com/mdsumner/ncdf4) ... TODO
+ClimateR looks to simplfy the steps needed to get raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all calls require the same inputs. 
 
-Get point and gridded Climate Data in R from multiple sources. 
 
 |**Number**|**Dataset**          | **Description**                                            | **Dates**         |
 |----------|---------------------| -----------------------------------------------------------|-------------------|
