@@ -1,4 +1,5 @@
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
+[![Build Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https://travis-ci.org/mikejohnson51/climateR)
 
 ClimateR looks to simplfy the steps needed to get raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all calls require the same inputs. 
 
