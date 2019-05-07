@@ -123,7 +123,7 @@ for(i in 1:12){
   pressure_mb = pressure_Pa / 100
 
   es = 6.112 * exp((17.67 * (tair - 273.15)) / ((tair - 273.15) + 243.5))
-  e = (shum[[i]] * pressure_mb) / (.378 * shum[[i]]+ .622)
+  e = (shum[[i]] * pressure_mb) / (.378 * shum[[i]] + .622) ############## SHUN
   rh = e / es
   rh[rh > 1] <- 1
   rh[rh < 0] <- 0

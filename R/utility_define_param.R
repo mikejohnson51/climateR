@@ -1,3 +1,12 @@
+#' @title Define climateR configuration
+#' @description **INTERNAL** Define the parameter configuration to call with climateR. Ensures that the specificed parameters
+#' are avialable and structured in the variable sapce of the datasource.
+#' @param param the parameter(s) of interest
+#' @param service the dataset for which a configuration is needed
+#' @author Mike Johnson
+#' @return a vector of N GCMs
+#' @keywords internal
+
 define.param = function(param, service = NULL){
 
   all = eval(parse(text = paste0('param_meta$', service)))

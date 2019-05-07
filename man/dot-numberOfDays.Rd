@@ -7,12 +7,12 @@
 .numberOfDays(date)
 }
 \arguments{
-\item{date}{character starting date in the form YYYY-MM-DD.}
+\item{date}{(character) starting date in the form YYYY-MM-DD.}
 }
 \value{
 the number of days in current month
 }
 \description{
-From a date, return the number of days in that month
+**INTERNAL** From a date, return the number of days in that month
 }
 \keyword{internal}

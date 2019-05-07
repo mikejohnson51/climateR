@@ -7,12 +7,12 @@
 .numberOfMonths(date, baseDate)
 }
 \arguments{
-\item{startDate}{character starting date in the form YYYY-MM-DD.}
+\item{startDate}{(character) starting date in the form YYYY-MM-DD.}
 }
 \value{
 the number of days in current month
 }
 \description{
-Find the number of months between dates
+**INTERNAL**Find the number of months between dates
 }
 \keyword{internal}

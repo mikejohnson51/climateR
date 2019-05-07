@@ -2,7 +2,7 @@ Package: climateR
 Type: Package
 Title: climateR
 Description: A set of functions to subset climate data to an area of interest.
-Version: 0.0.2
+Version: 0.0.3
 Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "jmj00@ucsb.edu")
 Maintainer: Mike Johnson <jmj00@ucsb.edu>
 BugReports: https://github.com/mikejohnson51/climateR/issues
@@ -12,8 +12,11 @@ Depends:
     AOI
 Imports: 
     areal,
+    doParallel,
+    foreach,
+    httr,
     magrittr,
-    ncdf4,
+    RNetCDF,
     raster,
     sf
 VignetteBuilder: knitr

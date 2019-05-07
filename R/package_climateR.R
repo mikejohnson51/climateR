@@ -10,8 +10,13 @@
 #' @name climateR
 #'
 #' @import AOI
-#' @importFrom crayon %+% blue yellow cyan white
-#' @importFrom raster writeRaster raster mosaic extent intersect crop stack stackApply
-#' @importFrom ncdf4 nc_open nc_close ncvar_get
+#' @importFrom raster raster extent crop stack brick crs
+#' @importFrom RNetCDF open.nc var.get.nc
+#' @importFrom foreach %do% %dopar% foreach
+#' @importFrom doParallel registerDoParallel
+#' @importFrom httr write_disk GET
 
 NULL
+
+## quiets concerns of R CMD check re: the .'s that appear in pipelines
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("model_meta", "grid_meta", "i"))

@@ -1,28 +1,32 @@
+#' @title Get GridMet Climate Data for an Area of Interest
+#' @description gridMET is a dataset of daily high-spatial resolution (~4-km, 1/24th degree) surface meteorological data covering the contiguous US from 1979-yesterday.
+#' These data are updated daily.
+#' @param AOI a spatial polygon object (sf or sp)
+#' @param param a meterological parameter (see `param_meta$gridmet`)
+#' @param startDate a start date given as "YYYY-MM-DD"
+#' @param endDate   an end date given as "YYYY-MM-DD"
+#' @author Mike Johnson
+#' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
+#' @export
+
 getGridMET = function(AOI, param, startDate, endDate = NULL){
 
+  id = 'gridmet'
+
   d = define.dates(startDate, endDate, baseDate = '1979-01-01')
-  g = define.grid(AOI, service = 'gridmet', proj = "+init=epsg:4269")
   p = define.param(param, service = 'gridmet')
-  s = define.initial(grid = g, date = d)
 
-  for(i in 1:NROW(p)){
+  base = 'http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_'
 
-    base = 'http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_'
+  g = define.grid3(AOI, id)
 
-    call = paste0(p$call[i], '_1979_CurrentYear_CONUS.nc?', p$description[i])
+  urls = paste0(base, p$call, '_1979_CurrentYear_CONUS.nc?', p$description,
+                '[', min(d$date.index), ':1:', max(d$date.index), "]",
+                g$lat.call,  g$lon.call)
 
-    time = paste0('[', min(d$date.index), ':1:', max(d$date.index), "]")
-
-    nc = ncdf4::nc_open(paste0(base, call, time, g$lat.call,  g$lon.call))
-
-    var = ncdf4::ncvar_get(nc, p$description[i])
-
-    ncdf4::nc_close(nc)
-
-    s = process.var(group = s, g = g, var, dates = d$date, param = param[i], name = NULL)
-
-    }
+  s = fast.download(urls, params = p$description, names = p$common.name,  g, d$date, dataset = id, fun = 'r')
 
   return(s)
 
 }
+

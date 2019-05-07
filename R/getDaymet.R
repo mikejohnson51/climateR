@@ -1,11 +1,26 @@
+#' @title Get Daymet Climate Data for an Area of Interest
+#' @description This dataset provides Daymet Version 3 model output data as gridded estimates of daily weather parameters for North America.
+#' Daymet output variables include the following parameters: minimum temperature, maximum temperature, precipitation, shortwave radiation,
+#' vapor pressure, snow water equivalent, and day length. The dataset covers the period from January 1, 1980 to December 31 of the most recent full calendar year. Each subsequent year is processed individually at the close of a calendar year after
+#' allowing adequate time for input weather station data to be of archive quality.  Daymet variables are continuous surfaces provided as individual files, by year, at a 1-km x 1-km spatial resolution and a daily temporal resolution. Data are in a Lambert Conformal
+#' Conic projection for North America and are in a netCDF file format compliant with Climate and Forecast (CF) metadata conventions.
+#' @param AOI a spatial polygon object (sf or sp)
+#' @param param a meterological parameter (see `param_meta$daymet`)
+#' @param startDate a start date given as "YYYY-MM-DD"
+#' @param endDate   an end date given as "YYYY-MM-DD"
+#' @author Mike Johnson
+#' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
+#' @export
+#'
 getDaymet = function(AOI, param, startDate, endDate = NULL){
 
-  daymet.proj = "+proj=lcc +lon_0=-100 +lat_0=42.5 +x_0=0 +y_0=0 +a=6378137 +rf=298.257223563 +lat_1=25 +lat_2=60 +datum=WGS84"
+  id = 'daymet'
+  base = 'https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/1328/'
 
-  d = define.dates(startDate, endDate)
-  g = define.grid(AOI, service = 'daymet', proj = daymet.proj)
-  p = define.param(param, service = 'daymet')
-  s = define.initial(grid = g, date = d)
+  d = define.dates(startDate, endDate, baseDate = "1980-01-01")
+  d = d[d$julien < 366, ]
+  p = define.param(param, id)
+  g = define.grid3(AOI, id)
 
   y = data.frame(year = unique(d$year), minJul = NA, maxJul = NA, min.date = as.Date(NA), max.date = as.Date(NA), stringsAsFactors = FALSE)
 
@@ -20,33 +35,15 @@ getDaymet = function(AOI, param, startDate, endDate = NULL){
   tmp = expand.grid(year = y$year, call = p$call, stringsAsFactors = FALSE)
   fin = merge(tmp, p, "call") %>% merge(y, "year")
 
-  for(i in 1:NROW(fin)){
+  urls = paste0(base, fin$year, '/daymet_v3_',  fin$call, '_', fin$year, '_na.nc4?', fin$call,
+                '[', fin$minJul - 1 ,   ':1:', fin$maxJul - 1, ']',
+                g$lat.call,
+                g$lon.call)
 
-      nc = ncdf4::nc_open(paste0('https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/1328/',
-                          fin$year[i],
-                          '/daymet_v3_',
-                          fin$call[i],
-                          '_',
-                          fin$year[i],
-                          '_na.nc4?',
-                          fin$call[i],
-                          '[', fin$minJul[i] -1 ,   ':1:', fin$maxJul[i] -1, ']',
-                          g$lat.call,
-                          g$lon.call ))
+  s = fast.download(urls, params = fin$call, names = fin$call, g, date.names =  d$date, dataset = id, fun = 'r')
 
-      var = ncdf4::ncvar_get(nc)
+  s
 
-      ncdf4::nc_close(nc)
-
-      s = process.var(group = s, g = g, var, dates = seq.Date(as.Date(fin$min.date[i]), as.Date(fin$max.date[i]), 1),
-                      param = fin$common.name[i], name = fin$year[i], proj = daymet.proj, fun = 't')
-  }
-
-  ss = define.initial(grid = g, date = d)
-
-  for(i in 1:NROW(p)){ ss[[p$common.name[i]]] = raster::stack(s[grepl(p$common.name[i], names(s))]) }
-
-  return(ss)
+  return(s)
 }
-
 

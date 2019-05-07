@@ -14,11 +14,9 @@ getPRISM(AOI, param, startDate, endDate = NULL)
 \item{startDate}{a start date given as "YYYY-MM-DD"}
 
 \item{endDate}{an end date given as "YYYY-MM-DD"}
-
-\item{model}{GMC model name (see `model_meta$prism$name`)}
 }
 \value{
-a list of rasterStacks
+if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 }
 \description{
 The Parameter-elevation Regressions on Independent Slopes Model (PRISM) group gathers climate observations

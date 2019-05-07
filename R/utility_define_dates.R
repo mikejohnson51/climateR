@@ -1,6 +1,6 @@
 #' @title Days in Month
-#' @description From a date, return the number of days in that month
-#' @param date character starting date in the form YYYY-MM-DD.
+#' @description **INTERNAL** From a date, return the number of days in that month
+#' @param date (character) starting date in the form YYYY-MM-DD.
 #' @return the number of days in current month
 #' @keywords internal
 
@@ -16,8 +16,8 @@
 }
 
 #' @title Months between dates
-#' @description Find the number of months between dates
-#' @param startDate character starting date in the form YYYY-MM-DD.
+#' @description  **INTERNAL**Find the number of months between dates
+#' @param startDate (character) starting date in the form YYYY-MM-DD.
 #' @return the number of days in current month
 #' @keywords internal
 
@@ -29,7 +29,7 @@
 }
 
 #' @title Define Date Matrix
-#' @description From a user supplied start and end date gnerate the julien, string, and date representations of the data used in climateR
+#' @description  **INTERNAL** From a user supplied start and end date gnerate the julien, string, and date representations of the data used in climateR
 #' @param startDate character starting date for data retrieval in the form YYYY-MM-DD.
 #' @param endDate character ending date for data retrieval in the form YYYY-MM-DD. Default is the startDate
 #' @param baseDate Used to define the first data of a data set in the form YYYY-MM-DD. Used to align data indeces

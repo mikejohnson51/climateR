@@ -17,6 +17,6 @@ define.dates(startDate, endDate, baseDate = NULL, type = "d")
 a data.frame with date, year, julien, and string representations of the data range
 }
 \description{
-From a user supplied start and end date gnerate the julien, string, and date representations of the data used in climateR
+**INTERNAL** From a user supplied start and end date gnerate the julien, string, and date representations of the data used in climateR
 }
 \keyword{internal}

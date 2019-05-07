@@ -21,7 +21,7 @@ gridmet = data.frame(
                   'tmin', 'tmax',
                   'wind_vel','burn_index',
                   'fmoist_100','fmoist_1000',
-                  'energy_release', #'palmer',
+                  'energy_release', 'palmer',
                   'pet_alfalfa','pet_grass',
                   'vpd'),
 
@@ -31,7 +31,7 @@ gridmet = data.frame(
                   'tmmn','tmmx',
                   'vs','bi',
                   'fm100','fm1000',
-                  'erc', #'pdsi',
+                  'erc', 'pdsi',
                   'etr', 'pet',
                   'vpd'),
 
@@ -41,7 +41,7 @@ gridmet = data.frame(
                   'daily_minimum_temperature', 'daily_maximum_temperature',
                   'daily_mean_wind_speed', 'daily_mean_burning_index_g',
                   'dead_fuel_moisture_100hr', 'dead_fuel_moisture_1000hr',
-                  'daily_mean_energy_release_component-g', #'daily_mean_palmer_drought_severity_index',
+                  'daily_mean_energy_release_component-g', 'daily_mean_palmer_drought_severity_index',
                   'daily_mean_reference_evapotranspiration_alfalfa', 'daily_mean_reference_evapotranspiration_grass',
                   'daily_mean_vapor_pressure_deficit'),
 
@@ -51,7 +51,7 @@ gridmet = data.frame(
             "degK", "degK",
             "m/s", "Unitless",
             "Percent", "Percent",
-            "Unitless", #"Unitless",
+            "Unitless", "Unitless",
             "mm", "mm",
             "kPa"),
 
@@ -439,12 +439,36 @@ terraclim = data.frame(
 
   stringsAsFactors = F
 
+),
+
+
+# MACA --------------------------------------------------------------------
+
+ca_bcm = data.frame(
+
+  common.name = c('aet', 'water_deficit',
+                  'pet', 'prcp', 'recharge',
+                  'runoff', 'tmin',
+                  'tmax', 'snow_pack'),
+
+  call = paste0(c('aet', 'cwd',
+                  'pet', 'ppt', 'rch',
+                  'run', 'tmn',
+                  'tmx', 'aprpck'), "-ave"),
+
+  description = c('Actual Evapotranspiration', 'Climatic Water Deficit',
+                  'Potential Evapotranspiration', 'Precipitation', 'Recharge',
+                  'Runoff', 'Minimum Temperature',
+                  'Maximum 2-m Temperature', 'April Snow Pack'),
+
+  units = c('mm', 'mm',
+            'mm', 'mm', 'mm',
+            'mm', 'C', 'C',
+            'mm'),
+
+  stringsAsFactors = F
+
 )
-
-
-
-
-
 
 
 )

@@ -8,9 +8,11 @@ getBCCA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
   endDate = NULL)
 }
 \arguments{
+\item{AOI}{a spatial polygon object (sf or sp)}
+
 \item{param}{a meterological parameter (see `param_meta$bcca`)}
 
-\item{model}{GMC model name (see `model_meta$bcca$name`)}
+\item{model}{GMC model name (see `model_meta$bcca`)}
 
 \item{scenario}{a climate scenario pathway (rcp45 or rcp85)}
 
@@ -19,11 +21,11 @@ getBCCA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
 \item{endDate}{an end date given as "YYYY-MM-DD"}
 }
 \value{
-a list of rasterStacks
+if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 }
 \description{
 Bias Corrected Constructed Analogs (BCCA) V2 Daily Climate Projections.
-This archive contains daily BCCA CMIP3 and CMIP5 projections of precipitation, daily maximum, and daily minimum temperature over the contiguous
+This service offeres an interface containing daily BCCA CMIP3 and CMIP5 projections of precipitation, daily maximum, and daily minimum temperature over the contiguous
 United States. The dataset content is based on global climate projections from the World Climate Research Programme's (WCRP's) Coupled Model
 Intercomparison Project phase 3 (CMIP3) multi-model dataset referenced in the Intergovernmental Panel on Climate Change Fourth Assessment Report,
 and the phase 5 (CMIP5) multi-model dataset that is informing the IPCC Fifth Assessment.

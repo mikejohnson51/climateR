@@ -12,7 +12,7 @@ getMACA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
 
 \item{param}{a meterological parameter (see `param_meta$maca`)}
 
-\item{model}{GMC model name (see `model_meta$maca$name`)}
+\item{model}{GMC model name (see `model_meta$maca`)}
 
 \item{scenario}{a climate scenario pathway (rcp45 or rcp85)}
 
@@ -25,8 +25,7 @@ a list of rasterStacks
 }
 \description{
 Multivariate Adaptive Constructed Analogs (MACA) is a statistical method for downscaling Global Climate Models
-(GCMs) from their native coarse resolution to a higher spatial resolution that captures
-reflects observed patterns of daily near-surface meteorology and simulated changes in GCMs experiments.
+(GCMs) from their native coarse resolution to a higher spatial resolution that catures reflects observed patterns of daily near-surface meteorology and simulated changes in GCMs experiments.
 }
 \author{
 Mike Johnson

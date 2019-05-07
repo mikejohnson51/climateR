@@ -1,54 +1,74 @@
-define.grid = function(AOI, service = NULL, proj = '+proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs'){
+#' @title Define AOI native grid
+#' @description **INTERNAL** This function defines the grid of the AOI in terms of the climate resource
+#' @keywords internal
+#' @param AOI an AOI object
+#' @param source a datset id (source)  being called
+#' @return a list of values including type, lat.call, lon.call, extent, AOI, proj4string
+#' @keywords internal
+#' @author Mike Johnson
 
-  load('/Users/mikejohnson/Documents/GitHub/climateR/data/grids.rda')
-  grid = eval(parse(text = paste0('grids$', service)))
 
-if(grepl(paste('raster', 'Spatial', 'sf', sep = "|"), class(AOI))) {
+define.grid3 = function(AOI, source = NULL){
 
-  AOI = sp::spTransform(AOI, proj)
+  index = which(grid_meta$source == source)
 
-  bb = AOI::bbox_st(AOI)
+  if(AOI::checkClass(AOI, 'sp')){ AOI = sf::st_as_sf(AOI) }
+  if(checkClass(AOI, 'data.frame') & !checkClass(AOI, "sf")){  AOI =  sf::st_sfc(list(sf::st_point(c(AOI$lon, AOI$lat)))) %>% sf::st_set_crs(AOI::aoiProj) %>% sf::st_sf() }
 
-  g = list(
-    ymax = max(which.min(abs(grid$lat  - bb$ymax)), which.min(abs(grid$lat  - bb$ymin))),
-    ymin = min(which.min(abs(grid$lat  - bb$ymax)), which.min(abs(grid$lat  - bb$ymin))),
-    xmax = max(which.min(abs(grid$long - bb$xmin)), which.min(abs(grid$long - bb$xmax))),
-    xmin = min(which.min(abs(grid$long - bb$xmin)), which.min(abs(grid$long - bb$xmax)))
-  )
+  bb = AOI %>% sf::st_transform(grid_meta$proj[index]) %>% AOI::bbox_st()
 
-  g[['type']] = 'grid'
-  g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')
-  g[['lon.call']] = paste0('[', g$xmin- 1, ':1:', g$xmax - 1, ']')
-  g[['e']] = raster::extent(range(grid$long[c(g$xmin:g$xmax)]), range(grid$lat[c(g$ymin:g$ymax)]))
-  g[['AOI']] = AOI
+  X_coords <- seq(as.numeric(grid_meta$MinX[index]),
+                  as.numeric(grid_meta$MaxX[index]),
+                  by = as.numeric(grid_meta$dX[index]))
 
-} else {
+  if(max(X_coords) > 180) {X_coords = X_coords - 360}
 
-  if(class(AOI) != 'data.frame'){ AOI = data.frame(lat = AOI[1], lon = AOI[2])}
+  Y_coords <- seq(as.numeric(grid_meta$MinY[index]),
+                  as.numeric(grid_meta$MaxY[index]),
+                  by = as.numeric(grid_meta$dY[index]))
 
-  if(sum(c(
-    AOI$lon > min(grid$long),
-    AOI$lon < max(grid$long),
-    AOI$lat > min(grid$lat),
-    AOI$lat < max(grid$lat)
-  )) != 4) {stop('Requested Point not within ', toupper(service), ' domain')}
 
-  g = list(
-    y = which.min(abs(grid$lat  - AOI$lat)),
-    x = which.min(abs(grid$long  - AOI$lon))
-  )
+  if(any(sf::st_geometry_type(AOI) != 'POINT')) {
 
-  g[["lat"]]      = grid$lat[g$y]
-  g[["lon"]]      = grid$lon[g$x]
-  g[['type']]     = 'point'
-  g[['lat.call']] = paste0('[', g$y, ':1:', g$y, ']')
-  g[['lon.call']] = paste0('[', g$x, ':1:', g$x, ']')
-  g[["e"]]        = NULL
-  g[['AOI']]      = sp::SpatialPointsDataFrame(coords = cbind(AOI$lon, AOI$lat), data = AOI)
+    g = list(
+      ymax = max(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords - bb$ymin))) + 1,
+      ymin = min(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords  - bb$ymin))) - 1,
+      xmax = max(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))) + 1,
+      xmin = min(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))) -1
+    )
 
-}
+    g[['type']] = 'grid'
+    g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')
+    g[['lon.call']] = paste0('[', g$xmin - 1,  ':1:', g$xmax - 1, ']')
+    g[['e']] = raster::extent(range(X_coords[c(g$xmin:g$xmax)]), range(Y_coords[c(g$ymin:g$ymax)]))
+    g[['AOI']] = AOI
+    g[['proj']] = grid_meta$proj[index]
+
+  } else {
+
+    lon = bb$xmax
+    lat = bb$ymax
+
+    if(sum(c( lon > min(X_coords), lon < max(X_coords), lat > min(Y_coords), lat < max(Y_coords))) != 4) {
+      stop('Requested Point not within domain')
+    }
+
+    g = list(
+      y = which.min(abs(Y_coords  - lat)),
+      x = which.min(abs(X_coords  - lon))
+    )
+
+    g[["lat"]]      = Y_coords[g$y]
+    g[["lon"]]      = X_coords[g$x]
+    g[['type']]     = 'point'
+    g[['lat.call']] = paste0('[', g$y - 1 , ':1:', g$y - 1, ']')
+    g[['lon.call']] = paste0('[', g$x - 1,  ':1:', g$x - 1, ']')
+    g[['e']] = NULL
+    g[['AOI']] = AOI
+    g[['proj']] = grid_meta$proj[index]
+
+  }
 
   return(g)
-
 }
 

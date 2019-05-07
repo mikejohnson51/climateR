@@ -1,30 +1,25 @@
 #' Grids
 #'
-#' Lat/Long vectors for all data set options. Used for constructing subsetting calls to OPeNDAP.
+#' Grid meta data (Min/Max XY, dx/dy, proj) used for constructing subsetting calls to OPeNDAP.
 #'
 #' @docType data
 #'
-#' @format a \code{list} of lat/long vectors:
+#' @format a \code{data.frame} contained source info for
 #' \itemize{
 #' \item 'daymet':    Daily Surface Weather and Climatological Summaries
 #' \item 'gridmet':   Gridded Meteorological Data; Multivariate Adaptive Constructed Analogs
 #' \item 'prism':     Parameter-elevation Regressions on Independent Slopes
-#' \item 'ncep':      National Centers for Environmental Predictions
-#' \item 'topowx':    Topoclimatic Daily Air Temperature Dataset
 #' \item 'loca':      Localized Constructed Analogs
-#' \item 'bcca':      Statistically downscaled GCM data using Bias Corrected Constructed Analogs
-#' \item 'sarrd_t':   Statistical Asynchronous Regional Regression Daily Downscaled Climate Projections Temperture
-#' \item 'sarrd_pr':  Statistical Asynchronous Regional Regression Daily Downscaled Climate Projections Precipitation
-#' \item 'BCSDhydro': Bias Corrected Spatially Downscaled - CMIP5 Monthly Hydrology Projections
-#'
+#' \item 'terraclim':      Localized Constructed Analogs
+#' \item 'maca':      Localized Constructed Analogs
 #' }
 #' @examples
 #' \dontrun{
-#'  grids = climateR::grids
+#'  grids = climateR::grid_meta
 #' }
 #'
 
-"grids"
+"grid_meta"
 
 #' Model Metadata
 #'
