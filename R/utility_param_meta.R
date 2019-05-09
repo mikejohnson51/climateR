@@ -1,4 +1,7 @@
-#sources_metadata
+#' @title Parameter Metadata
+#' @description  Meta data for model parameters including common names, model calls, description and units
+#' @export
+#' @author Mike Johnson
 
 param_meta = list(
 # PRISM -------------------------------------------------------------------
