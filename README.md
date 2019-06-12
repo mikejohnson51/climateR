@@ -19,7 +19,7 @@ ClimateR looks to simplfy the steps needed to get raster climate data in R for A
 |9         | **SARRD**           | Statistical Asynchronous Regional Regression               | 1960-2100         |
 |10        | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
 |11        | **OSSEB**           | Operational Simplified Surface Energy Balance              | 2000-2015         |
-|12        | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958-Current year |
+|12        | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958-2017 |
 |13        | **CHIRPS**          | Climate Hazards Group InfraRed Precipitation with Station  | 1980-Current year |
 |14        | **EDDI**            | Evaporative Demand Drought Index                           | 1980-Current year |
 
