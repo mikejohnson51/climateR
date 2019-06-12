@@ -7,22 +7,27 @@
 #' @param scenario a climate scenario pathway (rcp45 or rcp85)
 #' @param startDate a start date given as "YYYY-MM-DD"
 #' @param endDate   an end date given as "YYYY-MM-DD"
+#' @param timeRes daily or monthly
 #' @author Mike Johnson
 #' @return a list of rasterStacks
 #' @export
 
-getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, endDate = NULL){
+getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, endDate = NULL, timeRes = 'daily'){
 
   id = 'maca'
   base =  "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_macav2metdata_"
 
-  d = define.dates(startDate, endDate)
-  v = define.versions(dates = d$date, scenario = scenario, future.call = "2006_2099_CONUS_daily.nc?", historic.call = "1950_2005_CONUS_daily.nc?")
+  if(!timeRes %in% c('daily', 'monthly')){ stop("timeRes must be monthly or daily") }
+
+  d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
+  v = define.versions(dates = d, scenario = scenario, future.call = paste0("2006_2099_CONUS_", timeRes, ".nc?"), historic.call = paste0("1950_2005_CONUS_", timeRes, ".nc?"), timeRes = timeRes)
   p = define.param(param, service = 'maca')
   k = define.config(dataset = "maca", model = model, ensemble = NA)
 
   tmp = expand.grid(min.date = v$min.date, model = k, call = p$call, stringsAsFactors = FALSE)
   fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>% merge(model_meta$maca, "model")
+
+  if(timeRes == "monthly"){ name.date = format(d$date, "%Y-%m") } else {name.date = d$date}
 
   g = define.grid3(AOI, source = id)
 
@@ -30,6 +35,9 @@ getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
 
   pp = paste0(fin$model,"_", fin$common.name)
 
-  s = fast.download(urls, params = fin$call2, names = pp, g, d$date, dataset = id, fun = 'r')
+  s = fast.download(urls, params = fin$call2, names = pp, g, name.date, dataset = id, fun = 'r')
+
+  s
 
 }
+

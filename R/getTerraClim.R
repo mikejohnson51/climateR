@@ -18,6 +18,12 @@ getTerraClim = function(AOI, param, startDate, endDate = NULL){
   base = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_terraclimate_"
 
   d = define.dates  (startDate, endDate, baseDate = "1958-01-01")
+
+  endDateYear = as.numeric(max(d$year))
+  startDateYear =  as.numeric(min(d$year))
+
+  if(endDateYear > 2017 | startDateYear < 1958){ stop("TerraClim data only avaliable between 1958 and 2017")}
+
   p = define.param  (param, service = id)
   g = define.grid3(AOI, id)
 

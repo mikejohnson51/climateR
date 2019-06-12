@@ -5,7 +5,7 @@
 \title{Get MACA Climate Data for an Area of Interest}
 \usage{
 getMACA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
-  endDate = NULL)
+  endDate = NULL, timeRes = "daily")
 }
 \arguments{
 \item{AOI}{a spatial polygon object (sf or sp)}
@@ -19,6 +19,8 @@ getMACA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
 \item{startDate}{a start date given as "YYYY-MM-DD"}
 
 \item{endDate}{an end date given as "YYYY-MM-DD"}
+
+\item{timeRes}{daily or monthly}
 }
 \value{
 a list of rasterStacks

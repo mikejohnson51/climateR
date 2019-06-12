@@ -4,7 +4,7 @@
 \alias{define.dates}
 \title{Define Date Matrix}
 \usage{
-define.dates(startDate, endDate, baseDate = NULL, type = "d")
+define.dates(startDate, endDate, baseDate = NULL, splitDate = NULL)
 }
 \arguments{
 \item{startDate}{character starting date for data retrieval in the form YYYY-MM-DD.}
