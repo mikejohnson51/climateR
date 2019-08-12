@@ -19,8 +19,8 @@ getLOCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
     id = 'loca'
     base =  "https://cida.usgs.gov/thredds/dodsC/"
 
-    d = define.dates(startDate, endDate)
-    v = define.versions(dates = d$date, scenario = scenario, future.call = "loca_future?", historic.call = "loca_historical?")
+    d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
+    v = define.versions(dates = d, scenario = scenario, future.call = "loca_future?", historic.call = "loca_historical?")
     p = define.param(param, service = id)
     g = define.grid3(AOI, source = id)
     k = define.config(dataset = "loca", model = model, ensemble = NA)
@@ -33,8 +33,9 @@ getLOCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
 
     urls = paste0(base, fin$calls, var.names,  fin$time.index, g$lat.call, g$lon.call)
 
-    fast.download(urls, params = var.names, names = paste0(fin$model, "_", fin$common.name), g, date.names = d$date, dataset = id)
+    s = fast.download(urls, params = var.names, names = paste0(fin$model, "_", fin$common.name), g, date.names = d$date, dataset = id)
 
+    s
 }
 
 

@@ -445,29 +445,30 @@ terraclim = data.frame(
 ),
 
 
-# MACA --------------------------------------------------------------------
+# CA-BCM --------------------------------------------------------------------
 
-ca_bcm = data.frame(
 
-  common.name = c('aet', 'water_deficit',
+cabcm = data.frame(
+
+  common.name = c('excess', 'snowpack',
                   'pet', 'prcp', 'recharge',
-                  'runoff', 'tmin',
-                  'tmax', 'snow_pack'),
+                  'runoff', "snowfall", "soil",
+                  'tmin', 'tmax', 'aet', "cwd"),
 
-  call = paste0(c('aet', 'cwd',
+  call = paste0(c('exc', 'pck',
                   'pet', 'ppt', 'rch',
-                  'run', 'tmn',
-                  'tmx', 'aprpck'), "-ave"),
+                  'run', "snw", "str",
+                  'tmn', 'tmx', 'aet', 'cwd')),
 
-  description = c('Actual Evapotranspiration', 'Climatic Water Deficit',
+  description = c('Excess Water', "Snowpack",
                   'Potential Evapotranspiration', 'Precipitation', 'Recharge',
-                  'Runoff', 'Minimum Temperature',
-                  'Maximum 2-m Temperature', 'April Snow Pack'),
+                  'Runoff', "Snowfall", "Soil Water Storage",
+                  'Minimum Temperature', 'Maximum Temperature', 'Actual Evapotranspiration', 'Climatic Water Deficit'),
 
   units = c('mm', 'mm',
             'mm', 'mm', 'mm',
-            'mm', 'C', 'C',
-            'mm'),
+            'mm', 'mm', 'mm',
+            'C', 'C', 'mm', 'mm'),
 
   stringsAsFactors = F
 
@@ -475,6 +476,7 @@ ca_bcm = data.frame(
 
 
 )
+
 
 
 

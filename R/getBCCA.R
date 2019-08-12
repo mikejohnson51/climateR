@@ -20,8 +20,8 @@ getBCCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
   id = 'bcca'
   base = 'https://cida.usgs.gov/thredds/dodsC/cmip5_bcca/'
 
-  d = define.dates(startDate, endDate)
-  v = define.versions(dates = d$date, scenario = scenario, future.call = "future?", historic.call = "historical?")
+  d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
+  v = define.versions(dates = d, scenario = scenario, future.call = "future?", historic.call = "historical?")
   p = define.param(param, service = id)
   k = define.config(dataset = id, model = model, ensemble = NA)
 
@@ -29,7 +29,7 @@ getBCCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
   fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>%  merge(model_meta$bcca, "model")
   fin = fin[fin$scenario %in% scenario,]
 
-  g = define.grid3(AOI, id)
+  g = define.grid3(AOI, source = id)
 
   variable_call = paste0( "BCCA_0-125deg_",fin$call, "_day_", fin$model, "_", fin$ver, "_", fin$ensemble)
 
@@ -39,6 +39,5 @@ getBCCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
 
   s
 
-  return(s)
 }
 

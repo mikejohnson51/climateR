@@ -15,27 +15,37 @@ define.grid3 = function(AOI, source = NULL){
   if(AOI::checkClass(AOI, 'sp')){ AOI = sf::st_as_sf(AOI) }
   if(checkClass(AOI, 'data.frame') & !checkClass(AOI, "sf")){  AOI =  sf::st_sfc(list(sf::st_point(c(AOI$lon, AOI$lat)))) %>% sf::st_set_crs(AOI::aoiProj) %>% sf::st_sf() }
 
-  bb = AOI %>% sf::st_transform(grid_meta$proj[index]) %>% AOI::bbox_st()
+  bb = AOI %>% sf::st_transform(grid_meta$proj[index]) #%>% AOI::bbox_st()
+  
+  domain = suppressWarnings( AOI::bbox_sp(c(grid_meta$MinX[index], grid_meta$MaxX[index], grid_meta$MinY[index], grid_meta$MaxY[index])) %>% 
+     sf::st_set_crs(grid_meta$proj[index]) )
+ 
+  if(!AOI::is_inside(domain, bb, total = T)){ stop("Requested AOI not in model domain...") }
 
+  bb = AOI::bbox_st(bb)
+  
   X_coords <- seq(as.numeric(grid_meta$MinX[index]),
                   as.numeric(grid_meta$MaxX[index]),
                   by = as.numeric(grid_meta$dX[index]))
 
-  if(max(X_coords) > 180) {X_coords = X_coords - 360}
+  #if(max(X_coords) > 180) {X_coords = X_coords - 360}
 
   Y_coords <- seq(as.numeric(grid_meta$MinY[index]),
                   as.numeric(grid_meta$MaxY[index]),
                   by = as.numeric(grid_meta$dY[index]))
+  
 
 
   if(any(sf::st_geometry_type(AOI) != 'POINT')) {
-
+    
     g = list(
       ymax = max(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords - bb$ymin))) + 1,
       ymin = min(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords  - bb$ymin))) - 1,
       xmax = max(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))) + 1,
       xmin = min(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))) -1
     )
+    
+    g
 
     g[['type']] = 'grid'
     g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')
