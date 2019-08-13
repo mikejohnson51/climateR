@@ -38,6 +38,5 @@ getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
   s = fast.download(urls, params = fin$call2, names = pp, g, name.date, dataset = id, fun = 'r')
 
   s
-
 }
 

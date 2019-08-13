@@ -31,8 +31,9 @@ urls = paste0(base, var.names,
               g$lon.call )
 
 
-fast.download(urls, params = var.names, names = paste0(fin$model, "_", fin$common.name), g, date.names = unique(format(d$date, "%Y-%m")), dataset = id)
+s = fast.download(urls, params = var.names, names = paste0(fin$model, "_", fin$common.name), g, date.names = unique(format(d$date, "%Y-%m")), dataset = id)
 
+s
 }
 
 

@@ -20,15 +20,21 @@ define.grid3 = function(AOI, source = NULL){
   domain = suppressWarnings( AOI::bbox_sp(c(grid_meta$MinX[index], grid_meta$MaxX[index], grid_meta$MinY[index], grid_meta$MaxY[index])) %>% 
      sf::st_set_crs(grid_meta$proj[index]) )
  
-  if(!AOI::is_inside(domain, bb, total = T)){ stop("Requested AOI not in model domain...") }
+  if(!AOI::is_inside(domain, bb, total = T)){ 
+    
+    if(AOI::is_inside(domain, bb, total = F)){
+      message("Requested AOI not completly in model domain...AOI is being clipped") 
+      bb = sf::st_intersection(domain, bb)
+    } else {
+      stop("Requested AOI not in model domain")
+    }
+  }
 
   bb = AOI::bbox_st(bb)
   
   X_coords <- seq(as.numeric(grid_meta$MinX[index]),
                   as.numeric(grid_meta$MaxX[index]),
                   by = as.numeric(grid_meta$dX[index]))
-
-  #if(max(X_coords) > 180) {X_coords = X_coords - 360}
 
   Y_coords <- seq(as.numeric(grid_meta$MinY[index]),
                   as.numeric(grid_meta$MaxY[index]),
@@ -39,13 +45,12 @@ define.grid3 = function(AOI, source = NULL){
   if(any(sf::st_geometry_type(AOI) != 'POINT')) {
     
     g = list(
-      ymax = max(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords - bb$ymin))) + 1,
-      ymin = min(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords  - bb$ymin))) - 1,
-      xmax = max(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))) + 1,
-      xmin = min(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))) -1
+      ymax = max(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords - bb$ymin))) ,
+      ymin = min(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords  - bb$ymin))) ,
+      xmax = max(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))),
+      xmin = min(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax)))
     )
     
-    g
 
     g[['type']] = 'grid'
     g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')

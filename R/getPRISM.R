@@ -26,6 +26,7 @@ getPRISM = function(AOI, param, startDate, endDate = NULL){
 
   urls = paste0(base, fin$year, "/PRISM_combo_", fin$string, ".nc?", fin$call, "[0:1:0]", g$lat.call, g$lon.call)
 
-  fast.download(urls, params = fin$call, names = fin$common.name, g, date.names = unique(fin$date), dataset = id)
+  s = fast.download(urls, params = fin$call, names = fin$common.name, g, date.names = unique(fin$date), dataset = id, fun = "t", no_data = -1000)
 
+  s 
 }

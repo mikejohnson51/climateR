@@ -8,10 +8,9 @@ Maintainer: Mike Johnson <jmj00@ucsb.edu>
 BugReports: https://github.com/mikejohnson51/climateR/issues
 URL: https://github.com/mikejohnson51/climateR
 Depends:
-    R(>= 3.3.0),
+    R(>= 3.5.0),
     AOI
 Imports: 
-    areal,
     doParallel,
     foreach,
     httr,
@@ -24,5 +23,5 @@ Remotes: mikejohnson51/AOI
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: testthat, knitr

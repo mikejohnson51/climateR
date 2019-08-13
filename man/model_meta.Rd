@@ -4,7 +4,7 @@
 \name{model_meta}
 \alias{model_meta}
 \title{Model Metadata}
-\format{An object of class \code{list} of length 5.}
+\format{An object of class \code{list} of length 6.}
 \usage{
 model_meta
 }

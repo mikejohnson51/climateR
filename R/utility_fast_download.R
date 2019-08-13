@@ -8,7 +8,7 @@
 }
 
 
-fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r'){
+fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r', no_data = NA, scale_factor = 1){
 
   stopifnot(identical(length(urls), NROW(params)))
 
@@ -28,7 +28,16 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r')
 
     for(i in 1:length(var)){
 
-    v = var[[i]]
+    v = var[[i]] * scale_factor
+    
+    if(!is.na(no_data)){ 
+    if(no_data > 0){
+      v[v > no_data] = NA
+    } else {
+      v[v < no_data] = NA
+    }
+        
+    }
 
     if(length(dim(v)[3]) == 0 | is.na(dim(v)[3])){
       var2 = .orient(v, fun = fun)

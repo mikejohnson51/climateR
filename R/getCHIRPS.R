@@ -43,7 +43,7 @@ getCHIRPS = function(AOI, startDate, endDate = NULL  ){
     raster::crs(s) = sf::st_crs(g$AOI)[[2]]
   }
 
-  return(s)
+  s
 }
 
 

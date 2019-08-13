@@ -4,7 +4,7 @@
 \name{param_meta}
 \alias{param_meta}
 \title{Parameter Metadata}
-\format{An object of class \code{list} of length 12.}
+\format{An object of class \code{list} of length 13.}
 \usage{
 param_meta
 }

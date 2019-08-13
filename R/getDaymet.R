@@ -36,14 +36,13 @@ getDaymet = function(AOI, param, startDate, endDate = NULL){
   fin = merge(tmp, p, "call") %>% merge(y, "year")
 
   urls = paste0(base, fin$year, '/daymet_v3_',  fin$call, '_', fin$year, '_na.nc4?', fin$call,
-                '[', fin$minJul - 1 ,   ':1:', fin$maxJul - 1, ']',
+                '[', fin$minJul - 1 ,   ':1:',  fin$maxJul - 1, ']',
                 g$lat.call,
                 g$lon.call)
 
-  s = fast.download(urls, params = fin$call, names = fin$call, g, date.names =  d$date, dataset = id, fun = 'r')
+  s = fast.download(urls, params = fin$call, names = fin$call, g, date.names =  d$date, dataset = id, fun = 't')
 
-  s
-
-  return(s)
+  s 
+  
 }
 

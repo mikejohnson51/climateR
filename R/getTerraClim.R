@@ -34,6 +34,9 @@ getTerraClim = function(AOI, param, startDate, endDate = NULL){
 
   date.names  = unique(format(d$date, "%Y-%m"))
 
-  fast.download(urls, params = p$call, names = p$common.name, g, date.names = date.names, dataset = id, fun = 't')
-}
+  s = fast.download(urls, params = p$call, names = p$common.name, g, date.names = date.names, dataset = id, fun = 't', no_data = 3000)
+
+  s
+  
+  }
 

@@ -455,10 +455,10 @@ cabcm = data.frame(
                   'runoff', "snowfall", "soil",
                   'tmin', 'tmax', 'aet', "cwd"),
 
-  call = paste0(c('exc', 'pck',
+  call = c('exc', 'pck',
                   'pet', 'ppt', 'rch',
                   'run', "snw", "str",
-                  'tmn', 'tmx', 'aet', 'cwd')),
+                  'tmn', 'tmx', 'aet', 'cwd'),
 
   description = c('Excess Water', "Snowpack",
                   'Potential Evapotranspiration', 'Precipitation', 'Recharge',
@@ -472,9 +472,17 @@ cabcm = data.frame(
 
   stringsAsFactors = F
 
+),
+
+# TOPOWX--------------------------------------------------------------------
+
+topowx = data.frame(
+  common.name = c('tmin', 'tmax'),
+  call = c('tmin', 'tmax'),
+  description = c('Minimum Temperature', 'Maximum Temperature'),
+  units = c('C', 'C'),
+  stringsAsFactors = F
 )
-
-
 )
 
 
