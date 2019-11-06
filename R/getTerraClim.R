@@ -22,7 +22,7 @@ getTerraClim = function(AOI, param, startDate, endDate = NULL){
   endDateYear = as.numeric(max(d$year))
   startDateYear =  as.numeric(min(d$year))
 
-  if(endDateYear > 2017 | startDateYear < 1958){ stop("TerraClim data only avaliable between 1958 and 2017")}
+  if(endDateYear > 2018 | startDateYear < 1958){ stop("TerraClim data only avaliable between 1958 and 2018")}
 
   p = define.param  (param, service = id)
   g = define.grid3(AOI, id)
