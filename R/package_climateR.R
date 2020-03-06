@@ -15,6 +15,7 @@
 #' @importFrom foreach %do% %dopar% foreach
 #' @importFrom doParallel registerDoParallel
 #' @importFrom httr write_disk GET
+#' @importFrom methods is
 
 NULL
 

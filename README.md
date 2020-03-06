@@ -37,7 +37,7 @@ The climateR package works off the [AOI](https://github.com/mikejohnson51/AOI) f
 To get a climate product, an area of interest must be defined:
 
 ```r
-AOI = getAOI(state = "CA")
+AOI = aoi_get(state = "CA")
 ```
 <p align="center">
 <img src="man/figures/ca_AOI.png" width="400">
@@ -94,7 +94,7 @@ Large scale data grabs are also quite efficient
 
 ```r
 system.time({
-  g = getAOI(state = "conus") %>%  getGridMET(param = 'srad', startDate = "2017-06-29")
+  g = aoi_get(state = "conus") %>%  getGridMET(param = 'srad', startDate = "2017-06-29")
 })
 
 >   user  system elapsed 
@@ -118,7 +118,7 @@ Getting ensemble averages is also quite simple:
 models = c('ccsm', 'cnrm', 'csiro', 'hadgem', 'pcm')
 
 system.time({
-  temp = getAOI(state = "conus") %>% getSARRD(param = 'tmin', model = models, ensemble = 'a2', startDate = "2080-11-29")
+  temp = aoi_get(state = "conus") %>% getSARRD(param = 'tmin', model = models, ensemble = 'a2', startDate = "2080-11-29")
 })
 
 > user  system elapsed 

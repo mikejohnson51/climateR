@@ -11,7 +11,6 @@
 #' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 #' @export
 
-
 getTerraClim = function(AOI, param, startDate, endDate = NULL){
 
   id = "terraclim"

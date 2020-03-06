@@ -17,7 +17,8 @@ Imports:
     magrittr,
     RNetCDF,
     raster,
-    sf
+    sf,
+    methods
 VignetteBuilder: knitr
 Remotes: mikejohnson51/AOI
 License: MIT + file LICENSE

@@ -12,17 +12,24 @@ define.grid3 = function(AOI, source = NULL){
 
   index = which(grid_meta$source == source)
 
-  if(AOI::checkClass(AOI, 'sp')){ AOI = sf::st_as_sf(AOI) }
-  if(checkClass(AOI, 'data.frame') & !checkClass(AOI, "sf")){  AOI =  sf::st_sfc(list(sf::st_point(c(AOI$lon, AOI$lat)))) %>% sf::st_set_crs(AOI::aoiProj) %>% sf::st_sf() }
-
-  bb = AOI %>% sf::st_transform(grid_meta$proj[index]) #%>% AOI::bbox_st()
+  if(methods::is(AOI, 'sp')){ AOI = sf::st_as_sf(AOI) }
   
-  domain = suppressWarnings( AOI::bbox_sp(c(grid_meta$MinX[index], grid_meta$MaxX[index], grid_meta$MinY[index], grid_meta$MaxY[index])) %>% 
+  if(methods::is(AOI, 'data.frame') & !methods::is(AOI, "sf")){  
+    AOI =  sf::st_sfc(list(sf::st_point(c(AOI$lon, AOI$lat)))) %>% 
+      sf::st_set_crs(AOI::aoiProj) %>% sf::st_sf() }
+
+  bb = AOI %>% sf::st_transform(grid_meta$proj[index])
+  
+  domain = suppressWarnings( 
+    AOI::bbox_get(paste(grid_meta$MinX[index], 
+                    grid_meta$MaxX[index], 
+                    grid_meta$MinY[index], 
+                    grid_meta$MaxY[index], sep = ",")) %>% 
      sf::st_set_crs(grid_meta$proj[index]) )
  
-  if(!AOI::is_inside(domain, bb, total = T)){ 
+  if(!AOI::aoi_inside(domain, bb, total = T)){ 
     
-    if(AOI::is_inside(domain, bb, total = F)){
+    if(AOI::aoi_inside(domain, bb, total = F)){
       message("Requested AOI not completly in model domain...AOI is being clipped") 
       bb = sf::st_intersection(domain, bb)
     } else {
@@ -30,7 +37,7 @@ define.grid3 = function(AOI, source = NULL){
     }
   }
 
-  bb = AOI::bbox_st(bb)
+  bb = AOI::bbox_coords(bb)
   
   X_coords <- seq(as.numeric(grid_meta$MinX[index]),
                   as.numeric(grid_meta$MaxX[index]),
