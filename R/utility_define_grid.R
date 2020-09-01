@@ -16,7 +16,7 @@ define.grid3 = function(AOI, source = NULL){
   
   if(methods::is(AOI, 'data.frame') & !methods::is(AOI, "sf")){  
     AOI =  sf::st_sfc(list(sf::st_point(c(AOI$lon, AOI$lat)))) %>% 
-      sf::st_set_crs(AOI::aoiProj) %>% sf::st_sf() }
+      sf::st_set_crs(4326) %>% sf::st_sf() }
 
   bb = AOI %>% sf::st_transform(grid_meta$proj[index])
   
