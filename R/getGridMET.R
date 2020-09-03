@@ -24,10 +24,13 @@ getGridMET = function(AOI, param, startDate, endDate = NULL){
                 g$lon.call,
                 "#fillmismatch")
 
-  s = fast.download(urls, params = p$description, names = p$common.name,  g, d$date, dataset = id, fun = 't')
+  s = fast.download(urls,
+                    params = p$description, 
+                    names = p$common.name,  g, 
+                    d$date, 
+                    dataset = id, 
+                    fun = 't')
 
   return(s)
 
 }
-
-
