@@ -4,8 +4,14 @@
 \alias{getBCCA}
 \title{Get BCCA Climate Data for an Area of Interest}
 \usage{
-getBCCA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
-  endDate = NULL)
+getBCCA(
+  AOI,
+  param,
+  model = "CCSM4",
+  scenario = "rcp45",
+  startDate,
+  endDate = NULL
+)
 }
 \arguments{
 \item{AOI}{a spatial polygon object (sf or sp)}

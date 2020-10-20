@@ -17,21 +17,21 @@
 getLOCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, endDate = NULL){
 
     id = 'loca'
-    base =  "https://cida.usgs.gov/thredds/dodsC/"
 
     d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
-    v = define.versions(dates = d, scenario = scenario, future.call = "loca_future?", historic.call = "loca_historical?")
+    v = define.versions(dates = d, scenario = scenario, future.call = "future?", historic.call = "historical?")
     p = define.param(param, service = id)
     g = define.grid3(AOI, source = id)
-    k = define.config(dataset = "loca", model = model, ensemble = NA)
+    k = define.config(dataset = id, model = model, ensemble = NA)
 
     tmp = expand.grid(min.date = v$min.date, model = k, call = p$call)
-    fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>%  merge(model_meta$loca, "model")
+    fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>% 
+        merge(climateR::model_meta$loca, "model")
     fin = fin[fin$scenario %in% scenario,]
 
     var.names = paste0(fin$call, "_", fin$model, "_", fin$ensemble, "_", fin$ver)
 
-    urls = paste0(base, fin$calls, var.names,  fin$time.index, g$lat.call, g$lon.call)
+    urls = paste0(g$base, fin$calls, var.names,  fin$time.index, g$lat.call, g$lon.call)
 
     s = fast.download(urls, params = var.names, names = paste0(fin$model, "_", fin$common.name), g, date.names = d$date, dataset = id)
 

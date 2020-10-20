@@ -4,7 +4,9 @@
 \name{model_meta}
 \alias{model_meta}
 \title{Model Metadata}
-\format{An object of class \code{list} of length 6.}
+\format{
+An object of class \code{list} of length 4.
+}
 \usage{
 model_meta
 }
@@ -13,7 +15,7 @@ Metadata for model options
 }
 \examples{
 \dontrun{
- model_meta = climateR::model_meta
+ climateR::model_meta
 }
 
 }

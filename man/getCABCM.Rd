@@ -4,8 +4,14 @@
 \alias{getCABCM}
 \title{Get CABCM Climate Data for an Area of Interest}
 \usage{
-getCABCM(AOI, param, model = "CCSM4", scenario = "rcp85", startDate,
-  endDate = NULL)
+getCABCM(
+  AOI,
+  param,
+  model = "CCSM4",
+  scenario = "rcp85",
+  startDate,
+  endDate = NULL
+)
 }
 \arguments{
 \item{AOI}{a spatial polygon object (sf or sp)}

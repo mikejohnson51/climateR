@@ -3,13 +3,12 @@
 \docType{package}
 \name{climateR}
 \alias{climateR}
-\alias{climateR-package}
 \title{climateR}
 \description{
 \code{climateR} package
 }
 \details{
-Download gridded and point climate data
+Download gridded climate data
 
 See the README on
 }

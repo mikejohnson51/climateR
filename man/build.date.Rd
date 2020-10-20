@@ -7,8 +7,6 @@
 build.date(startDate, endDate)
 }
 \arguments{
-\item{startDate}{(character) starting date}
-
 \item{startDate}{(character) ending date}
 }
 \value{

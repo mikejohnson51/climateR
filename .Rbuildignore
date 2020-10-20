@@ -5,3 +5,5 @@ inProgress
 sampleFiles
 data_backup
 help
+^README\.Rmd$
+^data-raw$

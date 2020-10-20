@@ -10,11 +10,12 @@
 
 getCHIRPS = function(AOI, startDate, endDate = NULL  ){
 
+  i = NULL
   d = define.dates  (startDate, endDate)
   dates = paste0("%28", as.numeric(format(d$date, "%d")), "%20", month.abb[as.numeric(format(d$date, "%m"))], "%20", format(d$date, "%Y"))
   g = define.grid3(AOI, 'chirps')
 
-  bb = g$AOI %>% AOI::bbox_st()
+  bb =  sf::st_bbox(AOI)
 
   urls = paste0('https://iridl.ldeo.columbia.edu/SOURCES/.UCSB/.CHIRPS/.v2p0/.daily-improved/.global/.0p05/.prcp/',
          'Y/', bb$ymin, '/', bb$ymax,'/RANGEEDGES/',
@@ -25,7 +26,7 @@ getCHIRPS = function(AOI, startDate, endDate = NULL  ){
   no_cores  <- parallel::detectCores() - 1
   doParallel::registerDoParallel(no_cores)
 
-  if(any(sf::st_geometry_type(g$AOI) == 'POINT')) {
+  if(any(sf::st_geometry_type(AOI) == 'POINT')) {
 
     var = foreach::foreach(i = 1:length(urls), .combine = 'c', .packages = 'raster') %dopar% { raster::raster(urls[i]) %>% as.matrix()}
 

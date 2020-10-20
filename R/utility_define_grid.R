@@ -1,96 +1,85 @@
 #' @title Define AOI native grid
 #' @description **INTERNAL** This function defines the grid of the AOI in terms of the climate resource
 #' @keywords internal
-#' @param AOI an AOI object
-#' @param source a datset id (source)  being called
+#' @param AOI an POINT or POLYGON object
+#' @param source a dataset id (source)  being called
 #' @return a list of values including type, lat.call, lon.call, extent, AOI, proj4string
 #' @keywords internal
+#' @importFrom methods is
+#' @importFrom sf st_geometry_type st_as_sf st_as_sfc st_bbox st_transform st_combine st_crs st_within st_intersects st_intersection
+#' @importFrom  raster extent
 #' @author Mike Johnson
 
-
 define.grid3 = function(AOI, source = NULL){
-
-  index = which(grid_meta$source == source)
-
-  if(methods::is(AOI, 'sp')){ AOI = sf::st_as_sf(AOI) }
   
-  if(methods::is(AOI, 'data.frame') & !methods::is(AOI, "sf")){  
-    AOI =  sf::st_sfc(list(sf::st_point(c(AOI$lon, AOI$lat)))) %>% 
-      sf::st_set_crs(4326) %>% sf::st_sf() }
-
-  bb = AOI %>% sf::st_transform(grid_meta$proj[index])
+  grid = climateR::grid_meta[which(climateR::grid_meta$source == source), ]
   
-  domain = suppressWarnings( 
-    AOI::bbox_get(paste(grid_meta$MinX[index], 
-                    grid_meta$MaxX[index], 
-                    grid_meta$MinY[index], 
-                    grid_meta$MaxY[index], sep = ",")) %>% 
-     sf::st_set_crs(grid_meta$proj[index]) )
- 
-  if(!AOI::aoi_inside(domain, bb, total = T)){ 
-    
-    if(AOI::aoi_inside(domain, bb, total = F)){
-      message("Requested AOI not completly in model domain...AOI is being clipped") 
-      bb = sf::st_intersection(domain, bb)
-    } else {
-      stop("Requested AOI not in model domain")
-    }
+  if(methods::is(AOI, 'sp')){ 
+    AOI = sf::st_as_sf(AOI) 
   }
-
-  bb = AOI::bbox_coords(bb)
   
-  X_coords <- seq(as.numeric(grid_meta$MinX[index]),
-                  as.numeric(grid_meta$MaxX[index]),
-                  by = as.numeric(grid_meta$dX[index]))
-
-  Y_coords <- seq(as.numeric(grid_meta$MinY[index]),
-                  as.numeric(grid_meta$MaxY[index]),
-                  by = as.numeric(grid_meta$dY[index]))
+  if(any(sf::st_geometry_type(AOI) == "POINT") & nrow(AOI) > 1){ 
+    AOI = sf::st_as_sfc(sf::st_bbox(AOI)) 
+  }
   
-
-
-  if(any(sf::st_geometry_type(AOI) != 'POINT')) {
+  bb = sf::st_combine(sf::st_transform(AOI, grid$proj))
+  
+  X_coords <- seq(grid$Xstart, grid$Xend, by = grid$dX)
+  if(any(X_coords > 180.001)){X_coords = X_coords - 360}
+  
+  Y_coords <- seq(grid$Ystart, grid$Yend, by = grid$dY)
+  
+  domain = sf::st_as_sfc(sf::st_bbox(c(xmin = min(X_coords), xmax = max(X_coords), 
+                                       ymin = min(Y_coords), ymax = max(Y_coords)), 
+                                       crs = sf::st_crs(bb)))
+  
+  suppressMessages(suppressWarnings(
+    if(!sf::st_within(bb, domain, sparse = FALSE)){ 
+      if(sf::st_intersects(bb, domain, sparse = FALSE)){
+        message("Requested AOI not completly in model domain ... AOI is being clipped") 
+        bb = sf::st_intersection(domain, bb)
+      } else {
+        stop("Requested AOI not in model domain")
+      }
+    }
+  ))
+  
+  bb = st_bbox(bb)
+  
+  if(all(sf::st_geometry_type(AOI) != "POINT")) {
     
-    g = list(
-      ymax = max(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords - bb$ymin))) ,
-      ymin = min(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords  - bb$ymin))) ,
-      xmax = max(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax))),
-      xmin = min(which.min(abs(X_coords - bb$xmin)),  which.min(abs(X_coords - bb$xmax)))
-    )
+    ys = c(which.min(abs(Y_coords - bb$ymax)), which.min(abs(Y_coords - bb$ymin)))
+    xs = c(which.min(abs(X_coords - bb$xmin)), which.min(abs(X_coords - bb$xmax)))
     
-
+    g = list(ymax = max(ys), ymin = min(ys), xmax = max(xs), xmin = min(xs))
     g[['type']] = 'grid'
     g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')
     g[['lon.call']] = paste0('[', g$xmin - 1,  ':1:', g$xmax - 1, ']')
     g[['e']] = raster::extent(range(X_coords[c(g$xmin:g$xmax)]), range(Y_coords[c(g$ymin:g$ymax)]))
-    g[['AOI']] = AOI
-    g[['proj']] = grid_meta$proj[index]
-
+    g[['proj']] = grid$proj
+    g[["base"]] = grid$base
+    
+    
   } else {
-
-    lon = bb$xmax
-    lat = bb$ymax
-
-    if(sum(c( lon > min(X_coords), lon < max(X_coords), lat > min(Y_coords), lat < max(Y_coords))) != 4) {
-      stop('Requested Point not within domain')
-    }
-
-    g = list(
-      y = which.min(abs(Y_coords  - lat)),
-      x = which.min(abs(X_coords  - lon))
-    )
-
+    
+    lon = bb$xmin
+    lat = bb$ymin
+    
+    g = list(y = which.min(abs(Y_coords  - lat)),
+             x = which.min(abs(X_coords  - lon)))
+    
     g[["lat"]]      = Y_coords[g$y]
     g[["lon"]]      = X_coords[g$x]
     g[['type']]     = 'point'
     g[['lat.call']] = paste0('[', g$y - 1 , ':1:', g$y - 1, ']')
     g[['lon.call']] = paste0('[', g$x - 1,  ':1:', g$x - 1, ']')
     g[['e']] = NULL
-    g[['AOI']] = AOI
-    g[['proj']] = grid_meta$proj[index]
-
+    #g[['AOI']] = AOI
+    g[['proj']] = grid$proj
+    g[["base"]] = grid$base
+    
   }
-
+  
   return(g)
 }
 

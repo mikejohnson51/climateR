@@ -17,9 +17,21 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
   doParallel::registerDoParallel(no_cores)
 
   if(g$type == 'point'){
-    var = foreach::foreach(i = 1:length(urls), .combine = 'c') %dopar% { RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T)}
+    var = foreach::foreach(i = 1:length(urls), .combine = 'c') %dopar% { 
+      tryCatch({
+        RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) 
+      }, error = function(e){
+        urls[i]
+      })
+    }
   } else {
-    var = foreach::foreach(i = 1:length(urls)) %dopar% { RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) }
+    var = foreach::foreach(i = 1:length(urls)) %dopar% { 
+      tryCatch({
+        RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) 
+      }, error = function(e){
+          urls[i]
+      })
+    }
   }
 
   if(g$type == 'grid'){

@@ -1,182 +1,347 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
-[![Build Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https://travis-ci.org/mikejohnson51/climateR)     [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
 
+[![Build
+Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https://travis-ci.org/mikejohnson51/climateR)
+[![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
 
+`climateR` seeks to simplifiy the steps needed to get climate data into
+R. It currently provides access to the following gridded climate sources
+using a single parmaeter
 
-ClimateR looks to simplfy the steps needed to get raster climate data in R for Areas of Interest (AOI). It currently provides, or will provide, access to gridded climate sources as well as observation networks. Efforts have been made to reduce parameter variations (eg prcp and ppt) so that all calls require the same inputs. 
-
-
-|**Number**|**Dataset**          | **Description**                                            | **Dates**         |
-|----------|---------------------| -----------------------------------------------------------|-------------------|
-|1         | **GridMET**         | Gridded Meteorological Data.                               | 1979-Yesterday    |
-|2         | **Daymet**          | Daily Surface Weather and Climatological Summaries         | 1980-2017.        |
-|3         | **TopoWX**          | Topoclimatic Daily Air Temperature Dataset                 | 1948-2016.        |
-|4         | **PRISM**           | Parameter-elevation Regressions on Independent Slopes      | 1981-(Yesterday-1)|
-|5         | **MACA**            | Multivariate Adaptive Constructed Analogs                  | 1950-2099         |
-|6         | **LOCA**            | Localized Constructed Analogs                              | 1950-2100         |
-|7         | **BCCA**            | Bias Corrected Constructed Analogs                         | 1950-2100         |
-|8         | **NCEP**            | National Centers for Ecological Prediction.                | **In progress**   |
-|9         | **SARRD**           | Statistical Asynchronous Regional Regression               | 1960-2100         |
-|10        | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950-2099         |
-|11        | **OSSEB**           | Operational Simplified Surface Energy Balance              | 2000-2015         |
-|12        | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958-2017 |
-|13        | **CHIRPS**          | Climate Hazards Group InfraRed Precipitation with Station  | 1980-Current year |
-|14        | **EDDI**            | Evaporative Demand Drought Index                           | 1980-Current year |
+| **Number** | **Dataset**      | **Description**                                            | **Dates**            |
+| ---------- | ---------------- | ---------------------------------------------------------- | -------------------- |
+| 1          | **GridMET**      | Gridded Meteorological Data.                               | 1979 - Yesterday     |
+| 2          | **Daymet**       | Daily Surface Weather and Climatological Summaries         | 1980 - 2019          |
+| 3          | **TopoWX**       | Topoclimatic Daily Air Temperature Dataset                 | 1948 - 2016          |
+| 4          | **PRISM**        | Parameter-elevation Regressions on Independent Slopes      | 1981 - (Yesterday-1) |
+| 5          | **MACA**         | Multivariate Adaptive Constructed Analogs                  | 1950 - 2099          |
+| 6          | **LOCA**         | Localized Constructed Analogs                              | 1950 - 2100          |
+| 7          | **BCCA**         | Bias Corrected Constructed Analogs                         | 1950 - 2100          |
+| 8          | **BCSD**         | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950 - 2099          |
+| 9          | **TerraClimate** | TerraClimate Monthly Gridded Data                          | 1958 - 2019          |
+| 10         | **CHIRPS**       | Climate Hazards Group InfraRed Precipitation with Station  | 1980 - Current month |
+| 11         | **EDDI**         | Evaporative Demand Drought Index                           | 1980 - Current year  |
 
 # Installation
 
-```r
-install.packages("devtools")
-devtools::install_github("mikejohnson51/climateR")
+``` r
+remotes::install_github("mikejohnson51/AOI") # suggested!
+remotes::install_github("mikejohnson51/climateR")
+```
+
+# Usful Packages for climate data
+
+``` r
+library(AOI)
+library(climateR)
+library(sf)
+library(raster)
+library(rasterVis)
 ```
 
 # Examples
 
-The climateR package works off the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. This framework is also used in [HydroData](https://github.com/mikejohnson51/HydroData), and [NWM](https://github.com/mikejohnson51/nwm). 
+The climateR package is supplimented by the
+[AOI](https://github.com/mikejohnson51/AOI) framework established in the
+AOI R package.
 
 To get a climate product, an area of interest must be defined:
 
-```r
-AOI = aoi_get(state = "CA")
+``` r
+AOI = aoi_get(state = "NC")
+plot(AOI$geometry)
 ```
-<p align="center">
-<img src="man/figures/ca_AOI.png" width="400">
-</p>
 
-Here we are loading a spatial polygon for the state of California. More examples of contruting AOI calls can be found [here](https://mikejohnson51.github.io/AOI/).
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-With an AOI, we can construct a call to a dataset for a parameter(s) and date(s) of choice. Here we are querting the PRISM dataset for maximum and mimimun temperture estimates for October 29, 2018:
+Here we are loading a polygon for the state of California. More examples
+of constructing AOI calls can be found
+[here](https://mikejohnson51.github.io/AOI/).
 
-```r
+With an AOI, we can construct a call to a dataset for a parameter(s) and
+date(s) of choice. Here we are querying the PRSIM dataset for maximum
+and minimum temperature on October 29, 2018:
+
+``` r
 system.time({
-p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
+ p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
-
->  user  system elapsed 
-  0.057   1.054   4.845 
+#>    user  system elapsed 
+#>   0.628   0.153   1.783
 ```
 
-```r
-r = raster::stack(p$tmax, p$tmin)
-names(r) = c('tmax', 'tmin')
-rasterVis::levelplot(r)
+``` r
+r = raster::stack(p)
+names(r) = names(p)
+rasterVis::levelplot(r, par.settings = BuRdTheme) +
+  layer(sp.lines(as_Spatial(AOI), col="gray30", lwd=3))
 ```
-<p align="center">
-<img src="man/figures/prism_ex.png" width="600">
-</p>
 
-Some sources are  downscaled Global Climate Models (GCMs). These allow you to query future forecasted ensemble members. One example is from the MACA dataset:
+<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
 
-```r
+# Data through time …
+
+In addition to multiple variables we can request variables through time,
+here lets look at the gridMET rainfall for the Gulf Coast during
+Hurricane Harvey:
+
+``` r
+harvey = getGridMET(aoi_get(state = c("TX", "FL")), 
+                  param = "prcp", 
+                  startDate = "2017-08-20", endDate = "2017-08-31")
+
+levelplot(harvey$prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+# Climate Projections
+
+Some sources are downscaled Global Climate Models (GCMs). These allow
+you to query foretasted ensemble members from different models and/or
+climate scenarios. One example is from the MACA dataset:
+
+``` r
 system.time({
-m = getMACA(AOI, 
+m = getMACA(aoi_get(state = "FL"), 
             model = "CCSM4", 
             param = 'prcp', 
             scenario = c('rcp45', 'rcp85'), 
-            startDate = "2080-06-29", 
-            endDate = "2080-06-30")
+            startDate = "2080-06-29", endDate = "2080-06-30")
 })
-
->  user  system elapsed 
-  0.183   1.213   5.998
+#>    user  system elapsed 
+#>   0.351   0.114   1.098
 ```
 
-```r
-r = raster::stack(m$prcp_rcp45, m$prcp_rcp85)
-names(r) = paste0(c(rep("RCP45_", 2), rep("RCP85_", 2)), unique(substring(names(r), 2, 11)))
-rasterVis::levelplot(r, par.settings = rasterTheme(region=sequential_hcl(10, power=2.2)))
-```
-<p align="center">
-<img src="man/figures/scenario_ex.png" width="600">
-</p>
-
-Large scale data grabs are also quite efficient
-
-```r
-system.time({
-  g = aoi_get(state = "conus") %>%  getGridMET(param = 'srad', startDate = "2017-06-29")
-})
-
->   user  system elapsed 
-  0.304   1.618   6.063 
+``` r
+r = raster::stack(m)
+names(r) = paste(rep(names(m), each = 2), names(m[[1]]))
+levelplot(r, par.settings = BTCTheme)
 ```
 
-```r
-raster::plot(g$srad, col = viridis::viridis(100), axes = F, box= F)
-title(main = "Solar Radiation 2017-06-29\n4km Resolution")
-sp::plot(g$AOI, add = T)
-```
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
 
-<p align="center">
-<img src="man/figures/conus_ex.png" width="600">
-</p>
+Getting multiple models results is also quite simple:
 
-Getting ensemble averages is also quite simple:
+``` r
+models = c("bnu-esm","canesm2", "ccsm4", "cnrm-cm5", "csiro-mk3-6-0")
 
-```r
+temp =  getMACA(AOI = aoi_get(state = "conus"),
+                  param = 'tmin', 
+                  model = models, 
+                  startDate = "2080-11-29")
 
-models = c('ccsm', 'cnrm', 'csiro', 'hadgem', 'pcm')
-
-system.time({
-  temp = aoi_get(state = "conus") %>% getSARRD(param = 'tmin', model = models, ensemble = 'a2', startDate = "2080-11-29")
-})
-
-> user  system elapsed 
-0.554   1.798  36.724
-```
-
-```r
-#stack model outputs
 s = stack(temp)
-
-# add mean to stack
 s = addLayer(s, mean(s))
-names(s) = c(models, "Ensemble")
+names(s) = c(models, "Ensemble Mean")
 
 # Plot
-levelplot(s, par.settings = RdBuTheme)
-```
-<p align="center">
-<img src="man/figures/ensemble_ex.png" width="600">
-</p>
-
-Statistics are not limited to mean: 
-
-```r 
-stats= stack(max(s), min(s), mean(s), max(s) - min(s), calc(s, sd), sum((s - mean(s))^2) / 5)
-names(stats) = c("Ensemble Max", "Ensemble Min", "Ensemble Mean",  "Ensemble Range",  "Ensemble SD",  "Ensemble Variance")
-```
-<p align="center">
-<img src="man/figures/stats_ex.png" width="600">
-</p>
-
-Not all datasets are USA focused. The TerraClimate Dataset offers global, monthly data up to the current year. Here we can get the PDSI (Palmer Index for October 2017):
-
-```r
-w = AOI::world %>% getTerraClim(param = 'palmer', startDate = '2017-10-10')
-```
-<p align="center">
-<img src="man/figures/world_ex.png" width="600">
-</p>
-
-Finally, data gathering is not limitied to areas and can be done as a time series for a point. Here we look for a 10-model ensemble for maximum temperture in Colorado Springs, Colorado from the LOCA downscaled dataset between Jan 1, 2030 and Decemeber 31, 2040.
-
-```r
-system.time({
-  ts = geocode('Colorado Springs') %>% 
-       getLOCA(param = 'tmax', model = 10, startDate = "2030-01-01", endDate = "2040-12-31")
-})
-> user  system elapsed 
-2.716   4.506  193.675 
-
+rasterVis::levelplot(s, par.settings = rasterVis::BuRdTheme)
 ```
 
-In a little over 3 minutes we collected **40,180** data points (~208 per second). The results can be seen below:
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" /> If
+your dont know your models, you can always grab a random set by
+specifying a number:
 
-<p align="center">
-<img src="man/figures/timeseries_ex.png" width="800">
-</p>
+``` r
+random = getMACA(aoi_get(state = "MI"), model = 3, param = "prcp", startDate = "2050-10-29")
+random = stack(random) %>% setNames(names(random))
+levelplot(stack(random), par.settings = BTCTheme)
+```
+
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+Not all datasets are USA focused either. TerraClimate offers global,
+monthly data up to the current year for many variables, and CHIRPS
+provides daily rainfall data:
+
+``` r
+
+kenya = aoi_get(country = "Kenya")
+tc = getTerraClim(kenya, param = "prcp", startDate = "2018-01-01")
+chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
+
+p1 = levelplot(tc$prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
+  layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
+p2 = levelplot(chirps,  par.settings = BTCTheme, main = "Janaury 1-4, 2018; CHIRPS", layout=c(2, 2)) +
+  layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
+
+gridExtra::grid.arrange(p1,p2, nrow = 1)
+```
+
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+
+This raises the question “*what is available for each resource?*”. This
+can be checked in the appropriate meta\_data objects. For example lets
+see what parameter data is offered for gridMET, and what models and
+scenarios are offered for MACA.
+
+``` r
+head(param_meta$gridmet)
+#>   common.name call                               description
+#> 1        prcp   pr                      precipitation_amount
+#> 2       rhmax rmax           daily_maximum_relative_humidity
+#> 3       rhmin rmin           daily_minimum_relative_humidity
+#> 4        shum  sph              daily_mean_specific_humidity
+#> 5        srad srad daily_mean_shortwave_radiation_at_surface
+#> 6    wind_dir   th                 daily_mean_wind_direction
+#>                          units
+#> 1                           mm
+#> 2                      Percent
+#> 3                      Percent
+#> 4                        kg/kg
+#> 5                        W/m^2
+#> 6 Degrees Clockwise from north
+
+
+head(model_meta$maca)
+#>           model ensemble scenario
+#> 1       BNU-ESM   r1i1p1    rcp45
+#> 2      CNRM-CM5   r1i1p1    rcp45
+#> 3 CSIRO-Mk3-6-0   r1i1p1    rcp45
+#> 4    bcc-csm1-1   r1i1p1    rcp45
+#> 5       CanESM2   r1i1p1    rcp45
+#> 6    GFDL-ESM2G   r1i1p1    rcp45
+```
+
+# Point Based Data
+
+Finally, data gathering is not limited to areal extents and can be
+retrieved as a time series at locations.
+
+``` r
+AOI = AOI::geocode('Colorado Springs', pt = TRUE)
+ts  = getGridMET(AOI, param = 'srad', startDate = "2019-01-01", endDate = "2019-12-31")
+
+ggplot(data = ts) + 
+  aes(x = date, y = srad) + 
+  geom_line() +
+  stat_smooth(col = "red") + 
+  theme_linedraw() + 
+  labs(title = "Solar Radiation: Colorado Springs 2019", x = "Date", y = "Solar Radiation")
+```
+
+<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+
+# Point Based Ensemble
+
+``` r
+future = getMACA(geocode("UCSB", pt = TRUE), 
+                 model = 5, param = "tmax", 
+                 startDate = "2050-01-01", endDate = "2050-01-31")
+
+future_long = future %>% 
+  dplyr::select(-source, -lat, -lon) %>% 
+  tidyr::pivot_longer(-date) 
+
+ggplot(data = future_long, aes(x = date, y = value, col = name)) + 
+  geom_line() + 
+  theme_linedraw() + 
+  scale_color_brewer(palette = "Dark2") + 
+  labs(title = "UCSB Temperture: January, 2050",
+       x = "Date",
+       y = "Degree K",
+       color = "Model")
+```
+
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+
+# Multi site extraction
+
+Extracting data for a set of points is an interesting challenge. It
+turns it is much more efficient to grab the underlying raster stack and
+then extract timeseries as opposed to iterating over the locations:
+
+1.  Starting with a set of locations in Brazil:
+
+<!-- end list -->
+
+``` r
+(sites = read.csv('./inst/extdata/example.csv') %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326))
+#> Simple feature collection with 100 features and 2 fields
+#> geometry type:  POINT
+#> dimension:      XY
+#> bbox:           xmin: -54.81975 ymin: -29.73627 xmax: -40.80975 ymax: -18.52627
+#> geographic CRS: WGS 84
+#> First 10 features:
+#>         X     ID                    geometry
+#> 1  190760 190760 POINT (-50.40975 -25.81627)
+#> 2  267801 267801 POINT (-48.15975 -24.60627)
+#> 3  219885 219885 POINT (-49.28975 -25.32627)
+#> 4  200445 200445 POINT (-50.45975 -25.63627)
+#> 5   74789  74789 POINT (-51.70975 -28.01627)
+#> 6   18343  18343 POINT (-50.35975 -29.33627)
+#> 7  143615 143615 POINT (-49.33975 -26.73627)
+#> 8  588292 588292 POINT (-47.57975 -21.27627)
+#> 9  371314 371314 POINT (-47.76975 -23.28627)
+#> 10 638894 638894 POINT (-46.99975 -20.75627)
+```
+
+2.  `climateR` will grab the RasterStack underlying the bounding area of
+    the points
+
+<!-- end list -->
+
+``` r
+sites_stack = getTerraClim(AOI = sites, 
+                           param ="tmax", 
+                           startDate = "2018-01-01", endDate = "2018-12-31")
+
+
+plot(sites_stack$tmax$X2018.01)
+plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
+```
+
+<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+
+3.  Use `extract_sites` to extract the times series from these
+    locations. The `id` parameter is the unique identifier from the site
+    data with whoch to names the resulting columns.
+
+<!-- end list -->
+
+``` r
+sites_wide = extract_sites(sites_stack, sites, "ID")
+sites_wide$tmax[1:5, 1:5]
+#>         date site_190760 site_267801 site_219885 site_200445
+#> 1 2018-01-01        26.9        31.5        25.6        26.2
+#> 2 2018-02-01        26.6        30.1        25.2        25.8
+#> 3 2018-03-01        26.4        30.8        25.6        26.0
+#> 4 2018-04-01        25.3        28.3        24.8        24.9
+#> 5 2018-05-01        21.5        25.1        21.7        21.2
+```
+
+To make the data ‘tidy’ simply pivot on the date column:
+
+``` r
+tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
+head(tmax)
+#> # A tibble: 6 x 3
+#>   date       name        value
+#>   <date>     <chr>       <dbl>
+#> 1 2018-01-01 site_190760  26.9
+#> 2 2018-01-01 site_267801  31.5
+#> 3 2018-01-01 site_219885  25.6
+#> 4 2018-01-01 site_200445  26.2
+#> 5 2018-01-01 site_74789   26.7
+#> 6 2018-01-01 site_18343   24
+
+ggplot(data = tmax, aes(x = date, y = value, col = name)) + 
+  scale_color_viridis_d() +
+  geom_line() + 
+  theme_linedraw() + 
+  theme(legend.position = "none") 
+```
+
+<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
 
 ### Support:
 
-ClimateR is written by [Mike Johnson](https://mikejohnson51.github.io), a graduate Student at the [University of California, Santa Barbara](https://geog.ucsb.edu) in [Keith C. Clarke's](http://www.geog.ucsb.edu/~kclarke/) Lab, 2018 and is funded through the NOAA National Water Center (NWC) via the UCAR COMET Program (2017/18).
+ClimateR is written by [Mike Johnson](https://mikejohnson51.github.io),
+a graduate Student at the [University of California, Santa
+Barbara](https://geog.ucsb.edu) in [Keith C.
+Clarke’s](http://www.geog.ucsb.edu/~kclarke/) Lab.

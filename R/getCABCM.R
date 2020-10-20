@@ -20,12 +20,13 @@ getCABCM = function(AOI, param, model = 'CCSM4', scenario = 'rcp85', startDate, 
   base =  "https://cida.usgs.gov/thredds/dodsC/CA-BCM-2014/"
 
   d = define.dates(startDate, endDate, baseDate = "1921-01-01", splitDate = "2010-01-01")
-  v = define.versions(dates = d, scenario = scenario, future.call = "future?", historic.call = "historic?", timeRes = "monthly")
+  v = define.versions(dates = d, scenario = scenario, future.call = "future?", historic.call = "historical?", timeRes = "monthly")
   p = define.param(param, service = id)
   k = define.config(dataset = id, model = model, ensemble = NA)
 
   tmp = expand.grid(min.date = v$min.date, model = k, call = p$call, stringsAsFactors = FALSE)
-  fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>% merge(model_meta$cabcm, "model")
+  fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>% 
+    merge(climateR::model_meta$cabcm, "model")
 
   name.date = format(d$date, "%Y-%m")
 

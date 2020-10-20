@@ -4,8 +4,13 @@
 \alias{getEDDI}
 \title{Get EDDI Climate Data for an Area of Interest}
 \usage{
-getEDDI(AOI = NULL, startDate, endDate = NULL, timestep = 3,
-  timescale = "week")
+getEDDI(
+  AOI = NULL,
+  startDate,
+  endDate = NULL,
+  timestep = 3,
+  timescale = "week"
+)
 }
 \arguments{
 \item{AOI}{a spatial polygon object (sf or sp)}

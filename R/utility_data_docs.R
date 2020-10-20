@@ -28,10 +28,24 @@
 #' @docType data
 #' @examples
 #' \dontrun{
-#'  model_meta = climateR::model_meta
+#'  climateR::model_meta
 #' }
 #'
 
 "model_meta"
+
+
+#' Model Parameter Metadata
+#'
+#' Metadata for model parameters. Includes common name, model name, despriction and units
+#'
+#' @docType data
+#' @examples
+#' \dontrun{
+#'  climateR::param_meta
+#' }
+#'
+
+"param_meta"
 
 
