@@ -70,7 +70,7 @@ system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.628   0.153   1.783
+#>   0.644   0.161   1.768
 ```
 
 ``` r
@@ -81,6 +81,21 @@ rasterVis::levelplot(r, par.settings = BuRdTheme) +
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" />
+
+# Data from known bounding coordinates
+
+`climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we
+are requesting wind velocity data for the dour corners region of the USA
+by bounding coordinates.
+
+``` r
+AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
+  getGridMET(param = "wind_vel", startDate = "2018-09-01")
+
+rasterVis::levelplot(AOI$wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
 # Data through time …
 
@@ -96,7 +111,7 @@ harvey = getGridMET(aoi_get(state = c("TX", "FL")),
 levelplot(harvey$prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
 
 # Climate Projections
 
@@ -113,7 +128,7 @@ m = getMACA(aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.351   0.114   1.098
+#>   0.354   0.121   4.081
 ```
 
 ``` r
@@ -122,7 +137,7 @@ names(r) = paste(rep(names(m), each = 2), names(m[[1]]))
 levelplot(r, par.settings = BTCTheme)
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
 
 Getting multiple models results is also quite simple:
 
@@ -142,7 +157,7 @@ names(s) = c(models, "Ensemble Mean")
 rasterVis::levelplot(s, par.settings = rasterVis::BuRdTheme)
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" /> If
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" /> If
 your dont know your models, you can always grab a random set by
 specifying a number:
 
@@ -152,7 +167,9 @@ random = stack(random) %>% setNames(names(random))
 levelplot(stack(random), par.settings = BTCTheme)
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+
+# Global Datasets
 
 Not all datasets are USA focused either. TerraClimate offers global,
 monthly data up to the current year for many variables, and CHIRPS
@@ -172,7 +189,7 @@ p2 = levelplot(chirps,  par.settings = BTCTheme, main = "Janaury 1-4, 2018; CHIR
 gridExtra::grid.arrange(p1,p2, nrow = 1)
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 This raises the question “*what is available for each resource?*”. This
 can be checked in the appropriate meta\_data objects. For example lets
@@ -195,7 +212,6 @@ head(param_meta$gridmet)
 #> 4                        kg/kg
 #> 5                        W/m^2
 #> 6 Degrees Clockwise from north
-
 
 head(model_meta$maca)
 #>           model ensemble scenario
@@ -224,7 +240,7 @@ ggplot(data = ts) +
   labs(title = "Solar Radiation: Colorado Springs 2019", x = "Date", y = "Solar Radiation")
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
 
 # Point Based Ensemble
 
@@ -247,7 +263,7 @@ ggplot(data = future_long, aes(x = date, y = value, col = name)) +
        color = "Model")
 ```
 
-<img src="man/figures/README-unnamed-chunk-15-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-16-1.png" width="100%" />
 
 # Multi site extraction
 
@@ -296,11 +312,11 @@ plot(sites_stack$tmax$X2018.01)
 plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 ```
 
-<img src="man/figures/README-unnamed-chunk-17-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
 3.  Use `extract_sites` to extract the times series from these
     locations. The `id` parameter is the unique identifier from the site
-    data with whoch to names the resulting columns.
+    data with which to names the resulting columns.
 
 <!-- end list -->
 
@@ -337,7 +353,7 @@ ggplot(data = tmax, aes(x = date, y = value, col = name)) +
   theme(legend.position = "none") 
 ```
 
-<img src="man/figures/README-unnamed-chunk-19-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
 ### Support:
 

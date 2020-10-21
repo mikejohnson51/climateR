@@ -85,6 +85,17 @@ rasterVis::levelplot(r, par.settings = BuRdTheme) +
   layer(sp.lines(as_Spatial(AOI), col="gray30", lwd=3))
 ```
 
+# Data from known bounding coordinates
+
+`climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we are requesting wind velocity data for the dour corners region of the USA by bounding coordinates.
+
+```{r}
+AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
+  getGridMET(param = "wind_vel", startDate = "2018-09-01")
+
+rasterVis::levelplot(AOI$wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
+```
+
 # Data through time ...
 
 In addition to multiple variables we can request variables through time, here lets look at the gridMET rainfall for the Gulf Coast during Hurricane Harvey:
@@ -142,6 +153,7 @@ random = stack(random) %>% setNames(names(random))
 levelplot(stack(random), par.settings = BTCTheme)
 ```
 
+# Global Datasets
 
 Not all datasets are USA focused either. TerraClimate offers global, monthly data up to the current year for many variables, and CHIRPS provides daily rainfall data:
 
@@ -163,7 +175,6 @@ This raises the question "_what is available for each resource?_". This can be c
 
 ```{r}
 head(param_meta$gridmet)
-
 
 head(model_meta$maca)
 ```
@@ -230,7 +241,7 @@ plot(sites_stack$tmax$X2018.01)
 plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 ```
 
-3. Use `extract_sites` to extract the times series from these locations. The `id` parameter is the unique identifier from the site data with whoch to names the resulting columns.
+3. Use `extract_sites` to extract the times series from these locations. The `id` parameter is the unique identifier from the site data with which to names the resulting columns.
 
 ````{r}
 sites_wide = extract_sites(sites_stack, sites, "ID")

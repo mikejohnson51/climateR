@@ -14,11 +14,15 @@ define.grid3 = function(AOI, source = NULL){
   
   grid = climateR::grid_meta[which(climateR::grid_meta$source == source), ]
   
+  if(methods::is(AOI, 'bbox')){ 
+    AOI = sf::st_as_sfc(AOI) 
+  }
+  
   if(methods::is(AOI, 'sp')){ 
     AOI = sf::st_as_sf(AOI) 
   }
   
-  if(any(sf::st_geometry_type(AOI) == "POINT") & nrow(AOI) > 1){ 
+  if(any(sf::st_geometry_type(AOI) == "POINT" & nrow(AOI) > 1, is.null(nrow(AOI)))){ 
     AOI = sf::st_as_sfc(sf::st_bbox(AOI)) 
   }
   
