@@ -70,7 +70,7 @@ system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.644   0.161   1.768
+#>   0.933   0.376   6.808
 ```
 
 ``` r
@@ -85,7 +85,7 @@ rasterVis::levelplot(r, par.settings = BuRdTheme) +
 # Data from known bounding coordinates
 
 `climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we
-are requesting wind velocity data for the dour corners region of the USA
+are requesting wind velocity data for the four corners region of the USA
 by bounding coordinates.
 
 ``` r
@@ -100,7 +100,7 @@ rasterVis::levelplot(AOI$wind_vel, margin = FALSE, main = "Four corners Wind Vel
 # Data through time …
 
 In addition to multiple variables we can request variables through time,
-here lets look at the gridMET rainfall for the Gulf Coast during
+here let’s look at the gridMET rainfall for the Gulf Coast during
 Hurricane Harvey:
 
 ``` r
@@ -116,7 +116,7 @@ levelplot(harvey$prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
 # Climate Projections
 
 Some sources are downscaled Global Climate Models (GCMs). These allow
-you to query foretasted ensemble members from different models and/or
+you to query forecasted ensemble members from different models and/or
 climate scenarios. One example is from the MACA dataset:
 
 ``` r
@@ -128,7 +128,7 @@ m = getMACA(aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.354   0.121   4.081
+#>   0.346   0.137   4.235
 ```
 
 ``` r
@@ -158,7 +158,7 @@ rasterVis::levelplot(s, par.settings = rasterVis::BuRdTheme)
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" /> If
-your dont know your models, you can always grab a random set by
+you don’t know your models, you can always grab a random set by
 specifying a number:
 
 ``` r
@@ -192,7 +192,7 @@ gridExtra::grid.arrange(p1,p2, nrow = 1)
 <img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" />
 
 This raises the question “*what is available for each resource?*”. This
-can be checked in the appropriate meta\_data objects. For example lets
+can be checked in the appropriate `meta_data` objects. For example let’s
 see what parameter data is offered for gridMET, and what models and
 scenarios are offered for MACA.
 
