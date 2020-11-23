@@ -60,9 +60,11 @@ eddi = setNames(data.frame("eddi", "+init=epsg:4326",  baseURL,
 
 #gridmet
 baseURL = 'http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_'
-test = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_pr_1979_CurrentYear_CONUS.nc"
-gridmet = process_coords(baseURL, test, names = c("lon", "lat", "day"), source = "gridmet")
+test = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_pr_1979_CurrentYear_CONUS.nc#FillMisMatch"
 
+ncmeta::nc_grid_mapping_atts(test)
+gridmet = process_coords(baseURL, test, names = c("lon", "lat", "day"), source = "gridmet")
+ncmeta::nc_gm_to_prj(ncmeta::nc_grid_mapping_atts(test))
 # LOCA
 baseURL = 'https://cida.usgs.gov/thredds/dodsC/loca_'
 test = 'https://cida.usgs.gov/thredds/dodsC/loca_future?lat,lon,time'
