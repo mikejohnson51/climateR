@@ -22,7 +22,7 @@ library(ggplot2)
 [![Build Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https://travis-ci.org/mikejohnson51/climateR)     [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
 
 
-`climateR` seeks to simplifiy the steps needed to get  climate data into R. It currently provides access to the following gridded climate sources using a single parmaeter
+`climateR` seeks to simplifiy the steps needed to get climate data into R. It currently provides access to the following gridded climate sources using a single parmaeter
 
 
 |**Number**|**Dataset**          | **Description**                                            | **Dates**            |
@@ -87,7 +87,7 @@ rasterVis::levelplot(r, par.settings = BuRdTheme) +
 
 # Data from known bounding coordinates
 
-`climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we are requesting wind velocity data for the dour corners region of the USA by bounding coordinates.
+`climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we are requesting wind velocity data for the four corners region of the USA by bounding coordinates.
 
 ```{r}
 AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
@@ -98,7 +98,7 @@ rasterVis::levelplot(AOI$wind_vel, margin = FALSE, main = "Four corners Wind Vel
 
 # Data through time ...
 
-In addition to multiple variables we can request variables through time, here lets look at the gridMET rainfall for the Gulf Coast during Hurricane Harvey:
+In addition to multiple variables we can request variables through time, here let's look at the gridMET rainfall for the Gulf Coast during Hurricane Harvey:
 
 ```{r, fig.width= 15}
 harvey = getGridMET(aoi_get(state = c("TX", "FL")), 
@@ -110,7 +110,7 @@ levelplot(harvey$prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
 
 # Climate Projections 
 
-Some sources are downscaled Global Climate Models (GCMs). These allow you to query foretasted ensemble members from different models and/or climate scenarios. One example is from the MACA dataset:
+Some sources are downscaled Global Climate Models (GCMs). These allow you to query forecasted ensemble members from different models and/or climate scenarios. One example is from the MACA dataset:
 
 ```{r}
 system.time({
@@ -145,7 +145,7 @@ names(s) = c(models, "Ensemble Mean")
 # Plot
 rasterVis::levelplot(s, par.settings = rasterVis::BuRdTheme)
 ```
-If your dont know your models, you can always grab a random set by specifying a number:
+If you don't know your models, you can always grab a random set by specifying a number:
 
 ```{r, fig.width= 15}
 random = getMACA(aoi_get(state = "MI"), model = 3, param = "prcp", startDate = "2050-10-29")
@@ -171,7 +171,7 @@ p2 = levelplot(chirps,  par.settings = BTCTheme, main = "Janaury 1-4, 2018; CHIR
 gridExtra::grid.arrange(p1,p2, nrow = 1)
 ```
 
-This raises the question "_what is available for each resource?_". This can be checked in the appropriate meta_data objects. For example lets see what parameter data is offered for gridMET, and what models and scenarios are offered for MACA.
+This raises the question "_what is available for each resource?_". This can be checked in the appropriate `meta_data` objects. For example let's see what parameter data is offered for gridMET, and what models and scenarios are offered for MACA.
 
 ```{r}
 head(param_meta$gridmet)
