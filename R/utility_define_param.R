@@ -9,7 +9,7 @@
 
 define.param = function(param, service = NULL){
 
-  all = eval(parse(text = paste0('param_meta$', service)))
+  all = eval(parse(text = paste0('climateR::param_meta$', service)))
 
   if(is.null(param)){ stop("No parameters defined. Select from: \n'", paste(all$common.name, collapse = "', '"))}
 
