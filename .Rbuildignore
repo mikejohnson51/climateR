@@ -1,4 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$
 inProgress
 sampleFiles
+data_backup
+help
+^README\.Rmd$
+^data-raw$

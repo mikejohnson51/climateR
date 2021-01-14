@@ -4,7 +4,8 @@
 \name{grid_meta}
 \alias{grid_meta}
 \title{Grids}
-\format{a \code{data.frame} contained source info for
+\format{
+a \code{data.frame} contained source info for
 \itemize{
 \item 'daymet':    Daily Surface Weather and Climatological Summaries
 \item 'gridmet':   Gridded Meteorological Data; Multivariate Adaptive Constructed Analogs
@@ -12,7 +13,8 @@
 \item 'loca':      Localized Constructed Analogs
 \item 'terraclim':      Localized Constructed Analogs
 \item 'maca':      Localized Constructed Analogs
-}}
+}
+}
 \usage{
 grid_meta
 }

@@ -8,7 +8,7 @@
 }
 
 
-fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r'){
+fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r', no_data = NA, scale_factor = 1){
 
   stopifnot(identical(length(urls), NROW(params)))
 
@@ -17,9 +17,21 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r')
   doParallel::registerDoParallel(no_cores)
 
   if(g$type == 'point'){
-    var = foreach::foreach(i = 1:length(urls), .combine = 'c') %dopar% { RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T)}
+    var = foreach::foreach(i = 1:length(urls), .combine = 'c') %dopar% { 
+      tryCatch({
+        RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) 
+      }, error = function(e){
+        urls[i]
+      })
+    }
   } else {
-    var = foreach::foreach(i = 1:length(urls)) %dopar% { RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) }
+    var = foreach::foreach(i = 1:length(urls)) %dopar% { 
+      tryCatch({
+        RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) 
+      }, error = function(e){
+          urls[i]
+      })
+    }
   }
 
   if(g$type == 'grid'){
@@ -28,7 +40,16 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r')
 
     for(i in 1:length(var)){
 
-    v = var[[i]]
+    v = var[[i]] * scale_factor
+    
+    if(!is.na(no_data)){ 
+    if(no_data > 0){
+      v[v > no_data] = NA
+    } else {
+      v[v < no_data] = NA
+    }
+        
+    }
 
     if(length(dim(v)[3]) == 0 | is.na(dim(v)[3])){
       var2 = .orient(v, fun = fun)

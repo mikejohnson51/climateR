@@ -14,18 +14,18 @@
 getPRISM = function(AOI, param, startDate, endDate = NULL){
 
   id = 'prism'
-  base = 'http://convection.meas.ncsu.edu:8080/thredds/dodsC/prism/daily/combo/'
 
   d = define.dates  (startDate, endDate)
-  p = define.param  (param, service = 'prism')
+  p = define.param  (param, service = id)
   g = define.grid3(AOI, id)
 
   tmp = expand.grid(string = d$string, call = p$call, stringsAsFactors = F)
   fin = merge(tmp, p, "call") %>% merge(d, "string")
   fin = fin[order(fin$call),]
 
-  urls = paste0(base, fin$year, "/PRISM_combo_", fin$string, ".nc?", fin$call, "[0:1:0]", g$lat.call, g$lon.call)
+  urls = paste0(g$base, fin$year, "/PRISM_combo_", fin$string, ".nc?", fin$call, "[0:1:0]", g$lat.call, g$lon.call)
 
-  fast.download(urls, params = fin$call, names = fin$common.name, g, date.names = unique(fin$date), dataset = id)
-
+  s = fast.download(urls, params = fin$call, names = fin$common.name, g, date.names = unique(fin$date), dataset = id, fun = "t", no_data = -1000)
+  s
 }
+

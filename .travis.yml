@@ -5,7 +5,7 @@ cache:
   - ccache
 
 sudo: required
-dist: trusty
+dist: xenial
 latex: false
 
 r:

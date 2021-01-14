@@ -7,7 +7,7 @@
 #' @keywords internal
 
 .random_model = function(dataset, n = 10){
-  m = eval(parse(text = paste0('model_meta$', dataset, "$model")))
+  m = eval(parse(text = paste0('climateR::model_meta$', dataset, "$model")))
   m = unique(m)
   if(n > length(m)){ n = length(m)}
   m = sample(m, n)
@@ -26,13 +26,14 @@
 
 define.config = function(dataset = NULL, model, ensemble = NA){
 
-  if(!(dataset %in% names(model_meta))){ paste(toupper(dataset), "not parameterized!")}
+  if(!(dataset %in% names(climateR::model_meta))){ paste(toupper(dataset), "not parameterized!")}
 
   if(is.numeric(model)){ model = .random_model(dataset = dataset, n = model) }
 
   config = expand.grid(model = model, ensemble = tolower(ensemble), stringsAsFactors = FALSE)
-  meta = eval(parse(text = paste0("model_meta$", dataset)))
+  meta   = eval(parse(text = paste0("climateR::model_meta$", dataset)))
 
+  climateR::model_meta$cabcm
   bad.model = !(tolower(config$model) %in% tolower(meta$model))
 
   if(sum(bad.model) != 0){

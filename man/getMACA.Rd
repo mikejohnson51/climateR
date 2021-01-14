@@ -4,11 +4,18 @@
 \alias{getMACA}
 \title{Get MACA Climate Data for an Area of Interest}
 \usage{
-getMACA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
-  endDate = NULL, timeRes = "daily")
+getMACA(
+  AOI,
+  param,
+  model = "CCSM4",
+  scenario = "rcp45",
+  startDate,
+  endDate = NULL,
+  timeRes = "daily"
+)
 }
 \arguments{
-\item{AOI}{a spatial polygon object (sf or sp)}
+\item{AOI}{a spatial object (sf or sp)}
 
 \item{param}{a meterological parameter (see `param_meta$maca`)}
 

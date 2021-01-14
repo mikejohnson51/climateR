@@ -4,8 +4,14 @@
 \alias{getLOCA}
 \title{Get LOCA Climate Data for an Area of Interest}
 \usage{
-getLOCA(AOI, param, model = "CCSM4", scenario = "rcp45", startDate,
-  endDate = NULL)
+getLOCA(
+  AOI,
+  param,
+  model = "CCSM4",
+  scenario = "rcp45",
+  startDate,
+  endDate = NULL
+)
 }
 \arguments{
 \item{AOI}{a spatial polygon object (sf or sp)}
