@@ -21,6 +21,10 @@ define.grid = function(AOI, source = NULL){
     AOI = sf::st_as_sf(AOI) 
   }
   
+  if(methods::is(AOI, 'sfc')){ 
+    AOI = sf::st_as_sf(AOI) 
+  }
+  
   if(any(sf::st_geometry_type(AOI) == "POINT" & nrow(AOI) > 1, is.null(nrow(AOI)))){ 
     AOI = sf::st_as_sfc(sf::st_bbox(AOI)) 
   }

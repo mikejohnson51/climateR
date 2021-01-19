@@ -31,7 +31,7 @@ getTopoWX = function(AOI, param, startDate, endDate = NULL, timeRes = 'daily'){
   }
   
   urls = paste0(base, p$call,
-                '[', min(index), ':1:', max(index), "]",
+                '[', min(index) -1 , ':1:', max(index) -1, "]",
                 g$lat.call,  g$lon.call)
   
   fast.download(urls, 

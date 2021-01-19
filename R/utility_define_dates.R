@@ -92,8 +92,8 @@ define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL){
     base = c(baseDate, splitDate)
 
     for(i in 1:length(dates)){
-    dates[[i]]$date.index = as.numeric(dates[[i]]$date - as.Date(base[i])) + 1
-    dates[[i]]$month.index = .numberOfMonths(dates[[i]]$date, base[i]) + 1
+    dates[[i]]$date.index = as.numeric(dates[[i]]$date - as.Date(base[i])) #+ 1
+    dates[[i]]$month.index = .numberOfMonths(dates[[i]]$date, base[i]) #+ 1
     }
   }
 
