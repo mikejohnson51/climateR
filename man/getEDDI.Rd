@@ -34,6 +34,3 @@ that themselves operate at different timescales. The EDDI for a given date is th
 The time period is given in either a number of months or number of weeks. For example, a timestep of 3 and a timescale of weeks requests 
 the EDDI values for the 3 weeks prior to the requested date.
 }
-\author{
-Mike Johnson
-}

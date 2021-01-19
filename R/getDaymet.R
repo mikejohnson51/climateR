@@ -11,16 +11,14 @@
 #' @author Mike Johnson
 #' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 #' @export
-#'
+
 getDaymet = function(AOI, param, startDate, endDate = NULL){
 
   id = 'daymet'
-  base = 'https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/1328/'
-
   d = define.dates(startDate, endDate, baseDate = "1980-01-01")
   d = d[d$julien < 366, ]
   p = define.param(param, id)
-  g = define.grid3(AOI, id)
+  g = define.grid(AOI, id)
 
   y = data.frame(year = unique(d$year), minJul = NA, maxJul = NA, min.date = as.Date(NA), max.date = as.Date(NA), stringsAsFactors = FALSE)
 
@@ -32,17 +30,23 @@ getDaymet = function(AOI, param, startDate, endDate = NULL){
     y$max.date[t] = max(tmp$date)
   }
 
-  tmp = expand.grid(year = y$year, call = p$call, stringsAsFactors = FALSE)
-  fin = merge(tmp, p, "call") %>% merge(y, "year")
+  fin = expand.grid(year = y$year, call = p$call, stringsAsFactors = FALSE) %>%
+    merge(p, "call") %>% 
+    merge(y, "year")
 
-  urls = paste0(base, fin$year, '/daymet_v3_',  fin$call, '_', fin$year, '_na.nc4?', fin$call,
+  urls = paste0(g$base, fin$year, '/daymet_v3_',  fin$call, '_', fin$year, '_na.nc4?', fin$call,
                 '[', fin$minJul - 1 ,   ':1:',  fin$maxJul - 1, ']',
                 g$lat.call,
                 g$lon.call)
 
-  s = fast.download(urls, params = fin$call, names = fin$call, g, date.names =  d$date, dataset = id, fun = 't')
+  fast.download(urls, 
+                params = fin$call, 
+                names = fin$call, 
+                g, 
+                date.names =  d$date,
+                dataset = id, 
+                fun = 't')
 
-  s 
   
 }
 

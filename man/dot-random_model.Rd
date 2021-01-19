@@ -9,15 +9,12 @@
 \arguments{
 \item{dataset}{the dataset for which random GCMs are being drawn}
 
-\item{n}{athe number of model names to return}
+\item{n}{the number of model names to return}
 }
 \value{
 a vector of N GCMs
 }
 \description{
 **INTERNAL** Returns a vector of possible GCM models of length N
-}
-\author{
-Mike Johnson
 }
 \keyword{internal}

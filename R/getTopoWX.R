@@ -15,27 +15,30 @@
 getTopoWX = function(AOI, param, startDate, endDate = NULL, timeRes = 'daily'){
   
   id = 'topowx'
-  base =  "https://cida.usgs.gov/thredds/dodsC/topowx"
+  max.date = "2016-12-31"
   
+ 
   if(!timeRes %in% c('daily', 'monthly')){ stop("timeRes must be monthly or daily") }
-  
+  g = define.grid(AOI, source = id)
   d = define.dates(startDate, endDate, baseDate = "1948-01-01")
+  if(any(d$date > max.date)){stop("Max date is ", max.date)}
   p = define.param(param, service = id)
 
   if(timeRes == "monthly"){ 
-    base = paste0(base, "_monthly?"); index = d$month.index 
+    base = paste0(g$base, "_monthly?"); index = d$month.index 
   } else {
-    base = paste0(base, "?"); index = d$date.index
+    base = paste0(g$base, "?"); index = d$date.index
   }
-  
-  g = define.grid3(AOI, source = id)
   
   urls = paste0(base, p$call,
                 '[', min(index), ':1:', max(index), "]",
                 g$lat.call,  g$lon.call)
   
-  s = fast.download(urls, params = p$call, names = p$common.name,  g, d$date, dataset = id, fun = 't', scale_factor = .01)
-  
-  s
+  fast.download(urls, 
+                    params = p$call,
+                    names = p$common.name,  
+                    g, 
+                    d$date, 
+                    dataset = id, 
+                    fun = 't', scale_factor = .01)
 }
-

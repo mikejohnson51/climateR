@@ -1,8 +1,7 @@
 #' @title Select N number of GCMs
 #' @description **INTERNAL** Returns a vector of possible GCM models of length N
 #' @param dataset the dataset for which random GCMs are being drawn
-#' @param n  athe number of model names to return
-#' @author Mike Johnson
+#' @param n  the number of model names to return
 #' @return a vector of N GCMs
 #' @keywords internal
 
@@ -16,29 +15,32 @@
 
 
 #' @title Define climateR configuration
-#' @description **INTERNAL** Define the model configuration to call with climateR. Ensures that the specified GCM is avialabe for called dataset
+#' @description **INTERNAL** Define the model configuration to call. 
+#' Ensures that the specified GCM is provided for called dataset
 #' @param dataset the dataset for which a configuration is needed
 #' @param model the GCM name(s) of interest
-#' @param ensemble  athe number of model names to return
-#' @author Mike Johnson
+#' @param ensemble  the number of model names to return
 #' @return a vector of N GCMs
 #' @keywords internal
 
 define.config = function(dataset = NULL, model, ensemble = NA){
 
-  if(!(dataset %in% names(climateR::model_meta))){ paste(toupper(dataset), "not parameterized!")}
-
+  if(!(dataset %in% names(climateR::model_meta))){ paste(toupper(dataset), 
+                                                         "not parameterized!")}
+  meta   = climateR::model_meta[[dataset]] 
+  
   if(is.numeric(model)){ model = .random_model(dataset = dataset, n = model) }
 
-  config = expand.grid(model = model, ensemble = tolower(ensemble), stringsAsFactors = FALSE)
-  meta   = eval(parse(text = paste0("climateR::model_meta$", dataset)))
-
-  climateR::model_meta$cabcm
+  config = expand.grid(model = model, 
+                       ensemble = tolower(ensemble), 
+                       stringsAsFactors = FALSE)
+  
   bad.model = !(tolower(config$model) %in% tolower(meta$model))
 
   if(sum(bad.model) != 0){
     index = config[bad.model,]
-    cat(paste(toupper(unique(index$model)), "not a valid model. Removed from query!\n\n"))
+    message(paste(toupper(unique(index$model)), 
+                  "not a valid model. Removed from query!\n\n"))
     config = config[!bad.model,]
   }
 

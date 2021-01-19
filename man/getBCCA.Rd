@@ -9,6 +9,7 @@ getBCCA(
   param,
   model = "CCSM4",
   scenario = "rcp45",
+  ensemble = NA,
   startDate,
   endDate = NULL
 )
@@ -22,12 +23,14 @@ getBCCA(
 
 \item{scenario}{a climate scenario pathway (rcp45 or rcp85)}
 
+\item{ensemble}{if NA. A default is elected.}
+
 \item{startDate}{a start date given as "YYYY-MM-DD"}
 
 \item{endDate}{an end date given as "YYYY-MM-DD"}
 }
 \value{
-if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
+if AOI is an areal extent a list of rasterStack(s), if AOI is a point then a data.frame of modeled records.
 }
 \description{
 Bias Corrected Constructed Analogs (BCCA) V2 Daily Climate Projections.

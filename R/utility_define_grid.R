@@ -8,9 +8,8 @@
 #' @importFrom methods is
 #' @importFrom sf st_geometry_type st_as_sf st_as_sfc st_bbox st_transform st_combine st_crs st_within st_intersects st_intersection
 #' @importFrom  raster extent
-#' @author Mike Johnson
 
-define.grid3 = function(AOI, source = NULL){
+define.grid = function(AOI, source = NULL){
   
   grid = climateR::grid_meta[which(climateR::grid_meta$source == source), ]
   
@@ -59,11 +58,22 @@ define.grid3 = function(AOI, source = NULL){
     g[['type']] = 'grid'
     g[['lat.call']] = paste0('[', g$ymin - 1 , ':1:', g$ymax - 1, ']')
     g[['lon.call']] = paste0('[', g$xmin - 1,  ':1:', g$xmax - 1, ']')
-    g[['e']] = raster::extent(range(X_coords[c(g$xmin:g$xmax)]), range(Y_coords[c(g$ymin:g$ymax)]))
+    
+    xrange = range(X_coords[c(g$xmin:g$xmax)])
+    xrange[1] = xrange[1] - abs(.5*grid$dX)
+    xrange[2] = xrange[2] + abs(.5*grid$dX)
+    yrange = range(Y_coords[c(g$ymin:g$ymax)])
+    yrange[1] = yrange[1] - abs(.5*grid$dY)
+    yrange[2] = yrange[2] + abs(.5*grid$dY)
+    
+    g['rows'] = abs(diff(yrange) / grid$dY)
+    g['cols'] = abs(diff(xrange) / grid$dX)
+    g[['e']] = raster::extent(xrange, yrange)
     g[['proj']] = grid$proj
     g[["base"]] = grid$base
     
-    
+   b =  st_transform(AOI, grid$proj) %>% st_bbox()
+    b$ymax - b$ymin
   } else {
     
     lon = bb$xmin
@@ -78,7 +88,6 @@ define.grid3 = function(AOI, source = NULL){
     g[['lat.call']] = paste0('[', g$y - 1 , ':1:', g$y - 1, ']')
     g[['lon.call']] = paste0('[', g$x - 1,  ':1:', g$x - 1, ']')
     g[['e']] = NULL
-    #g[['AOI']] = AOI
     g[['proj']] = grid$proj
     g[["base"]] = grid$base
     

@@ -15,7 +15,7 @@ getGridMET = function(AOI, param, startDate, endDate = NULL){
 
   d = define.dates(startDate, endDate, baseDate = '1979-01-01')
   p = define.param(param, service = id)
-  g = define.grid3(AOI, id)
+  g = define.grid(AOI, id)
 
   urls = paste0(g$base, p$call, '_1979_CurrentYear_CONUS.nc?', p$description,
                 '[', min(d$date.index), ':1:', max(d$date.index), "]",
@@ -30,3 +30,5 @@ getGridMET = function(AOI, param, startDate, endDate = NULL){
                 dataset = id, 
                 fun = 't')
 }
+
+

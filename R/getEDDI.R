@@ -10,7 +10,6 @@
 #' @param endDate   an end date given as "YYYY-MM-DD"
 #' @param timestep  The number of time steps (numeric). Must be between 1-12.
 #' @param timescale Can be 'week' or 'month'
-#' @author Mike Johnson
 #' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 #' @export
 
@@ -24,24 +23,27 @@ getEDDI =  function(AOI = NULL, startDate, endDate = NULL,  timestep = 3, timesc
     stop("Timestep must be between 0 and 12")
   }
 
+  g = define.grid(AOI, 'eddi')
   d = define.dates(startDate, endDate = endDate)
   num = sprintf("%02s", timestep)
   abb = ifelse(timescale == 'week', 'wk', 'mn')
-  base = "ftp://ftp.cdc.noaa.gov/Projects/EDDI/CONUS_archive/data/"
 
-  urls <- paste0(base, d$year, "/", "EDDI_ETrs_", num, abb, "_", d$string, ".asc")
+  urls <- paste0(g$base, d$year, "/", "EDDI_ETrs_", num, abb, "_", d$string, ".asc")
 
+  system.time({
   s = raster::stack()
 
   for (i in seq_along(urls)) {
       dest = tempfile(pattern = basename(urls[i]))
       suppressWarnings( httr::GET(urls[i], httr::write_disk(dest, overwrite = TRUE)) ) # suppressing Government Warning
       r = raster::raster(dest)
-      raster::crs(r) = "+init=epsg:4326"
+      raster::crs(r) = g$proj
       r = raster::crop(r, AOI, snap = "out")
       s = raster::addLayer(s, r)
   }
 
+  })
+  
   names(s) = gsub(".asc", "", basename(urls))
   
   s

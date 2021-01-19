@@ -14,8 +14,6 @@
 getTerraClim = function(AOI, param, startDate, endDate = NULL){
 
   id = "terraclim"
-  base = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_terraclimate_"
-
   d = define.dates(startDate, endDate, baseDate = "1958-01-01")
 
   endDateYear = as.numeric(max(d$year))
@@ -24,17 +22,22 @@ getTerraClim = function(AOI, param, startDate, endDate = NULL){
   if(endDateYear > 2019 | startDateYear < 1958){ stop("TerraClim data only avaliable between 1958 and 2019")}
 
   p = define.param(param, service = id)
-  g = define.grid3(AOI, id)
+  g = define.grid(AOI, id)
 
-  urls = paste0(base, p$call, '_1958_CurrentYear_GLOBE.nc', "?", p$call,
+  urls = paste0(g$base, "_", p$call, '_1958_CurrentYear_GLOBE.nc', "?", p$call,
                 '[', min(d$month.index),':1:' ,max(d$month.index), ']',
                 g$lat.call,
                 g$lon.call,
                 "#fillmismatch")
 
-  date.names  = unique(format(d$date, "%Y-%m"))
-
-  s = fast.download(urls, params = p$call, names = p$common.name, g, date.names = date.names, dataset = id, fun = 't', no_data = 3000)
+  s = fast.download(urls, 
+                    params = p$call, 
+                    names = p$common.name, 
+                    g, 
+                    date.names = unique(format(d$date, "%Y-%m")), 
+                    dataset = id, 
+                    fun = 't', 
+                    no_data = 3000)
 
   s
 

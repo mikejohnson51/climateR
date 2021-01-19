@@ -12,7 +12,7 @@ R. It currently provides access to the following gridded climate sources
 using a single parmaeter
 
 | **Number** | **Dataset**      | **Description**                                            | **Dates**            |
-| ---------- | ---------------- | ---------------------------------------------------------- | -------------------- |
+|------------|------------------|------------------------------------------------------------|----------------------|
 | 1          | **GridMET**      | Gridded Meteorological Data.                               | 1979 - Yesterday     |
 | 2          | **Daymet**       | Daily Surface Weather and Climatological Summaries         | 1980 - 2019          |
 | 3          | **TopoWX**       | Topoclimatic Daily Air Temperature Dataset                 | 1948 - 2016          |
@@ -57,12 +57,12 @@ plot(AOI$geometry)
 
 <img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
 
-Here we are loading a polygon for the state of California. More examples
-of constructing AOI calls can be found
+Here we are loading a polygon for the state of North Carolina More
+examples of constructing AOI calls can be found
 [here](https://mikejohnson51.github.io/AOI/).
 
 With an AOI, we can construct a call to a dataset for a parameter(s) and
-date(s) of choice. Here we are querying the PRSIM dataset for maximum
+date(s) of choice. Here we are querying the PRISM dataset for maximum
 and minimum temperature on October 29, 2018:
 
 ``` r
@@ -70,13 +70,13 @@ system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.933   0.376   6.808
+#>   0.586   0.167   1.947
 ```
 
 ``` r
 r = raster::stack(p)
-names(r) = names(p)
-rasterVis::levelplot(r, par.settings = BuRdTheme) +
+
+rasterVis::levelplot(r, par.settings = BuRdTheme, names.attr = names(p)) +
   layer(sp.lines(as_Spatial(AOI), col="gray30", lwd=3))
 ```
 
@@ -128,7 +128,7 @@ m = getMACA(aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.346   0.137   4.235
+#>   0.301   0.101   1.368
 ```
 
 ``` r
@@ -176,7 +176,6 @@ monthly data up to the current year for many variables, and CHIRPS
 provides daily rainfall data:
 
 ``` r
-
 kenya = aoi_get(country = "Kenya")
 tc = getTerraClim(kenya, param = "prcp", startDate = "2018-01-01")
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
@@ -269,11 +268,9 @@ ggplot(data = future_long, aes(x = date, y = value, col = name)) +
 
 Extracting data for a set of points is an interesting challenge. It
 turns it is much more efficient to grab the underlying raster stack and
-then extract timeseries as opposed to iterating over the locations:
+then extract time series as opposed to iterating over the locations:
 
 1.  Starting with a set of locations in Brazil:
-
-<!-- end list -->
 
 ``` r
 (sites = read.csv('./inst/extdata/example.csv') %>% 
@@ -297,16 +294,14 @@ then extract timeseries as opposed to iterating over the locations:
 #> 10 638894 638894 POINT (-46.99975 -20.75627)
 ```
 
-2.  `climateR` will grab the RasterStack underlying the bounding area of
+1.  `climateR` will grab the RasterStack underlying the bounding area of
     the points
 
-<!-- end list -->
-
 ``` r
-sites_stack = getTerraClim(AOI = sites, 
-                           param ="tmax", 
-                           startDate = "2018-01-01", endDate = "2018-12-31")
-
+sites_stack = getTerraClim(AOI   = sites, 
+                           param = "tmax", 
+                           startDate = "2018-01-01", 
+                           endDate   = "2018-12-31")
 
 plot(sites_stack$tmax$X2018.01)
 plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
@@ -314,11 +309,9 @@ plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
-3.  Use `extract_sites` to extract the times series from these
+1.  Use `extract_sites` to extract the times series from these
     locations. The `id` parameter is the unique identifier from the site
     data with which to names the resulting columns.
-
-<!-- end list -->
 
 ``` r
 sites_wide = extract_sites(sites_stack, sites, "ID")
@@ -331,7 +324,7 @@ sites_wide$tmax[1:5, 1:5]
 #> 5 2018-05-01        21.5        25.1        21.7        21.2
 ```
 
-To make the data ‘tidy’ simply pivot on the date column:
+To make the data ‘tidy’ simply pivot on the `date` column:
 
 ``` r
 tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
@@ -355,9 +348,41 @@ ggplot(data = tmax, aes(x = date, y = value, col = name)) +
 
 <img src="man/figures/README-unnamed-chunk-20-1.png" width="100%" />
 
+# Fast Reprojection
+
+This is a relatively new function (01-18-2020) that has not been
+extensively tested for how it scales with large requests. The aim is to
+provide fast projection of climateR gridded output. For point data use
+`sf::st_transform`. Starting with 2 days of precipitation data in 2080
+from MACA:
+
+``` r
+cr = climateR::getMACA(
+  AOI::aoi_get(state = "conus"), 
+  model = "CCSM4", 
+  param = 'prcp', 
+  startDate = "2080-06-29", endDate = "2080-06-30")
+
+levelplot(cr$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
+```
+
+<img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
+
+Lets transform the projection system from the native WGS84 to the
+projected CONUS Albers Equal Area (EPSG:5070).
+
+``` r
+system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
+#>    user  system elapsed 
+#>   0.760   0.236   1.339
+levelplot(cr2$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
+```
+
+<img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />
+
 ### Support:
 
-ClimateR is written by [Mike Johnson](https://mikejohnson51.github.io),
-a graduate Student at the [University of California, Santa
-Barbara](https://geog.ucsb.edu) in [Keith C.
-Clarke’s](http://www.geog.ucsb.edu/~kclarke/) Lab.
+`climateR` is written by [Mike
+Johnson](https://mikejohnson51.github.io), a graduate Student at the
+[University of California, Santa Barbara](https://geog.ucsb.edu) in
+[Keith C. Clarke’s](http://www.geog.ucsb.edu/~kclarke/) Lab.

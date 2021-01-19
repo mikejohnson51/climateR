@@ -12,21 +12,24 @@
 #' @return a list of rasterStacks
 #' @export
 
-getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, endDate = NULL, timeRes = 'daily'){
+getMACA = function(AOI, param, 
+                   model = 'CCSM4', scenario = 'rcp45', 
+                   startDate, endDate = NULL, timeRes = 'daily'){
 
   id = 'maca'
   
   if(!timeRes %in% c('daily', 'monthly')){ stop("timeRes must be monthly or daily") }
 
+  g = define.grid(AOI, source = id)
   d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
   v = define.versions(dates = d, scenario = scenario, future.call = paste0("2006_2099_CONUS_", timeRes, ".nc?"), historic.call = paste0("1950_2005_CONUS_", timeRes, ".nc?"), timeRes = timeRes)
   p = define.param(param, service = id)
   k = define.config(dataset = id, model = model, ensemble = NA)
 
-  tmp = expand.grid(min.date = v$min.date, model = k, call = p$call, stringsAsFactors = FALSE)
-  fin = merge(v, tmp, "min.date")  %>% 
-        merge(p, "call")
-  fin$model = tolower(fin$mod)
+  fin = expand.grid(min.date = v$min.date, model = tolower(k), call = p$call, stringsAsFactors = FALSE) %>% 
+    merge(v, "min.date")  %>% 
+    merge(p, "call")
+  
   tmp = climateR::model_meta$maca
   tmp$model2 = tolower(tmp$model)
   
@@ -37,16 +40,18 @@ getMACA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, e
   fin = fin[!duplicated(fin),]
 
   if(timeRes == "monthly"){ name.date = format(d$date, "%Y-%m") } else {name.date = d$date}
-
-  g = define.grid3(AOI, source = id)
-
-  urls = paste0(g$base, fin$call, "_", fin$model.y, "_", fin$ensemble, "_", fin$ver, "_", fin$calls, fin$call2, fin$time.index, g$lat.call, g$lon.call)
-
-  pp = paste0(fin$model,"_", fin$common.name,"_", fin$ver, "_", fin$units)
+  
+  urls = paste0(g$base, fin$call, "_", 
+                fin$model.y, "_", 
+                fin$ensemble, "_", 
+                fin$ver, "_", 
+                fin$calls, fin$call2, 
+                fin$time.index, 
+                g$lat.call, g$lon.call)
 
   s = fast.download(urls, 
                     params = fin$call2, 
-                    names = pp, 
+                    names = paste0(fin$model,"_", fin$common.name,"_", fin$ver, "_", fin$units), 
                     g, 
                     date.names = name.date, 
                     dataset = id, 

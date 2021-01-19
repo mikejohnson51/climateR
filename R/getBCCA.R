@@ -8,35 +8,58 @@
 #' @param param a meterological parameter (see `param_meta$bcca`)
 #' @param model GMC model name (see `model_meta$bcca`)
 #' @param scenario a climate scenario pathway (rcp45 or rcp85)
+#' @param ensemble if NA. A default is elected.
 #' @param startDate a start date given as "YYYY-MM-DD"
 #' @param endDate   an end date given as "YYYY-MM-DD"
 #' @author Mike Johnson
-#' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
+#' @return if AOI is an areal extent a list of rasterStack(s), if AOI is a point then a data.frame of modeled records.
 #' @export
 
-getBCCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', startDate, endDate = NULL){
+getBCCA = function(AOI, param, model = 'CCSM4', scenario = 'rcp45', ensemble = NA,
+                   startDate, endDate = NULL){
 
   id = 'bcca'
 
-  d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
-  v = define.versions(dates = d, scenario = scenario, future.call = "future?", historic.call = "historical?")
+  g = define.grid(AOI, source = id)
+
+  d = define.dates(startDate, endDate, 
+                   baseDate = "1950-01-01", splitDate = "2006-01-01")
+  
+  v = define.versions(dates = d, scenario = scenario, 
+                      future.call = "future?", historic.call = "historical?")
+  
   p = define.param(param, service = id)
+
   k = define.config(dataset = id, model = model, ensemble = NA)
 
-  tmp = expand.grid(min.date = v$min.date, model = k, call = p$call, stringsAsFactors = FALSE)
-  fin = merge(v, tmp, "min.date")  %>% 
-        merge(p, "call") %>%  
-        merge(climateR::model_meta$bcca, "model")
+  fin = expand.grid(min.date = v$min.date, 
+                    model = k, 
+                    call = p$call) %>% 
+    merge(v, "min.date") %>% 
+    merge(p, "call") %>% 
+    merge(climateR::model_meta[[id]], "model")
+  
   fin = fin[fin$scenario %in% scenario,]
+  #fin = fin[1,]
+  
+  variable_call = paste0( "BCCA_0-125deg_",
+                          fin$call, "_day_", 
+                          fin$model, "_", 
+                          fin$ver, "_", 
+                          fin$ensemble)
 
-  g = define.grid3(AOI, source = id)
+  urls = paste0(g$base, 
+                fin$calls, 
+                variable_call, 
+                fin$time.index, 
+                g$lat.call, g$lon.call)
 
-  variable_call = paste0( "BCCA_0-125deg_",fin$call, "_day_", fin$model, "_", fin$ver, "_", fin$ensemble)
-
-  urls = paste0(g$base, fin$calls, variable_call, fin$time.index, g$lat.call, g$lon.call)
-
-  s = fast.download(urls, params = variable_call, names = paste0(fin$model, "_",fin$ensemble, "_", fin$call), g, date.names = d$date, dataset = id)
-
-  s
+  fast.download(urls, 
+                params = variable_call, 
+                names = paste0(fin$model, "_",fin$ensemble, "_", fin$call), 
+                g = g, 
+                date.names = d$date, 
+                dataset = id)
 
 }
+

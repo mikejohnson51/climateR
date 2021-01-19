@@ -11,15 +11,13 @@ define.config(dataset = NULL, model, ensemble = NA)
 
 \item{model}{the GCM name(s) of interest}
 
-\item{ensemble}{athe number of model names to return}
+\item{ensemble}{the number of model names to return}
 }
 \value{
 a vector of N GCMs
 }
 \description{
-**INTERNAL** Define the model configuration to call with climateR. Ensures that the specified GCM is avialabe for called dataset
-}
-\author{
-Mike Johnson
+**INTERNAL** Define the model configuration to call. 
+Ensures that the specified GCM is provided for called dataset
 }
 \keyword{internal}

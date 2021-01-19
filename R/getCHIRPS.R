@@ -11,9 +11,12 @@
 getCHIRPS = function(AOI, startDate, endDate = NULL  ){
 
   i = NULL
-  d = define.dates  (startDate, endDate)
-  dates = paste0("%28", as.numeric(format(d$date, "%d")), "%20", month.abb[as.numeric(format(d$date, "%m"))], "%20", format(d$date, "%Y"))
-  g = define.grid3(AOI, 'chirps')
+  d = define.dates(startDate, endDate)
+  dates = paste0("%28", as.numeric(format(d$date, "%d")), "%20", 
+                 month.abb[as.numeric(format(d$date, "%m"))], "%20", 
+                 format(d$date, "%Y"))
+  
+  g = define.grid(AOI, 'chirps')
 
   if(methods::is(AOI, 'bbox')){
     bb = AOI
@@ -21,7 +24,7 @@ getCHIRPS = function(AOI, startDate, endDate = NULL  ){
     bb =  sf::st_bbox(AOI)
   }
 
-  urls = paste0('https://iridl.ldeo.columbia.edu/SOURCES/.UCSB/.CHIRPS/.v2p0/.daily-improved/.global/.0p05/.prcp/',
+  urls = paste0(g$base,
          'Y/', bb$ymin, '/', bb$ymax,'/RANGEEDGES/',
          'X/',bb$xmin, '/', bb$xmax,'/RANGEEDGES/',
          'T/',dates,'%29VALUES/%5BX/Y/%5D/palettecolor.tiff?filename=tmp.tiff')
@@ -32,7 +35,9 @@ getCHIRPS = function(AOI, startDate, endDate = NULL  ){
 
   if(g$type != "grid") {
 
-    var = foreach::foreach(i = 1:length(urls), .combine = 'c', .packages = 'raster') %dopar% { raster::raster(urls[i]) %>% as.matrix()}
+    var = foreach::foreach(i = 1:length(urls), .combine = 'c', .packages = 'raster') %dopar% { 
+      raster::raster(urls[i]) %>% as.matrix()
+    }
 
     l = length(d$date)
     df = data.frame(source = rep('chirps', l), lat = rep(bb$ymax , l), lon = rep(bb$xmax, l),  date = d$date, stringsAsFactors = FALSE)
@@ -48,5 +53,4 @@ getCHIRPS = function(AOI, startDate, endDate = NULL  ){
 
   s
 }
-
 

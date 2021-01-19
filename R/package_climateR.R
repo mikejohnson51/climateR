@@ -9,7 +9,7 @@
 #' @docType package
 #' @name climateR
 #'
-#' @importFrom raster raster extent crop stack brick crs
+#' @importFrom raster raster extent crop stack brick crs values
 #' @importFrom RNetCDF open.nc var.get.nc
 #' @importFrom foreach %do% %dopar% foreach
 #' @importFrom doParallel registerDoParallel

@@ -1,11 +1,15 @@
+library(RNetCDF)
+library(ncmeta)
+
 ## code to prepare `grid_meta` dataset goes here
 
 process_coords = function(baseURL, test, names = c("lon", "lat", "day"), source = NULL, proj = NULL){
-  nc = RNetCDF::open.nc(paste0(test, "#fillmismatch"))
-  if(is.null(proj)){proj = "+init=epsg:4326"}
-  X = RNetCDF::var.get.nc(nc, names[1])
-  Y = RNetCDF::var.get.nc(nc, names[2])
-  time =  RNetCDF::var.get.nc(nc, names[3])
+  url  = paste0(test, "#fillmismatch")
+  if(is.null(proj)){ proj = '+proj=longlat +datum=WGS84 +no_defs'}
+  nc   = RNetCDF::open.nc(url)
+  X    = RNetCDF::var.get.nc(nc, names[1])
+  Y    = RNetCDF::var.get.nc(nc, names[2])
+  time = RNetCDF::var.get.nc(nc, names[3])
   
   setNames(data.frame(source, proj, baseURL,
                       head(X,1), tail(X,1), head(Y, 1), tail(Y, 1), 
@@ -13,6 +17,7 @@ process_coords = function(baseURL, test, names = c("lon", "lat", "day"), source 
                       length(X), length(Y), length(time)),
            c("source", "proj", "base", "Xstart", "Xend", "Ystart", "Yend", "dX", "dY", "nX", "nY", "nT"))
 }
+
 
 
 # BCCA
@@ -23,8 +28,8 @@ bcca = process_coords(baseURL, test, names = c("longitude", "latitude", "time"),
 # CABCM
 baseURL = "https://cida.usgs.gov/thredds/dodsC/CA-BCM-2014/"
 test = "https://cida.usgs.gov/thredds/dodsC/CA-BCM-2014/historical?x,y,time"
-proj = '+proj=aea +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +units=m +lat_0=0 +lon_0=-120 +a=6378137 +f=0.00335281068118232 +pm=0 +no_defs'
-cabcm = process_coords(baseURL, test, names = c("x", "y", "time"), source = "cabcm", proj)
+proj = '+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000'
+cabcm = process_coords(baseURL, test, names = c("x", "y", "time"), source = "cabcm", proj = proj)
 
 # CHIRPS
 baseURL = "https://iridl.ldeo.columbia.edu/SOURCES/.UCSB/.CHIRPS/.v2p0/.daily-improved/.global/.0p05/.prcp/"
@@ -43,7 +48,7 @@ chirps = setNames(data.frame("chirps", proj, baseURL,
 baseURL = 'https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/1328/'
 test = 'https://thredds.daac.ornl.gov/thredds/dodsC/ornldaac/1328/1980/daymet_v3_dayl_1980_na.nc4?y,x,time'
 proj = '+proj=lcc +lat_1=25 +lat_2=60 +lat_0=42.5 +lon_0=-100 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs'
-daymet = process_coords(baseURL, test, names = c("x", "y", "time"), source = "daymet", proj)
+daymet = process_coords(baseURL, test, names = c("x", "y", "time"), source = "daymet", proj = proj)
 
 # EDDI
 baseURL = "ftp://ftp.cdc.noaa.gov/Projects/EDDI/CONUS_archive/data/"
@@ -51,8 +56,8 @@ url = "ftp://ftp.cdc.noaa.gov/Projects/EDDI/CONUS_archive/data/2001/EDDI_ETrs_03
 tmp = tempfile()
 suppressWarnings( httr::GET(url, httr::write_disk(tmp, overwrite = TRUE)) ) # suppressing Government Warning
 t = raster::raster(tmp)
-raster::crs(t) = "+init=epsg:4326"
-eddi = setNames(data.frame("eddi", "+init=epsg:4326",  baseURL,
+raster::crs(t) ="+proj=longlat +datum=WGS84 +no_defs"
+eddi = setNames(data.frame("eddi", "+proj=longlat +datum=WGS84 +no_defs",  baseURL,
                            t(as.vector(extent(t))),
                            t(res(t)), 
                            t(dim(t)[1:2]), NA),
@@ -60,11 +65,9 @@ eddi = setNames(data.frame("eddi", "+init=epsg:4326",  baseURL,
 
 #gridmet
 baseURL = 'http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_'
-test = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_pr_1979_CurrentYear_CONUS.nc#FillMisMatch"
-
-ncmeta::nc_grid_mapping_atts(test)
+test = "http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_met_pr_1979_CurrentYear_CONUS.nc"
 gridmet = process_coords(baseURL, test, names = c("lon", "lat", "day"), source = "gridmet")
-ncmeta::nc_gm_to_prj(ncmeta::nc_grid_mapping_atts(test))
+
 # LOCA
 baseURL = 'https://cida.usgs.gov/thredds/dodsC/loca_'
 test = 'https://cida.usgs.gov/thredds/dodsC/loca_future?lat,lon,time'
@@ -90,6 +93,7 @@ baseURL = 'https://cida.usgs.gov/thredds/dodsC/topowx'
 test = 'https://cida.usgs.gov/thredds/dodsC/topowx?lat,lon,time'
 topowx = process_coords(baseURL, test, names = c("lon", "lat", "time"), source = "topowx")
 
-grid_meta = bind_rows(list(bcca, cabcm, chirps, daymet, eddi, gridmet, loca, maca, prism, terraclim, topowx))
+grid_meta = dplyr::bind_rows(list(bcca, cabcm, chirps, daymet, eddi, gridmet, loca, maca, prism, terraclim, topowx))
 
 usethis::use_data(grid_meta, overwrite = TRUE)
+

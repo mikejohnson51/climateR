@@ -17,30 +17,43 @@
 getCABCM = function(AOI, param, model = 'CCSM4', scenario = 'rcp85', startDate, endDate = NULL){
 
   id = 'cabcm'
-  base =  "https://cida.usgs.gov/thredds/dodsC/CA-BCM-2014/"
-
-  d = define.dates(startDate, endDate, baseDate = "1921-01-01", splitDate = "2010-01-01")
-  v = define.versions(dates = d, scenario = scenario, future.call = "future?", historic.call = "historical?", timeRes = "monthly")
+  
+  g = define.grid(AOI, 
+                  source = id)
+  
+  d = define.dates(startDate, endDate, 
+                   baseDate = "1921-01-01", splitDate = "2010-01-01")
+  
+  v = define.versions(dates = d, 
+                      scenario = scenario,
+                      future.call = "future?", 
+                      historic.call = "historical?", 
+                      timeRes = "monthly")
+  
   p = define.param(param, service = id)
+  
   k = define.config(dataset = id, model = model, ensemble = NA)
 
-  tmp = expand.grid(min.date = v$min.date, model = k, call = p$call, stringsAsFactors = FALSE)
-  fin = merge(v, tmp, "min.date")  %>% merge(p, "call") %>% 
+  fin = expand.grid(min.date = v$min.date, 
+                    model = k, 
+                    call = p$call) %>% 
+    merge(v, "min.date") %>% 
+    merge(p, "call") %>% 
     merge(climateR::model_meta$cabcm, "model")
 
-  name.date = format(d$date, "%Y-%m")
+  urls = paste0(g$base, 
+                fin$calls, 
+                fin$model, "_", fin$scenario, "_Monthly_", 
+                fin$call, fin$time.index, 
+                g$lat.call, g$lon.call)
 
-  g = define.grid3(AOI, source = id)
-
-  urls = paste0(base, fin$calls, fin$model, "_", fin$scenario, "_Monthly_", fin$call, fin$time.index, g$lat.call, g$lon.call)
-
-  pp = paste0(fin$model,"_", fin$common.name)
-  name.date = format(d$date, "%Y-%m")
-  fin$call2 = paste0(fin$model, "_", fin$scenario, "_Monthly_", fin$call)
-
-  s = fast.download(urls, params = fin$call2, names = pp, g, name.date, dataset = id, fun = 'r')
-
-  s
+  fast.download(urls, 
+                params = paste0(fin$model, "_", fin$scenario, "_Monthly_", fin$call), 
+                names = paste0(fin$model,"_", fin$common.name), 
+                g = g, 
+                date.names = format(d$date, "%Y-%m"), 
+                dataset = id, 
+                fun = 'r')
 
 }
 
