@@ -52,7 +52,7 @@ getMACA = function(AOI, param,
   s = fast.download(urls, 
                     params = fin$call2, 
                     names = paste0(fin$model,"_", fin$common.name,"_", fin$ver, "_", fin$units), 
-                    g, 
+                    g = g, 
                     date.names = name.date, 
                     dataset = id, 
                     fun = 'r')

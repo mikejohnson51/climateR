@@ -74,9 +74,11 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
       raster::extent(b1) = g$e
       raster::crs(b1) = g$proj
     } else {
-      var2 = array(0, dim = c(dim(v)[2], dim(v)[1],dim(v)[3]))
+      var2 = array(0, dim = c(dim(v)[2], dim(v)[1], dim(v)[3]))
       for(j in 1:dim(v)[3]){ var2[,,j] = .orient(v[,,j], fun = fun) }
-      b1 = raster::raster(var2, ext = g$e, crs = g$proj)
+      b1 = raster::brick(var2)
+      raster::extent(b1) = g$e
+      raster::crs(b1) = g$proj
     }
 
     b1[b1>100000] = NA
