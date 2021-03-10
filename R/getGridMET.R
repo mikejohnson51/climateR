@@ -18,7 +18,7 @@ getGridMET = function(AOI, param, startDate, endDate = NULL){
   g = define.grid(AOI, id)
 
   urls = paste0(g$base, p$call, '_1979_CurrentYear_CONUS.nc?', p$description,
-                '[', min(d$date.index) -1, ':1:', max(d$date.index) -1, "]",
+                '[', min(d$date.index), ':1:', max(d$date.index), "]",
                 g$lat.call,  g$lon.call,
                 "#fillmismatch")
 

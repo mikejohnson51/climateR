@@ -14,7 +14,6 @@
 getPRISM = function(AOI, param, startDate, endDate = NULL){
 
   id = 'prism'
-
   d = define.dates  (startDate, endDate)
   p = define.param  (param, service = id)
   g = define.grid(AOI, id)
