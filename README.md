@@ -11,19 +11,20 @@ Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https:/
 R. It currently provides access to the following gridded climate sources
 using a single parmaeter
 
-| **Number** | **Dataset**      | **Description**                                            | **Dates**            |
-|------------|------------------|------------------------------------------------------------|----------------------|
-| 1          | **GridMET**      | Gridded Meteorological Data.                               | 1979 - Yesterday     |
-| 2          | **Daymet**       | Daily Surface Weather and Climatological Summaries         | 1980 - 2019          |
-| 3          | **TopoWX**       | Topoclimatic Daily Air Temperature Dataset                 | 1948 - 2016          |
-| 4          | **PRISM**        | Parameter-elevation Regressions on Independent Slopes      | 1981 - (Yesterday-1) |
-| 5          | **MACA**         | Multivariate Adaptive Constructed Analogs                  | 1950 - 2099          |
-| 6          | **LOCA**         | Localized Constructed Analogs                              | 1950 - 2100          |
-| 7          | **BCCA**         | Bias Corrected Constructed Analogs                         | 1950 - 2100          |
-| 8          | **BCSD**         | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950 - 2099          |
-| 9          | **TerraClimate** | TerraClimate Monthly Gridded Data                          | 1958 - 2019          |
-| 10         | **CHIRPS**       | Climate Hazards Group InfraRed Precipitation with Station  | 1980 - Current month |
-| 11         | **EDDI**         | Evaporative Demand Drought Index                           | 1980 - Current year  |
+| **Number** | **Dataset**              | **Description**                                            | **Dates**                                 |
+|------------|--------------------------|------------------------------------------------------------|-------------------------------------------|
+| 1          | **GridMET**              | Gridded Meteorological Data.                               | 1979 - Yesterday                          |
+| 2          | **Daymet**               | Daily Surface Weather and Climatological Summaries         | 1980 - 2019                               |
+| 3          | **TopoWX**               | Topoclimatic Daily Air Temperature Dataset                 | 1948 - 2016                               |
+| 4          | **PRISM**                | Parameter-elevation Regressions on Independent Slopes      | 1981 - (Yesterday-1)                      |
+| 5          | **MACA**                 | Multivariate Adaptive Constructed Analogs                  | 1950 - 2099                               |
+| 6          | **LOCA**                 | Localized Constructed Analogs                              | 1950 - 2100                               |
+| 7          | **BCCA**                 | Bias Corrected Constructed Analogs                         | 1950 - 2100                               |
+| 8          | **BCSD**                 | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950 - 2099                               |
+| 9          | **TerraClimate**         | TerraClimate Monthly Gridded Data                          | 1958 - 2019                               |
+| 10         | **TerraClimate Normals** | TerraClimate Normals Gridded Data                          | Monthly for 1961-1990, 1981-2010, 2C & 4C |
+| 11         | **CHIRPS**               | Climate Hazards Group InfraRed Precipitation with Station  | 1980 - Current month                      |
+| 12         | **EDDI**                 | Evaporative Demand Drought Index                           | 1980 - Current year                       |
 
 # Installation
 
@@ -44,7 +45,7 @@ library(rasterVis)
 
 # Examples
 
-The climateR package is supplimented by the
+The climateR package is supplemented by the
 [AOI](https://github.com/mikejohnson51/AOI) framework established in the
 AOI R package.
 
@@ -70,7 +71,7 @@ system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.586   0.167   1.947
+#>   0.636   0.194   1.553
 ```
 
 ``` r
@@ -128,7 +129,7 @@ m = getMACA(aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.301   0.101   1.368
+#>   0.340   0.119   1.686
 ```
 
 ``` r
@@ -317,11 +318,11 @@ plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 sites_wide = extract_sites(sites_stack, sites, "ID")
 sites_wide$tmax[1:5, 1:5]
 #>         date site_190760 site_267801 site_219885 site_200445
-#> 1 2018-01-01        26.9        31.5        25.6        26.2
-#> 2 2018-02-01        26.6        30.1        25.2        25.8
-#> 3 2018-03-01        26.4        30.8        25.6        26.0
-#> 4 2018-04-01        25.3        28.3        24.8        24.9
-#> 5 2018-05-01        21.5        25.1        21.7        21.2
+#> 1 2018-01-01        27.2        29.9        25.6        26.6
+#> 2 2018-02-01        26.8        31.5        25.6        26.2
+#> 3 2018-03-01        26.6        30.1        25.2        25.8
+#> 4 2018-04-01        26.4        30.8        25.6        26.0
+#> 5 2018-05-01        25.3        28.3        24.8        24.9
 ```
 
 To make the data ‘tidy’ simply pivot on the `date` column:
@@ -331,15 +332,15 @@ tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
 head(tmax)
 #> # A tibble: 6 x 3
 #>   date       name        value
-#>   <date>     <chr>       <dbl>
-#> 1 2018-01-01 site_190760  26.9
-#> 2 2018-01-01 site_267801  31.5
+#>   <chr>      <chr>       <dbl>
+#> 1 2018-01-01 site_190760  27.2
+#> 2 2018-01-01 site_267801  29.9
 #> 3 2018-01-01 site_219885  25.6
-#> 4 2018-01-01 site_200445  26.2
-#> 5 2018-01-01 site_74789   26.7
-#> 6 2018-01-01 site_18343   24
+#> 4 2018-01-01 site_200445  26.6
+#> 5 2018-01-01 site_74789   27.7
+#> 6 2018-01-01 site_18343   24.1
 
-ggplot(data = tmax, aes(x = date, y = value, col = name)) + 
+ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
   scale_color_viridis_d() +
   geom_line() + 
   theme_linedraw() + 
@@ -374,7 +375,7 @@ projected CONUS Albers Equal Area (EPSG:5070).
 ``` r
 system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
 #>    user  system elapsed 
-#>   0.760   0.236   1.339
+#>   0.921   0.324   1.567
 levelplot(cr2$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 

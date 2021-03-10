@@ -36,8 +36,9 @@ library(ggplot2)
 |7         | **BCCA**            | Bias Corrected Constructed Analogs                         | 1950 - 2100          |
 |8         | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950 - 2099          |
 |9         | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958 - 2019          |
-|10        | **CHIRPS**          | Climate Hazards Group InfraRed Precipitation with Station  | 1980 - Current month |
-|11        | **EDDI**            | Evaporative Demand Drought Index                           | 1980 - Current year  |
+|10        | **TerraClimate Normals**    | TerraClimate Normals Gridded Data                  | Monthly for 1961-1990, 1981-2010, 2C & 4C |
+|11        | **CHIRPS**          | Climate Hazards Group InfraRed Precipitation with Station  | 1980 - Current month |
+|12        | **EDDI**            | Evaporative Demand Drought Index                           | 1980 - Current year  |
 
 
 # Installation
@@ -56,10 +57,9 @@ library(raster)
 library(rasterVis)
 ```
 
-
 # Examples
 
-The climateR package is supplimented by the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. 
+The climateR package is supplemented by the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. 
 
 To get a climate product, an area of interest must be defined:
 
@@ -254,7 +254,7 @@ To make the data 'tidy' simply pivot on the `date` column:
 tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
 head(tmax)
 
-ggplot(data = tmax, aes(x = date, y = value, col = name)) + 
+ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
   scale_color_viridis_d() +
   geom_line() + 
   theme_linedraw() + 
