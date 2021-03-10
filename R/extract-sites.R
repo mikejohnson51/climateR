@@ -11,7 +11,8 @@ extract_sites = function(r, pts, id){
   my.to.date = function(x){
     d = gsub("[.]", "-",gsub("X", "", x))
     if(nchar(d[1]) == 7){d = paste0(d, "-01")}
-    if(length(d) !=10){
+    
+    if(nchar(d[1]) !=10){
       d
     } else {
       as.Date(d)
@@ -24,7 +25,7 @@ extract_sites = function(r, pts, id){
     df = data.frame(t(df))
     names(df) <- paste0("site_", df[1,])
     df = df[-1,]
-    df = cbind(date = my.to.date(grep("X", rownames(df), value = TRUE)), df)
+    df = cbind(date = my.to.date(names(r[[x]])), df)
     rownames(df) = NULL
     df
   }
@@ -32,7 +33,7 @@ extract_sites = function(r, pts, id){
   
   pts = st_transform(pts, crs(r[[1]]))
   # Extract your climate data via the points
-  extdata = lapply(seq_along(r), function(x){ flip(x, r, pts, id) } )
+  extdata = lapply(1:length(r), function(x){ flip(x, r, pts, id) } )
   
   names(extdata) = names(r)
   
