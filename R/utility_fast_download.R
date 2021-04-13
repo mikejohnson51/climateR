@@ -68,7 +68,10 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
     time = length(date.names[[i]])
     
     if(time > 1){
-      #dim(v) = round(c(g$rows, g$cols, time))
+      if(is.na(dim(v)[3])){
+        dim(v) = round(c(g$rows, g$cols, time))
+      }
+
       var2 = array(rep(0, length(v)), dim = round(c(g$rows, g$cols, time)))
       for(j in 1:dim(var2)[3]){ var2[,,j] = .orient(v[,,j], fun = fun) }
       b1 = raster::brick(var2)
