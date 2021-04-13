@@ -55,7 +55,7 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
     for(i in 1:length(var)){
 
     v = var[[i]] * scale_factor
-    
+ 
     if(!is.na(no_data)){ 
     if(no_data > 0){
       v[v > no_data] = NA
@@ -65,11 +65,11 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
         
     }
     
-    time = as.integer((length(v) / (g$rows * g$cols)))
+    time = length(date.names[[i]])
     
-    if(time > 0){
-      dim(v) = ceiling(c(g$rows, g$cols, time))
-      var2 = array(rep(0, length(v)), dim = ceiling(c(g$rows, g$cols, time)))
+    if(time > 1){
+      #dim(v) = round(c(g$rows, g$cols, time))
+      var2 = array(rep(0, length(v)), dim = round(c(g$rows, g$cols, time)))
       for(j in 1:dim(var2)[3]){ var2[,,j] = .orient(v[,,j], fun = fun) }
       b1 = raster::brick(var2)
     } else { 
