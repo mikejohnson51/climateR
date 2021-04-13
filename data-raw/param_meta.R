@@ -1,9 +1,8 @@
 ## code to prepare `param_meta` dataset goes here
-
 #' @title Parameter Metadata
 #' @description  Meta data for model parameters including common names, model calls, description and units
 #' @export
-#' @author Mike Johnson
+
 
 param_meta = list(
   # PRISM -------------------------------------------------------------------
@@ -49,6 +48,16 @@ param_meta = list(
                     'daily_mean_energy_release_component-g', 'daily_mean_palmer_drought_severity_index',
                     'daily_mean_reference_evapotranspiration_alfalfa', 'daily_mean_reference_evapotranspiration_grass',
                     'daily_mean_vapor_pressure_deficit'),
+    
+    timestep = c('daily','daily',
+                 'daily', 'daily',
+                 'daily','daily',
+                 'daily','daily',
+                 'daily','daily',
+                 'daily','daily',
+                 'daily', 'pentad',
+                 'daily', 'daily',
+                 'daily'),
     
     units = c("mm", "Percent",
               "Percent", "kg/kg",
@@ -407,18 +416,9 @@ param_meta = list(
     
     stringsAsFactors = F
     
-  ),
-  
-  # TOPOWX--------------------------------------------------------------------
-  
-  topowx = data.frame(
-    common.name = c('tmin', 'tmax'),
-    call = c('tmin', 'tmax'),
-    description = c('Minimum Temperature', 'Maximum Temperature'),
-    units = c('C', 'C'),
-    stringsAsFactors = F
   )
 )
+  
 
 
 usethis::use_data(param_meta, overwrite = TRUE)

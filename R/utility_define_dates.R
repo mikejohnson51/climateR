@@ -65,35 +65,39 @@ build.date = function(startDate, endDate){
 #' @keywords internal
 
 
-define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL){
+define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL, timestep = 1){
 
   bd = build.date(startDate, endDate)
 
   dates = seq.Date(as.Date(bd$startDate), as.Date(bd$endDate), 1)
+  
 
   if(!is.null(splitDate)){
     pre = dates[as.Date(dates) < as.Date(splitDate)]
     post = dates[as.Date(dates) >= as.Date(splitDate)]
 
     dates = list(pre, post)
-  } else { dates = list(dates)}
+  } else { 
+    dates = list(dates)
+  }
 
 
   for(i in 1:length(dates)){
-  dates[[i]] = data.frame(
-    date   = dates[[i]],
-    year   = as.numeric(format(dates[[i]], "%Y")),
-    julien = as.numeric(format(dates[[i]], "%j"))
-  )
+    dates[[i]] = data.frame(
+      date   = dates[[i]],
+      year   = as.numeric(format(dates[[i]], "%Y")),
+      julien = as.numeric(format(dates[[i]], "%j"))
+    )
   }
-
+  
   if(!is.null(baseDate)) {
 
     base = c(baseDate, splitDate)
 
     for(i in 1:length(dates)){
-    dates[[i]]$date.index = as.numeric(dates[[i]]$date - as.Date(base[i])) #+ 1
-    dates[[i]]$month.index = .numberOfMonths(dates[[i]]$date, base[i]) #+ 1
+      dates[[i]]$date.index  = as.numeric(dates[[i]]$date - as.Date(base[i])) 
+      dates[[i]]$month.index = .numberOfMonths(dates[[i]]$date, base[i])
+      dates[[i]] = merge(dates[[i]], .pentad(dates[[i]]$date,  base[i]))
     }
   }
 
@@ -108,3 +112,28 @@ define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL){
   return(dates)
 }
 
+
+
+.pentad <- function(x,  baseDate) {
+
+  all = data.frame(date = seq.Date(as.Date("1980-01-01"), Sys.Date(), 1))
+  
+  yday = as.POSIXlt(all$date)$yday + 1
+
+  all$pentad = ceiling( (yday - .leap_year(all$date)*(yday > 59)) / 5 )
+  
+  all$pent_ind = cumsum(ifelse(all$pentad != c(-1,all$pentad[1:nrow(all)-1]), 1, 0))
+
+  all     = all[all$date >= min(x),]
+  all     = all[all$date <= max(x),]
+
+}
+
+.leap_year <- function(date) {
+  if (is.numeric(date)) {
+    year <- date
+  } else {
+    year <- year(date)
+  }
+  (year %% 4 == 0) & ((year %% 100 != 0) | (year %% 400 == 0))
+}

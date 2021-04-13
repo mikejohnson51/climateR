@@ -71,7 +71,7 @@ system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.636   0.194   1.553
+#>   0.322   0.099   0.977
 ```
 
 ``` r
@@ -129,7 +129,7 @@ m = getMACA(aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.340   0.119   1.686
+#>   0.184   0.075   0.814
 ```
 
 ``` r
@@ -277,10 +277,10 @@ then extract time series as opposed to iterating over the locations:
 (sites = read.csv('./inst/extdata/example.csv') %>% 
   st_as_sf(coords = c("long", "lat"), crs = 4326))
 #> Simple feature collection with 100 features and 2 fields
-#> geometry type:  POINT
-#> dimension:      XY
-#> bbox:           xmin: -54.81975 ymin: -29.73627 xmax: -40.80975 ymax: -18.52627
-#> geographic CRS: WGS 84
+#> Geometry type: POINT
+#> Dimension:     XY
+#> Bounding box:  xmin: -54.81975 ymin: -29.73627 xmax: -40.80975 ymax: -18.52627
+#> Geodetic CRS:  WGS 84
 #> First 10 features:
 #>         X     ID                    geometry
 #> 1  190760 190760 POINT (-50.40975 -25.81627)
@@ -295,7 +295,7 @@ then extract time series as opposed to iterating over the locations:
 #> 10 638894 638894 POINT (-46.99975 -20.75627)
 ```
 
-1.  `climateR` will grab the RasterStack underlying the bounding area of
+2.  `climateR` will grab the RasterStack underlying the bounding area of
     the points
 
 ``` r
@@ -310,7 +310,7 @@ plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 
 <img src="man/figures/README-unnamed-chunk-18-1.png" width="100%" />
 
-1.  Use `extract_sites` to extract the times series from these
+3.  Use `extract_sites` to extract the times series from these
     locations. The `id` parameter is the unique identifier from the site
     data with which to names the resulting columns.
 
@@ -318,11 +318,11 @@ plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 sites_wide = extract_sites(sites_stack, sites, "ID")
 sites_wide$tmax[1:5, 1:5]
 #>         date site_190760 site_267801 site_219885 site_200445
-#> 1 2018-01-01        27.2        29.9        25.6        26.6
-#> 2 2018-02-01        26.8        31.5        25.6        26.2
-#> 3 2018-03-01        26.6        30.1        25.2        25.8
-#> 4 2018-04-01        26.4        30.8        25.6        26.0
-#> 5 2018-05-01        25.3        28.3        24.8        24.9
+#> 1 2018-01-01          27          30          26          27
+#> 2 2018-02-01          27          32          26          26
+#> 3 2018-03-01          27          30          25          26
+#> 4 2018-04-01          26          31          26          26
+#> 5 2018-05-01          25          28          25          25
 ```
 
 To make the data ‘tidy’ simply pivot on the `date` column:
@@ -332,13 +332,13 @@ tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
 head(tmax)
 #> # A tibble: 6 x 3
 #>   date       name        value
-#>   <chr>      <chr>       <dbl>
-#> 1 2018-01-01 site_190760  27.2
-#> 2 2018-01-01 site_267801  29.9
-#> 3 2018-01-01 site_219885  25.6
-#> 4 2018-01-01 site_200445  26.6
-#> 5 2018-01-01 site_74789   27.7
-#> 6 2018-01-01 site_18343   24.1
+#>   <date>     <chr>       <dbl>
+#> 1 2018-01-01 site_190760    27
+#> 2 2018-01-01 site_267801    30
+#> 3 2018-01-01 site_219885    26
+#> 4 2018-01-01 site_200445    27
+#> 5 2018-01-01 site_74789     28
+#> 6 2018-01-01 site_18343     24
 
 ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
   scale_color_viridis_d() +
@@ -375,7 +375,7 @@ projected CONUS Albers Equal Area (EPSG:5070).
 ``` r
 system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
 #>    user  system elapsed 
-#>   0.921   0.324   1.567
+#>   0.542   0.145   0.733
 levelplot(cr2$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 

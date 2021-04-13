@@ -9,26 +9,43 @@
 #' @return if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 #' @export
 
+
 getGridMET = function(AOI, param, startDate, endDate = NULL){
 
   id = 'gridmet'
 
   d = define.dates(startDate, endDate, baseDate = '1979-01-01')
+
   p = define.param(param, service = id)
   g = define.grid(AOI, id)
+  
+  urls = list()
+  names = list()
+  
+  for(i in 1:nrow(p)){
+    
+  if(p$timestep[i] == "pentad"){
+    date.nc = paste0('[', min(d$pent_ind), ':1:', max(d$pent_ind), "]")
+    date.names[[i]] = unique(paste0(d$year, "_pentad_", d$pentad))
+  } else {
+    date.nc = paste0('[', min(d$date.index), ':1:', max(d$date.index), "]")
+    date.names[[i]] = d$date
+  }
+    
+  urls[[i]] = paste0(g$base, p$call[i], '_1979_CurrentYear_CONUS.nc?', 
+                     p$description[i],
+                     date.nc, g$lat.call,  g$lon.call,
+                     "#fillmismatch")
+  }
 
-  urls = paste0(g$base, p$call, '_1979_CurrentYear_CONUS.nc?', p$description,
-                '[', min(d$date.index), ':1:', max(d$date.index), "]",
-                g$lat.call,  g$lon.call,
-                "#fillmismatch")
-
-  fast.download(urls,
+  fast.download(urls   = unlist(urls),
                 params = p$description, 
-                names = p$common.name,  
-                g = g, 
-                date.names = d$date, 
+                names  = p$common.name,  
+                g      = g, 
+                date.names = date.names, 
                 dataset = id, 
                 fun = 't')
-}
 
+
+}
 

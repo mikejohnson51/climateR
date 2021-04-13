@@ -64,34 +64,34 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
     }
         
     }
-
-    if(is.null(dim(v))){
-      b1 = raster(ext = g$e, crs = g$proj, nrows = g$rows, ncols = g$cols)
-      raster::values(b1) = v
-    } else if(length(dim(v)[3]) == 0 | is.na(dim(v)[3])){
-      var2 = .orient(v, fun = fun)
-      b1 = raster::raster(var2)
-      raster::extent(b1) = g$e
-      raster::crs(b1) = g$proj
-    } else {
-      var2 = array(0, dim = c(dim(v)[2], dim(v)[1], dim(v)[3]))
-      for(j in 1:dim(v)[3]){ var2[,,j] = .orient(v[,,j], fun = fun) }
+    
+    time = as.integer((length(v) / (g$rows * g$cols)))
+    
+    if(time > 0){
+      dim(v) = ceiling(c(g$rows, g$cols, time))
+      var2 = array(rep(0, length(v)), dim = ceiling(c(g$rows, g$cols, time)))
+      for(j in 1:dim(var2)[3]){ var2[,,j] = .orient(v[,,j], fun = fun) }
       b1 = raster::brick(var2)
-      raster::extent(b1) = g$e
-      raster::crs(b1) = g$proj
+    } else { 
+      mat = .orient(v, fun = fun)
+      b1 = raster(mat)
     }
+    
+    raster::extent(b1) = g$e
+    raster::crs(b1) = g$proj
+
 
     b1[b1>100000] = NA
     b[[i]] = b1
-    }
+  }
 
     names(b) = names
 
     keys = unique(names(b))
 
-    b = sapply(keys, function(name) {stack(b[grep(name, names(b))])})
+    b = sapply(keys, function(name) {stack(b[grep(paste0(name, "$"), names(b))])})
 
-   for(i in 1:length(b)){ names(b[[i]]) = unique(date.names)}
+    for(i in 1:length(b)){ names(b[[i]]) = unique(date.names[[i]])}
 
   } else {
 
