@@ -20,7 +20,7 @@ getGridMET = function(AOI, param, startDate, endDate = NULL){
   g = define.grid(AOI, id)
   
   urls = list()
-  names = list()
+  date.names = list()
   
   for(i in 1:nrow(p)){
     

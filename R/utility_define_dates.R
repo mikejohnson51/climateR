@@ -133,7 +133,7 @@ define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL, ti
   if (is.numeric(date)) {
     year <- date
   } else {
-    year <- year(date)
+    year <- as.numeric(substr(date, 1,4))
   }
   (year %% 4 == 0) & ((year %% 100 != 0) | (year %% 400 == 0))
 }
