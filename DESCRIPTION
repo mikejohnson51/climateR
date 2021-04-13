@@ -2,7 +2,7 @@ Package: climateR
 Type: Package
 Title: climateR
 Description: A set of functions to subset climate data for an area of interest.
-Version: 0.0.5
+Version: 0.1.0
 Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "jmj00@ucsb.edu")
 Maintainer: Mike Johnson <jmj00@ucsb.edu>
 BugReports: https://github.com/mikejohnson51/climateR/issues
