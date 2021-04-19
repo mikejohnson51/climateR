@@ -42,7 +42,7 @@ getGridMET = function(AOI, param, startDate, endDate = NULL){
                 params = p$description, 
                 names  = p$common.name,  
                 g      = g, 
-                date.names = date.names, 
+                date.names = date.names[[1]], 
                 dataset = id, 
                 fun = 't')
 

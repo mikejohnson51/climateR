@@ -33,22 +33,30 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
   if(g$type == 'point'){
     var = foreach::foreach(i = 1:length(urls), .combine = 'c') %dopar% { 
       tryCatch({
+        RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = TRUE) 
+      }, error = function(e){
+        urls[i]
+      })
+    }
+    
+    df = data.frame(source = dataset, 
+                    lat    = g$lat, 
+                    lon    = g$lon,  
+                    date   = date.names)
+    
+    b = cbind(df, matrix(var, nrow = length(date.names), byrow = FALSE))
+    colnames(b) = c('source', 'lat', 'lon', 'date', unique(names))
+  } 
+
+  if(g$type == 'grid'){
+    
+    var = foreach::foreach(i = 1:length(urls)) %dopar% { 
+      tryCatch({
         RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) 
       }, error = function(e){
         urls[i]
       })
     }
-  } else {
-    var = foreach::foreach(i = 1:length(urls)) %dopar% { 
-      tryCatch({
-        RNetCDF::open.nc(urls[i]) %>% RNetCDF::var.get.nc(params[i], unpack = T) 
-      }, error = function(e){
-          urls[i]
-      })
-    }
-  }
-
-  if(g$type == 'grid'){
 
     b = list()
 
@@ -65,7 +73,7 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
         
     }
     
-    time = length(date.names[[i]])
+    time = length(date.names)
     
     if(time > 1){
       if(is.na(dim(v)[3])){
@@ -81,29 +89,20 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
     }
     
     raster::extent(b1) = g$e
-    raster::crs(b1) = g$proj
-
+    raster::crs(b1)    = g$proj
 
     b1[b1>100000] = NA
-    b[[i]] = b1
+    b[[i]] = stack(b1)
   }
 
-    names(b) = names
+    names(b) = paste0("gridMet_", names)
+   # names(b) = names
+  #  keys     = unique(names(b))
 
-    keys = unique(names(b))
+   # b = sapply(keys, function(name) {stack(b[grep(paste0(name, "$"), names(b))])})
 
-    b = sapply(keys, function(name) {stack(b[grep(paste0(name, "$"), names(b))])})
+    for(i in 1:length(b)){ names(b[[i]]) = unique(date.names)}
 
-    for(i in 1:length(b)){ names(b[[i]]) = unique(date.names[[i]])}
-
-  } else {
-
-    l = length(date.names)
-    df = data.frame(source = rep(dataset, l), lat = rep(g$lat, l), lon = rep(g$lon, l),  date = date.names, stringsAsFactors = FALSE)
-
-    mat = matrix(var, nrow = l, byrow = F)
-    b = cbind(df, mat)
-    colnames(b) = c('source', 'lat', 'lon', 'date', unique(names))
   }
 
 return(b)
