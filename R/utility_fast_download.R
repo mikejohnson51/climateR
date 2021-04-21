@@ -95,7 +95,7 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
     b[[i]] = stack(b1)
   }
 
-    names(b) = paste0("gridMet_", names)
+    names(b) = paste0(dataset, "_", names)
    # names(b) = names
   #  keys     = unique(names(b))
 
