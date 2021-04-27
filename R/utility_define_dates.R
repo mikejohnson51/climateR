@@ -90,6 +90,9 @@ define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL, ti
     )
   }
   
+  dates = dates[sapply(dates, nrow)>0]
+  
+  
   if(!is.null(baseDate)) {
 
     base = c(baseDate, splitDate)

@@ -22,7 +22,10 @@ getMACA = function(AOI, param,
 
   g = define.grid(AOI, source = id)
   d = define.dates(startDate, endDate, baseDate = "1950-01-01", splitDate = "2006-01-01")
-  v = define.versions(dates = d, scenario = scenario, future.call = paste0("2006_2099_CONUS_", timeRes, ".nc?"), historic.call = paste0("1950_2005_CONUS_", timeRes, ".nc?"), timeRes = timeRes)
+  v = define.versions(dates = d, scenario = scenario, 
+                      future.call = paste0("2006_2099_CONUS_", timeRes, ".nc?"), 
+                      historic.call = paste0("1950_2005_CONUS_", timeRes, ".nc?"), 
+                      timeRes = timeRes)
   p = define.param(param, service = id)
   k = define.config(dataset = id, model = model, ensemble = NA)
 
@@ -35,7 +38,8 @@ getMACA = function(AOI, param,
   
   fin = merge(fin, tmp, by.x = "model", by.y =  "model2") 
   fin$scenario = NULL
-  fin = fin[fin$ver %in% scenario,]
+  
+  fin = fin[fin$ver %in% c("historical", "scenario"),]
   
   fin = fin[!duplicated(fin),]
 
@@ -47,7 +51,8 @@ getMACA = function(AOI, param,
                 fin$ver, "_", 
                 fin$calls, fin$call2, 
                 fin$time.index, 
-                g$lat.call, g$lon.call)
+                g$lat.call, g$lon.call,
+                "#fillmismatch")
 
   s = fast.download(urls, 
                     params = fin$call2, 
