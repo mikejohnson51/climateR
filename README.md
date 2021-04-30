@@ -71,7 +71,7 @@ system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.322   0.099   0.977
+#>   0.329   0.118   1.027
 ```
 
 ``` r
@@ -93,7 +93,7 @@ by bounding coordinates.
 AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
   getGridMET(param = "wind_vel", startDate = "2018-09-01")
 
-rasterVis::levelplot(AOI$wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
+rasterVis::levelplot(AOI$gridmet_wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -109,7 +109,7 @@ harvey = getGridMET(aoi_get(state = c("TX", "FL")),
                   param = "prcp", 
                   startDate = "2017-08-20", endDate = "2017-08-31")
 
-levelplot(harvey$prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
+levelplot(harvey$gridmet_prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
 ```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" />
@@ -122,14 +122,14 @@ climate scenarios. One example is from the MACA dataset:
 
 ``` r
 system.time({
-m = getMACA(aoi_get(state = "FL"), 
+m = getMACA(AOI = aoi_get(state = "FL"), 
             model = "CCSM4", 
             param = 'prcp', 
             scenario = c('rcp45', 'rcp85'), 
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.184   0.075   0.814
+#>   0.403   0.113   1.150
 ```
 
 ``` r
@@ -181,8 +181,9 @@ kenya = aoi_get(country = "Kenya")
 tc = getTerraClim(kenya, param = "prcp", startDate = "2018-01-01")
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
 
-p1 = levelplot(tc$prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
+p1 = levelplot(tc$terraclim_prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
   layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
+
 p2 = levelplot(chirps,  par.settings = BTCTheme, main = "Janaury 1-4, 2018; CHIRPS", layout=c(2, 2)) +
   layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
 
@@ -198,13 +199,13 @@ scenarios are offered for MACA.
 
 ``` r
 head(param_meta$gridmet)
-#>   common.name call                               description
-#> 1        prcp   pr                      precipitation_amount
-#> 2       rhmax rmax           daily_maximum_relative_humidity
-#> 3       rhmin rmin           daily_minimum_relative_humidity
-#> 4        shum  sph              daily_mean_specific_humidity
-#> 5        srad srad daily_mean_shortwave_radiation_at_surface
-#> 6    wind_dir   th                 daily_mean_wind_direction
+#>   common.name call                               description timestep
+#> 1        prcp   pr                      precipitation_amount    daily
+#> 2       rhmax rmax           daily_maximum_relative_humidity    daily
+#> 3       rhmin rmin           daily_minimum_relative_humidity    daily
+#> 4        shum  sph              daily_mean_specific_humidity    daily
+#> 5        srad srad daily_mean_shortwave_radiation_at_surface    daily
+#> 6    wind_dir   th                 daily_mean_wind_direction    daily
 #>                          units
 #> 1                           mm
 #> 2                      Percent
@@ -304,7 +305,7 @@ sites_stack = getTerraClim(AOI   = sites,
                            startDate = "2018-01-01", 
                            endDate   = "2018-12-31")
 
-plot(sites_stack$tmax$X2018.01)
+plot(sites_stack$terraclim_tmax$X2018.01)
 plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 ```
 
@@ -316,29 +317,29 @@ plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 
 ``` r
 sites_wide = extract_sites(sites_stack, sites, "ID")
-sites_wide$tmax[1:5, 1:5]
+sites_wide$terraclim_tmax[1:5, 1:5]
 #>         date site_190760 site_267801 site_219885 site_200445
-#> 1 2018-01-01          27          30          26          27
-#> 2 2018-02-01          27          32          26          26
-#> 3 2018-03-01          27          30          25          26
-#> 4 2018-04-01          26          31          26          26
-#> 5 2018-05-01          25          28          25          25
+#> 1 2018-01-01        27.2        29.9        25.6        26.6
+#> 2 2018-02-01        26.8        31.5        25.6        26.2
+#> 3 2018-03-01        26.6        30.1        25.2        25.8
+#> 4 2018-04-01        26.4        30.8        25.6        26.0
+#> 5 2018-05-01        25.3        28.3        24.8        24.9
 ```
 
 To make the data ‘tidy’ simply pivot on the `date` column:
 
 ``` r
-tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
+tmax = tidyr::pivot_longer(sites_wide$terraclim_tmax, -date)
 head(tmax)
 #> # A tibble: 6 x 3
 #>   date       name        value
 #>   <date>     <chr>       <dbl>
-#> 1 2018-01-01 site_190760    27
-#> 2 2018-01-01 site_267801    30
-#> 3 2018-01-01 site_219885    26
-#> 4 2018-01-01 site_200445    27
-#> 5 2018-01-01 site_74789     28
-#> 6 2018-01-01 site_18343     24
+#> 1 2018-01-01 site_190760  27.2
+#> 2 2018-01-01 site_267801  29.9
+#> 3 2018-01-01 site_219885  25.6
+#> 4 2018-01-01 site_200445  26.6
+#> 5 2018-01-01 site_74789   27.7
+#> 6 2018-01-01 site_18343   24.1
 
 ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
   scale_color_viridis_d() +
@@ -364,7 +365,7 @@ cr = climateR::getMACA(
   param = 'prcp', 
   startDate = "2080-06-29", endDate = "2080-06-30")
 
-levelplot(cr$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
+levelplot(cr$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 
 <img src="man/figures/README-unnamed-chunk-21-1.png" width="100%" />
@@ -375,8 +376,8 @@ projected CONUS Albers Equal Area (EPSG:5070).
 ``` r
 system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
 #>    user  system elapsed 
-#>   0.542   0.145   0.733
-levelplot(cr2$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
+#>   0.564   0.163   0.763
+levelplot(cr2$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 
 <img src="man/figures/README-unnamed-chunk-22-1.png" width="100%" />

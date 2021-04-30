@@ -63,6 +63,7 @@ getMACA = function(AOI, param,
                     fun = 'r')
 
   s
+  
 }
 
 

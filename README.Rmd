@@ -93,7 +93,7 @@ rasterVis::levelplot(r, par.settings = BuRdTheme, names.attr = names(p)) +
 AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
   getGridMET(param = "wind_vel", startDate = "2018-09-01")
 
-rasterVis::levelplot(AOI$wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
+rasterVis::levelplot(AOI$gridmet_wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
 ```
 
 # Data through time ...
@@ -105,7 +105,7 @@ harvey = getGridMET(aoi_get(state = c("TX", "FL")),
                   param = "prcp", 
                   startDate = "2017-08-20", endDate = "2017-08-31")
 
-levelplot(harvey$prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
+levelplot(harvey$gridmet_prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
 ```
 
 # Climate Projections 
@@ -114,7 +114,7 @@ Some sources are downscaled Global Climate Models (GCMs). These allow you to que
 
 ```{r}
 system.time({
-m = getMACA(aoi_get(state = "FL"), 
+m = getMACA(AOI = aoi_get(state = "FL"), 
             model = "CCSM4", 
             param = 'prcp', 
             scenario = c('rcp45', 'rcp85'), 
@@ -163,8 +163,9 @@ kenya = aoi_get(country = "Kenya")
 tc = getTerraClim(kenya, param = "prcp", startDate = "2018-01-01")
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
 
-p1 = levelplot(tc$prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
+p1 = levelplot(tc$terraclim_prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
   layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
+
 p2 = levelplot(chirps,  par.settings = BTCTheme, main = "Janaury 1-4, 2018; CHIRPS", layout=c(2, 2)) +
   layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
 
@@ -237,7 +238,7 @@ sites_stack = getTerraClim(AOI   = sites,
                            startDate = "2018-01-01", 
                            endDate   = "2018-12-31")
 
-plot(sites_stack$tmax$X2018.01)
+plot(sites_stack$terraclim_tmax$X2018.01)
 plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 ```
 
@@ -245,13 +246,13 @@ plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
 
 ````{r}
 sites_wide = extract_sites(sites_stack, sites, "ID")
-sites_wide$tmax[1:5, 1:5]
+sites_wide$terraclim_tmax[1:5, 1:5]
 ```
 
 To make the data 'tidy' simply pivot on the `date` column:
 
 ```{r}
-tmax = tidyr::pivot_longer(sites_wide$tmax, -date)
+tmax = tidyr::pivot_longer(sites_wide$terraclim_tmax, -date)
 head(tmax)
 
 ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
@@ -272,14 +273,14 @@ cr = climateR::getMACA(
   param = 'prcp', 
   startDate = "2080-06-29", endDate = "2080-06-30")
 
-levelplot(cr$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
+levelplot(cr$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 
 Lets transform the projection system from the native WGS84 to the projected CONUS Albers Equal Area (EPSG:5070).
 
 ```{r}
 system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
-levelplot(cr2$ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
+levelplot(cr2$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 
 ### Support:
