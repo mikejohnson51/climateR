@@ -39,7 +39,7 @@ getMACA = function(AOI, param,
   fin = merge(fin, tmp, by.x = "model", by.y =  "model2") 
   fin$scenario = NULL
   
-  fin = fin[fin$ver %in% c("historical", "scenario"),]
+  fin = fin[fin$ver %in% c("historical", scenario),]
   
   fin = fin[!duplicated(fin),]
 

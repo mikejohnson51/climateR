@@ -100,7 +100,7 @@ define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL, ti
     for(i in 1:length(dates)){
       dates[[i]]$date.index  = as.numeric(dates[[i]]$date - as.Date(base[i])) 
       dates[[i]]$month.index = .numberOfMonths(dates[[i]]$date, base[i])
-      dates[[i]] = merge(dates[[i]], .pentad(dates[[i]]$date,  base[i]))
+      dates[[i]] = merge(dates[[i]], .pentad(x = dates[[i]]$date,  base[i]))
     }
   }
 
@@ -119,7 +119,7 @@ define.dates= function(startDate, endDate, baseDate = NULL, splitDate = NULL, ti
 
 .pentad <- function(x,  baseDate) {
 
-  all = data.frame(date = seq.Date(as.Date("1980-01-01"), Sys.Date(), 1))
+  all = data.frame(date = seq.Date(as.Date("1980-01-01"), x, 1))
   
   yday = as.POSIXlt(all$date)$yday + 1
 
