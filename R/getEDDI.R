@@ -30,19 +30,16 @@ getEDDI =  function(AOI = NULL, startDate, endDate = NULL,  timestep = 3, timesc
 
   urls <- paste0(g$base, d$year, "/", "EDDI_ETrs_", num, abb, "_", d$string, ".asc")
 
-  system.time({
   s = raster::stack()
 
   for (i in seq_along(urls)) {
-      dest = tempfile(pattern = basename(urls[i]))
+      dest = tempfile(fileext = ".asc")
       suppressWarnings( httr::GET(urls[i], httr::write_disk(dest, overwrite = TRUE)) ) # suppressing Government Warning
       r = raster::raster(dest)
       raster::crs(r) = g$proj
       r = raster::crop(r, AOI, snap = "out")
       s = raster::addLayer(s, r)
   }
-
-  })
   
   names(s) = gsub(".asc", "", basename(urls))
   
