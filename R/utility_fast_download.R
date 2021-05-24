@@ -70,7 +70,6 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
     } else {
       v[v < no_data] = NA
     }
-        
     }
     
     time = length(date.names)

@@ -29,7 +29,7 @@ define.versions = function(dates,
     for(i in scenario){
       versions[nrow(versions) + 1, ] = list(min.date = min(future$date),
                                             max.date = max(future$date),
-                                            time.index = paste0(paste0("[", min(index) - 1 , ":1:", max(index) - 1, "]")),
+                                            time.index = paste0(paste0("[", min(index)  , ":1:", max(index) , "]")),
                                             calls = future.call,
                                             ver = i)
     }
@@ -41,10 +41,9 @@ define.versions = function(dates,
 
     versions[nrow(versions) + 1, ] = list(min.date = min(historic$date),
                                           max.date = max(historic$date),
-                                          time.index = paste0(paste0("[", min(index) -1 , ":1:", max(index) -1, "]")),
+                                          time.index = paste0(paste0("[", min(index), ":1:", max(index), "]")),
                                           calls      = historic.call,
                                           ver        = 'historical')
-
   }
 
   return(versions)
