@@ -1,3 +1,12 @@
+.pad_left <- function(x, len = 1 + max(nchar(x)), char = '0'){
+  unlist(lapply(x, function(x) {
+    paste0(
+      paste(rep(char, len - nchar(x)), collapse = ''),
+      x
+    )
+  }))
+}
+
 #' @title Get EDDI Climate Data for an Area of Interest
 #' @description The EDDI (Evaporative Demand Drought Index) is an experimental drought monitoring and early warning guidance tool. 
 #' It examines how anomalous the atmospheric evaporative demand (E0; also known as "the thirst of the atmosphere") is for a given location 
@@ -25,7 +34,7 @@ getEDDI =  function(AOI = NULL, startDate, endDate = NULL,  timestep = 3, timesc
 
   g = define.grid(AOI, 'eddi')
   d = define.dates(startDate, endDate = endDate)
-  num = sprintf("%02s", timestep)
+  num = .pad_left(timestep, 2)
   abb = ifelse(timescale == 'week', 'wk', 'mn')
 
   urls <- paste0(g$base, d$year, "/", "EDDI_ETrs_", num, abb, "_", d$string, ".asc")
