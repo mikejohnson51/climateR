@@ -16,9 +16,9 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 [![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
-`climateR` seeks to simplifiy the steps needed to get climate data into
+`climateR` seeks to simplify the steps needed to get climate data into
 R. It currently provides access to the following gridded climate sources
-using a single parmaeter
+using a consistent parameter set and variable name structure:
 
 | **Number** | **Dataset**              | **Description**                                            | **Dates**                                 |
 |------------|--------------------------|------------------------------------------------------------|-------------------------------------------|
@@ -82,7 +82,7 @@ system.time({
 #> Spherical geometry (s2) switched off
 #> Spherical geometry (s2) switched on
 #>    user  system elapsed 
-#>   0.410   0.137   1.323
+#>   0.391   0.128   2.691
 ```
 
 ``` r
@@ -146,7 +146,7 @@ m = getMACA(AOI = aoi_get(state = "FL"),
 #> Spherical geometry (s2) switched off
 #> Spherical geometry (s2) switched on
 #>    user  system elapsed 
-#>   0.300   0.100   3.156
+#>   0.302   0.112   4.308
 ```
 
 ``` r
@@ -409,7 +409,7 @@ projected CONUS Albers Equal Area (EPSG:5070).
 ``` r
 system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
 #>    user  system elapsed 
-#>   0.555   0.143   0.718
+#>   0.571   0.145   0.737
 levelplot(cr2$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 

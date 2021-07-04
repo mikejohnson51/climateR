@@ -7,3 +7,4 @@ data_backup
 help
 ^README\.Rmd$
 ^data-raw$
+.github

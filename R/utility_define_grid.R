@@ -6,7 +6,7 @@
 #' @return a list of values including type, lat.call, lon.call, extent, AOI, proj4string
 #' @keywords internal
 #' @importFrom methods is
-#' @importFrom sf  st_as_sf st_geometry_type st_as_sfc sf_use_s2 st_bbox st_transform st_combine st_crs st_within st_intersects st_intersection
+#' @importFrom sf `%>%` st_as_sf st_geometry_type st_as_sfc sf_use_s2 st_bbox st_transform st_combine st_crs st_within st_intersects st_intersection
 #' @importFrom raster extent
 
 define.grid = function(AOI, source = NULL){
@@ -79,7 +79,8 @@ define.grid = function(AOI, source = NULL){
     g[['proj']] = grid$proj
     g[["base"]] = grid$base
     
-   b =  st_transform(AOI, grid$proj) %>% st_bbox()
+   b =  st_transform(AOI, grid$proj) %>% 
+     st_bbox()
     b$ymax - b$ymin
   } else {
     

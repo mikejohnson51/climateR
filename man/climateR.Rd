@@ -10,5 +10,5 @@
 \details{
 Download gridded climate data
 
-See the README on
+See the README on [github](https://github.com/mikejohnson51/climateR)
 }

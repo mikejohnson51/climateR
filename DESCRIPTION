@@ -3,8 +3,8 @@ Type: Package
 Title: climateR
 Description: A set of functions to subset climate data for an area of interest.
 Version: 0.1.0
-Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "jmj00@ucsb.edu")
-Maintainer: Mike Johnson <jmj00@ucsb.edu>
+Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "mikecp11@gmail.com")
+Maintainer: Mike Johnson <mikecp11@gmail.com>
 BugReports: https://github.com/mikejohnson51/climateR/issues
 URL: https://github.com/mikejohnson51/climateR
 Depends: 
@@ -13,13 +13,11 @@ Imports:
     doParallel,
     foreach,
     httr,
-    magrittr,
     methods,
     parallel,
     raster,
     RNetCDF,
     sf
-Remotes: mikejohnson51/AOI
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

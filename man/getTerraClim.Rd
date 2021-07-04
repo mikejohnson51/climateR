@@ -9,7 +9,7 @@ getTerraClim(AOI, param, startDate, endDate = NULL)
 \arguments{
 \item{AOI}{a spatial polygon object (sf or sp)}
 
-\item{param}{a meterological parameter (see `param_meta$terraclim`)}
+\item{param}{a meteorological parameter (see `param_meta$terraclim`)}
 
 \item{startDate}{a start date given as "YYYY-MM-DD"}
 
@@ -19,9 +19,9 @@ getTerraClim(AOI, param, startDate, endDate = NULL)
 if AOI is an areal extent a list of rasterStacks, if AOI is a point then a data.frame of modeled records.
 }
 \description{
-TerraClim a dataset of high-spatial resolution (1/24Â°, ~4-km) monthly climate and climatic water balance for global terrestrial surfaces from 1958-2015.
+TerraClim a data set of high-spatial resolution (1/24Â°, ~4-km) monthly climate and climatic water balance for global terrestrial surfaces from 1958-2015.
 These data were created by using climatically aided interpolation, combining high-spatial resolution climatological normals from the WorldClim version 1.4 and version 2 datasets, with coarser resolution time varying (i.e. monthly) data from CRU Ts4.0 and JRA-55
-to produce a monthly dataset of precipitation, maximum and minimum temperature, wind speed, vapor pressure, and solar radiation. TerraClimate additionally produces monthly surface water balance datasets using a water balance model that incorporates reference
+to produce a monthly data set of precipitation, maximum and minimum temperature, wind speed, vapor pressure, and solar radiation. TerraClimate additionally produces monthly surface water balance datasets using a water balance model that incorporates reference
 evapotranspiration, precipitation, temperature, and interpolated plant extractable soil water capacity.
 }
 \author{

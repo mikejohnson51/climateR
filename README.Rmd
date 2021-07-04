@@ -28,7 +28,8 @@ library(ggplot2)
 [![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
-`climateR` seeks to simplifiy the steps needed to get climate data into R. It currently provides access to the following gridded climate sources using a single parmaeter
+`climateR` seeks to simplify the steps needed to get climate data into R. It currently provides access to the following gridded climate sources using a consistent parameter set and variable name structure:
+
 
 
 |**Number**|**Dataset**          | **Description**                                            | **Dates**            |

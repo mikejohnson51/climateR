@@ -19,6 +19,11 @@
 #' @param no_data a no_date value
 #' @param scale_factor a scale factors for returned data
 #' @return a list object of raster*
+#' @importFrom foreach `%dopar%` foreach
+#' @importFrom parallel detectCores makeCluster
+#' @importFrom doParallel registerDoParallel
+#' @importFrom RNetCDF open.nc var.get.nc
+#' @importFrom raster brick raster extent crs stack
 #' @export
 
 
@@ -84,14 +89,14 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
       b1 = raster::brick(var2)
     } else { 
       mat = .orient(v, fun = fun)
-      b1 = raster(mat)
+      b1 = raster::raster(mat)
     }
     
     raster::extent(b1) = g$e
     raster::crs(b1)    = g$proj
 
     b1[b1>100000] = NA
-    b[[i]] = stack(b1)
+    b[[i]] = raster::stack(b1)
   }
 
     names(b) = paste0(dataset, "_", names)

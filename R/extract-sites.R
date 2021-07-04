@@ -5,6 +5,7 @@
 #' @param id the unique identifier of each point (column name from pts)
 #' @return a data.frame with columnes represneting points, and rows time periods
 #' @export
+#' @importFrom raster extract
 
 extract_sites = function(r, pts, id){
   
@@ -31,7 +32,7 @@ extract_sites = function(r, pts, id){
   }
   
   
-  pts = st_transform(pts, crs(r[[1]]))
+  pts = sf::st_transform(pts, sf::st_crs(r[[1]]))
   # Extract your climate data via the points
   extdata = lapply(1:length(r), function(x){ flip(x, r, pts, id) } )
   
