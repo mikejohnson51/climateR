@@ -5,7 +5,7 @@
 \alias{param_meta}
 \title{Model Parameter Metadata}
 \format{
-An object of class \code{list} of length 13.
+An object of class \code{list} of length 12.
 }
 \usage{
 param_meta

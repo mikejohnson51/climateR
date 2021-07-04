@@ -19,8 +19,14 @@ library(ggplot2)
 
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
 
-[![Build Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https://travis-ci.org/mikejohnson51/climateR)     [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
-
+<!-- badges: start -->
+ [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
+[![R CMD Check](https://github.com/mikejohnson51/climateR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mikejohnson51/climateR/actions/workflows/R-CMD-check.yaml)
+[![Dependencies](https://img.shields.io/badge/dependencies-8/18-orange?style=flat)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+<!-- badges: end -->
 
 `climateR` seeks to simplifiy the steps needed to get climate data into R. It currently provides access to the following gridded climate sources using a single parmaeter
 

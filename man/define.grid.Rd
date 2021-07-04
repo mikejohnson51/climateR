@@ -9,7 +9,7 @@ define.grid(AOI, source = NULL)
 \arguments{
 \item{AOI}{an POINT or POLYGON object}
 
-\item{source}{a dataset id (source)  being called}
+\item{source}{a data set id (source)  being called}
 }
 \value{
 a list of values including type, lat.call, lon.call, extent, AOI, proj4string

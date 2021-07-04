@@ -2,12 +2,12 @@
 #' @description **INTERNAL** This function defines the grid of the AOI in terms of the climate resource
 #' @keywords internal
 #' @param AOI an POINT or POLYGON object
-#' @param source a dataset id (source)  being called
+#' @param source a data set id (source)  being called
 #' @return a list of values including type, lat.call, lon.call, extent, AOI, proj4string
 #' @keywords internal
 #' @importFrom methods is
-#' @importFrom sf st_geometry_type st_as_sf st_as_sfc st_bbox st_transform st_combine st_crs st_within st_intersects st_intersection
-#' @importFrom  raster extent
+#' @importFrom sf  st_as_sf st_geometry_type st_as_sfc sf_use_s2 st_bbox st_transform st_combine st_crs st_within st_intersects st_intersection
+#' @importFrom raster extent
 
 define.grid = function(AOI, source = NULL){
   
@@ -29,7 +29,7 @@ define.grid = function(AOI, source = NULL){
     AOI = sf::st_as_sfc(sf::st_bbox(AOI)) 
   }
   
-  bb = sf::st_combine(sf::st_transform(AOI, grid$proj))
+  bb = sf::st_combine(sf::st_transform(AOI, grid$proj)) 
   
   X_coords <- seq(grid$Xstart, grid$Xend, by = grid$dX)
   if(any(X_coords > 180.001)){X_coords = X_coords - 360}
@@ -38,18 +38,21 @@ define.grid = function(AOI, source = NULL){
   
   domain = sf::st_as_sfc(sf::st_bbox(c(xmin = min(X_coords), xmax = max(X_coords), 
                                        ymin = min(Y_coords), ymax = max(Y_coords)), 
-                                       crs = sf::st_crs(bb)))
+                                       crs = sf::st_crs(bb))) 
   
+  xxx = sf::sf_use_s2()
+  sf::sf_use_s2(FALSE)
   suppressMessages(suppressWarnings(
-    if(!sf::st_within(bb, domain, sparse = FALSE)){ 
+    if(!sf::st_within(bb, domain, sparse = FALSE)){
       if(sf::st_intersects(bb, domain, sparse = FALSE)){
-        message("Requested AOI not completly in model domain ... AOI is being clipped") 
+        message("Requested AOI not completly in model domain ... AOI is being clipped")
         bb = sf::st_intersection(domain, bb)
       } else {
         stop("Requested AOI not in model domain")
       }
     }
   ))
+  sf::sf_use_s2(xxx)
   
   bb = st_bbox(bb)
   

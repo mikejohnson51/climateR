@@ -95,13 +95,8 @@ fast.download = function(urls, params, names, g, date.names, dataset, fun = 'r',
   }
 
     names(b) = paste0(dataset, "_", names)
-   # names(b) = names
-  #  keys     = unique(names(b))
-
-   # b = sapply(keys, function(name) {stack(b[grep(paste0(name, "$"), names(b))])})
 
     for(i in 1:length(b)){ names(b[[i]]) = unique(date.names)}
-
   }
 
 return(b)

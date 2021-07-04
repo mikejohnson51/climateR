@@ -3,9 +3,18 @@
 
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
 
-[![Build
-Status](https://travis-ci.org/mikejohnson51/climateR.svg?branch=master)](https://travis-ci.org/mikejohnson51/climateR)
+<!-- badges: start -->
+
 [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
+[![R CMD
+Check](https://github.com/mikejohnson51/climateR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mikejohnson51/climateR/actions/workflows/R-CMD-check.yaml)
+[![Dependencies](https://img.shields.io/badge/dependencies-8/18-orange?style=flat)](#)
+[![License:
+MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
+[![Project Status:
+Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+<!-- badges: end -->
 
 `climateR` seeks to simplifiy the steps needed to get climate data into
 R. It currently provides access to the following gridded climate sources
@@ -70,8 +79,10 @@ and minimum temperature on October 29, 2018:
 system.time({
  p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
 })
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 #>    user  system elapsed 
-#>   0.329   0.118   1.027
+#>   0.410   0.137   1.323
 ```
 
 ``` r
@@ -92,6 +103,8 @@ by bounding coordinates.
 ``` r
 AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
   getGridMET(param = "wind_vel", startDate = "2018-09-01")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 rasterVis::levelplot(AOI$gridmet_wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
 ```
@@ -108,6 +121,8 @@ Hurricane Harvey:
 harvey = getGridMET(aoi_get(state = c("TX", "FL")), 
                   param = "prcp", 
                   startDate = "2017-08-20", endDate = "2017-08-31")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 levelplot(harvey$gridmet_prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
 ```
@@ -128,8 +143,10 @@ m = getMACA(AOI = aoi_get(state = "FL"),
             scenario = c('rcp45', 'rcp85'), 
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 #>    user  system elapsed 
-#>   0.403   0.113   1.150
+#>   0.300   0.100   3.156
 ```
 
 ``` r
@@ -149,6 +166,8 @@ temp =  getMACA(AOI = aoi_get(state = "conus"),
                   param = 'tmin', 
                   model = models, 
                   startDate = "2080-11-29")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 s = stack(temp)
 s = addLayer(s, mean(s))
@@ -164,6 +183,8 @@ specifying a number:
 
 ``` r
 random = getMACA(aoi_get(state = "MI"), model = 3, param = "prcp", startDate = "2050-10-29")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 random = stack(random) %>% setNames(names(random))
 levelplot(stack(random), par.settings = BTCTheme)
 ```
@@ -179,7 +200,11 @@ provides daily rainfall data:
 ``` r
 kenya = aoi_get(country = "Kenya")
 tc = getTerraClim(kenya, param = "prcp", startDate = "2018-01-01")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 p1 = levelplot(tc$terraclim_prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
   layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
@@ -232,6 +257,8 @@ retrieved as a time series at locations.
 ``` r
 AOI = AOI::geocode('Colorado Springs', pt = TRUE)
 ts  = getGridMET(AOI, param = 'srad', startDate = "2019-01-01", endDate = "2019-12-31")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 ggplot(data = ts) + 
   aes(x = date, y = srad) + 
@@ -249,6 +276,8 @@ ggplot(data = ts) +
 future = getMACA(geocode("UCSB", pt = TRUE), 
                  model = 5, param = "tmax", 
                  startDate = "2050-01-01", endDate = "2050-01-31")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 future_long = future %>% 
   dplyr::select(-source, -lat, -lon) %>% 
@@ -304,6 +333,8 @@ sites_stack = getTerraClim(AOI   = sites,
                            param = "tmax", 
                            startDate = "2018-01-01", 
                            endDate   = "2018-12-31")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 plot(sites_stack$terraclim_tmax$X2018.01)
 plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
@@ -364,6 +395,8 @@ cr = climateR::getMACA(
   model = "CCSM4", 
   param = 'prcp', 
   startDate = "2080-06-29", endDate = "2080-06-30")
+#> Spherical geometry (s2) switched off
+#> Spherical geometry (s2) switched on
 
 levelplot(cr$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
@@ -376,7 +409,7 @@ projected CONUS Albers Equal Area (EPSG:5070).
 ``` r
 system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
 #>    user  system elapsed 
-#>   0.564   0.163   0.763
+#>   0.555   0.143   0.718
 levelplot(cr2$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
 ```
 
