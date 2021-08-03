@@ -38,7 +38,7 @@ define.grid = function(AOI, source = NULL){
   
   domain = sf::st_as_sfc(sf::st_bbox(c(xmin = min(X_coords), xmax = max(X_coords), 
                                        ymin = min(Y_coords), ymax = max(Y_coords)), 
-                                       crs = sf::st_crs(bb))) 
+                                       crs  = sf::st_crs(bb))) 
   
   xxx = sf::sf_use_s2()
   sf::sf_use_s2(FALSE)

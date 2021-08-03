@@ -25,19 +25,19 @@ getTerraClim = function(AOI, param, startDate, endDate = NULL){
   g = define.grid(AOI, id)
 
   urls = paste0(g$base, "_", p$call, '_1958_CurrentYear_GLOBE.nc', "?", p$call,
-                '[', min(d$month.index) - 1,':1:' ,max(d$month.index) - 1, ']',
+                '[', min(d$month.index),':1:' ,max(d$month.index), ']',
                 g$lat.call,
                 g$lon.call,
                 "#fillmismatch")
 
   fast.download(urls, 
-                    params = p$call, 
-                    names = p$common.name, 
-                    g, 
-                    date.names = unique(format(d$date, "%Y-%m")), 
-                    dataset = id, 
-                    fun = 't', 
-                    no_data = 3000)
+                params = p$call, 
+                names = p$common.name, 
+                g, 
+                date.names = unique(format(d$date, "%Y-%m")), 
+                dataset = id, 
+                fun = 't', 
+                no_data = 3000)
 
   
 
