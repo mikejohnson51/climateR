@@ -15,6 +15,7 @@ knitr::opts_chunk$set(
 )
 
 library(ggplot2)
+library(tidyterra)
 ```
 
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
@@ -22,7 +23,7 @@ library(ggplot2)
 <!-- badges: start -->
  [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
 [![R CMD Check](https://github.com/mikejohnson51/climateR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/mikejohnson51/climateR/actions/workflows/R-CMD-check.yaml)
-[![Dependencies](https://img.shields.io/badge/dependencies-8/18-orange?style=flat)](#)
+[![Dependencies](https://img.shields.io/badge/dependencies-7/25-orange?style=flat)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
@@ -59,9 +60,8 @@ remotes::install_github("mikejohnson51/climateR")
 ```{r}
 library(AOI)
 library(climateR)
-library(sf)
-library(raster)
-library(rasterVis)
+library(tidyterra)
+library(ggplot2)
 ```
 
 # Examples
@@ -81,15 +81,18 @@ With an AOI, we can construct a call to a dataset for a parameter(s) and date(s)
 
 ```{r}
 system.time({
- p = getPRISM(AOI, param = c('tmax','tmin'), startDate = "2018-10-29")
+ p = getPRISM(AOI, varname = c('tmax','tmin'), startDate = "2018-10-29")
 })
 ```
 
-```{r}
-r = raster::stack(p)
-
-rasterVis::levelplot(r, par.settings = BuRdTheme, names.attr = names(p)) +
-  layer(sp.lines(as_Spatial(AOI), col="gray30", lwd=3))
+```{r, eval = FALSE}
+ggplot() +
+  geom_spatraster(data = rast(p)) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + theme_minimal()
 ```
 
 # Data from known bounding coordinates
@@ -97,10 +100,18 @@ rasterVis::levelplot(r, par.settings = BuRdTheme, names.attr = names(p)) +
 `climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we are requesting wind velocity data for the four corners region of the USA by bounding coordinates.
 
 ```{r}
-AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326) %>% 
-  getGridMET(param = "wind_vel", startDate = "2018-09-01")
+library(sf)
+AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326)\
 
-rasterVis::levelplot(AOI$gridmet_wind_vel, margin = FALSE, main = "Four corners Wind Velocity")
+g = getGridMET(AOI, varname = "pet", startDate = "2018-09-01")
+
+ggplot() +
+  geom_spatraster(data = rast(g)) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + theme_minimal()
 ```
 
 # Data through time ...
@@ -109,10 +120,16 @@ In addition to multiple variables we can request variables through time, here le
 
 ```{r, fig.width= 15}
 harvey = getGridMET(aoi_get(state = c("TX", "FL")), 
-                  param = "prcp", 
+                  varname = "pr", 
                   startDate = "2017-08-20", endDate = "2017-08-31")
 
-levelplot(harvey$gridmet_prcp, par.settings = BTCTheme, main = "Hurricane Harvey")
+ggplot() +
+  geom_spatraster(data = harvey$precipitation_amount_total) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white") + 
+  theme_minimal()
 ```
 
 # Climate Projections 
@@ -123,41 +140,57 @@ Some sources are downscaled Global Climate Models (GCMs). These allow you to que
 system.time({
 m = getMACA(AOI = aoi_get(state = "FL"), 
             model = "CCSM4", 
-            param = 'prcp', 
+            varname = 'pr', 
             scenario = c('rcp45', 'rcp85'), 
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 ```
 
 ```{r, fig.width = 15}
-r = raster::stack(m)
-names(r) = paste(rep(names(m), each = 2), names(m[[1]]))
-levelplot(r, par.settings = BTCTheme)
+ggplot() +
+  geom_spatraster(data = rast(m)) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + theme_minimal()
 ```
 
 Getting multiple models results is also quite simple:
 
 ```{r}
-models = c("bnu-esm","canesm2", "ccsm4", "cnrm-cm5", "csiro-mk3-6-0")
+models = c("BNU-ESM","CanESM2", "CCSM4", "CNRM-CM5", "CSIRO-Mk3-6-0")
 
 temp =  getMACA(AOI = aoi_get(state = "conus"),
-                  param = 'tmin', 
-                  model = models, 
-                  startDate = "2080-11-29")
-
-s = stack(temp)
-s = addLayer(s, mean(s))
-names(s) = c(models, "Ensemble Mean")
+                varname = 'tasmin', 
+                model = models, 
+                startDate = "2080-11-29")
+temp$air_temperature$mea =  terra::app(temp$air_temperature, mean)
+names(temp[[1]]) = c(models, "Ensemble Mean")
 
 # Plot
-rasterVis::levelplot(s, par.settings = rasterVis::BuRdTheme)
+ggplot() +
+  geom_spatraster(data = temp$air_temperature) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + theme_minimal()
 ```
 If you don't know your models, you can always grab a random set by specifying a number:
 
 ```{r, fig.width= 15}
-random = getMACA(aoi_get(state = "MI"), model = 3, param = "prcp", startDate = "2050-10-29")
-random = stack(random) %>% setNames(names(random))
-levelplot(stack(random), par.settings = BTCTheme)
+random = getMACA(aoi_get(state = "MI"), model = 3, varname = "pr", startDate = "2050-10-29")
+names(random$precipitation) = paste("models", 1:3)
+# Plot
+ggplot() +
+  geom_spatraster(data = random$precipitation) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + 
+  theme_minimal()
 ```
 
 # Global Datasets
@@ -167,25 +200,32 @@ Not all datasets are USA focused either. TerraClimate offers global, monthly dat
 ```{r, fig.width = 15}
 
 kenya = aoi_get(country = "Kenya")
-tc = getTerraClim(kenya, param = "prcp", startDate = "2018-01-01")
+tc = getTerraClim(kenya, varname = "pet", startDate = "2018-01-01")
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
 
-p1 = levelplot(tc$terraclim_prcp, par.settings = BTCTheme, main = "January 2018; TerraClim", margin = FALSE) +
-  layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
+library(patchwork)
 
-p2 = levelplot(chirps,  par.settings = BTCTheme, main = "Janaury 1-4, 2018; CHIRPS", layout=c(2, 2)) +
-  layer(sp.lines(as_Spatial(kenya), col="white", lwd=3))
+ggplot() +
+  geom_spatraster(data = tc$pet_total) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + 
+  theme_minimal() + 
+  ggplot() +
+  geom_spatraster(data = chirps$precip) +
+  facet_wrap(~lyr) +
+  scale_fill_whitebox_c(
+    palette = "muted",
+    na.value = "white"
+  ) + 
+  theme_minimal()
 
-gridExtra::grid.arrange(p1,p2, nrow = 1)
+
 ```
 
 This raises the question "_what is available for each resource?_". This can be checked in the appropriate `meta_data` objects. For example let's see what parameter data is offered for gridMET, and what models and scenarios are offered for MACA.
-
-```{r}
-head(param_meta$gridmet)
-
-head(model_meta$maca)
-```
 
 # Point Based Data
 
@@ -193,7 +233,7 @@ Finally, data gathering is not limited to areal extents and can be retrieved as 
 
 ```{r}
 AOI = AOI::geocode('Colorado Springs', pt = TRUE)
-ts  = getGridMET(AOI, param = 'srad', startDate = "2019-01-01", endDate = "2019-12-31")
+ts  = getGridMET(AOI, varname = 'srad', startDate = "2019-01-01", endDate = "2019-12-31")
 
 ggplot(data = ts) + 
   aes(x = date, y = srad) + 
@@ -208,7 +248,7 @@ ggplot(data = ts) +
 
 ```{r}
 future = getMACA(geocode("UCSB", pt = TRUE), 
-                 model = 5, param = "tmax", 
+                 model = 5, varname = "vpd", 
                  startDate = "2050-01-01", endDate = "2050-01-31")
 
 future_long = future %>% 
@@ -269,26 +309,6 @@ ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) +
   theme(legend.position = "none") 
 ```
 
-# Fast Reprojection
-
-This is a relatively new function (01-18-2020) that has not been extensively tested for how it scales with large requests. The aim is to provide fast projection of climateR gridded output. For point data use `sf::st_transform`. Starting with 2 days of precipitation data in 2080 from MACA:
-
-```{r}
-cr = climateR::getMACA(
-  AOI::aoi_get(state = "conus"), 
-  model = "CCSM4", 
-  param = 'prcp', 
-  startDate = "2080-06-29", endDate = "2080-06-30")
-
-levelplot(cr$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
-```
-
-Lets transform the projection system from the native WGS84 to the projected CONUS Albers Equal Area (EPSG:5070).
-
-```{r}
-system.time({ cr2 = fast_reproject(cr, target_prj = 5070) })
-levelplot(cr2$maca_ccsm4_prcp_rcp45_mm, par.settings = BTCTheme)
-```
 
 ### Support:
 

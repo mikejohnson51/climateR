@@ -14,7 +14,7 @@ extract_sites(r, pts, id)
 \item{id}{the unique identifier of each point (column name from pts)}
 }
 \value{
-a data.frame with columnes represneting points, and rows time periods
+a data.frame with columes representing points, and rows time periods
 }
 \description{
 extract timeseries values from a raster stack for a set of points
