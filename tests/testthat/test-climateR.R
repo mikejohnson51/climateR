@@ -255,9 +255,35 @@ test_that("CHIRPS", {
   expect_true(nlyr(xx[[1]]) == 1)
   
   expect_error(getCHIRPS(AOI = AOI::aoi_get("Fort Collins"), period = "BLAH", startDate = "2011-11-29", endDate = "2011-12-03"))
- 
- 
+
   
+})
+
+test_that("piping AOI", {
+  
+  xx = AOI::aoi_get("Fort Collins") %>% 
+    getCHIRPS(startDate = "2011-11-29", endDate = "2011-12-03")
+  expect_true(class(xx) == "list")
+  expect_true(class(xx[[1]]) == "SpatRaster")
+  expect_true(names(xx)[1] == "precip")
+  expect_true(nlyr(xx[[1]]) == 5)
+
+})
+
+
+test_that("dap_xyzv", {
+  
+  f = system.file("nc/bcsd_obs_1999.nc", package = "climateR")
+   o = dap_xyzv(f)
+   expect_equal(nrow(o), 2)
+   expect_equal(o$X_name[1], "longitude")
+   expect_equal(o$Y_name[1], "latitude")
+   expect_equal(o$T_name[1], "time")
+   expect_equal(o$dim_order[1], "TYX")
+   
+   expect_error(dap_xyzv(f, varname = "BLAH"))
+
+   
 })
 
 
