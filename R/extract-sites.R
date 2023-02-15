@@ -5,30 +5,31 @@
 #' @param id the unique identifier of each point (column name from pts)
 #' @return a data.frame with columes representing points, and rows time periods
 #' @export
-#' @importFrom terra extract project vect
+
 
 extract_sites = function(r, pts, id){
   
+  if(inherits(pts, "sf")){
+    pts = vect(pts)
+  }
+  
   my.to.date = function(x){
     d = gsub("[.]", "-",gsub("X", "", x))
-    if(nchar(d[1]) == 7){d = paste0(d, "-01")}
+    #if(nchar(d[1]) == 7){d = paste0(d, "-01")}
     
     if(nchar(d[1]) !=10){
-      d
+      as.POSIXct(d, tz = "UTC")
     } else {
       as.Date(d)
     }
-
   }
   
   flip = function(x, r, pts, id){
-    df = cbind(ID = pts[[id]], extract(r[[x]], pts, ID = FALSE))
-    df = data.frame(t(df))
-    names(df) <- paste0("site_", df[1,])
-    df = df[-1,]
-    df = cbind(date = my.to.date(names(r[[x]])), df)
-    rownames(df) = NULL
-    df
+    df = data.frame(t(extract(r[[x]], pts, ID = FALSE)), row.names = NULL)
+    names(df) <- paste0("site_", gsub(" ", "",  pts[[id]][,1]))
+    df = mutate_all(df, as.numeric)
+    df$date = my.to.date(names(r[[x]]))
+    select(df, date, everything())
   }
   
   pts = project(pts, crs(r[[1]]))

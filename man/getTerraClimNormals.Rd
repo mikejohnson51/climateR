@@ -24,7 +24,7 @@ getTerraClimNormals(
 
 \item{verbose}{Should messages be emited?}
 
-\item{dryrun}{Return summary of data prior to retriving it}
+\item{dryrun}{Return summary of data prior to retrieving it}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.

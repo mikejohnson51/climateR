@@ -10,7 +10,7 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
     obj <- open.nc(obj)
     on.exit(close.nc(obj))
   }
-  
+
   raw = suppressWarnings({
     tryCatch({
       nc_coord_var(obj, variable = varname)[, c("variable", "X", "Y", "T")]
@@ -121,9 +121,7 @@ try_att <- function(nc, variable, attribute) {
   
   xx <- try(var.get.nc(nc, X_name))
   
-  if (inherits(xx, "try-error")) {
-    xx <- seq_len(ncols)
-  }
+  if (inherits(xx, "try-error")) { xx <- seq_len(ncols) }
   
   rs <- xx[-length(xx)] - xx[-1]
   
@@ -141,7 +139,6 @@ try_att <- function(nc, variable, attribute) {
   resx <- (xrange[2] - xrange[1]) / (ncols - 1)
   X1 <- xx[1]
   Xn <- xx[length(xx)]
-  rm(xx)
   
   yy <- try(var.get.nc(nc, Y_name))
   
@@ -168,8 +165,6 @@ try_att <- function(nc, variable, attribute) {
   } else {
     toptobottom <- TRUE
   }
-  
-  rm(yy)
   
   data.frame(
     crs = crs,

@@ -24,7 +24,7 @@ getLivneh_fluxes(
 
 \item{verbose}{Should messages be emited?}
 
-\item{dryrun}{Return summary of data prior to retriving it}
+\item{dryrun}{Return summary of data prior to retrieving it}
 
 \item{timeRes}{daily or monthly}
 }

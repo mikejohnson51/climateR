@@ -5,7 +5,7 @@
 \alias{params}
 \title{ClimateR Catalog}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 105202 rows and 28 columns.
+An object of class \code{data.table} (inherits from \code{data.frame}) with 105307 rows and 28 columns.
 }
 \usage{
 params

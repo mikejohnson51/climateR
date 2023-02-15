@@ -1,3 +1,5 @@
+call_aoi = function(x, AOI){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
+
 match.call.defaults <- function(...) {
   call <- evalq(match.call(expand.dots = FALSE), parent.frame(1))
   formals <- evalq(formals(), parent.frame(1))
@@ -8,7 +10,7 @@ match.call.defaults <- function(...) {
   match.call(sys.function(sys.parent()), call)
 }
 
-#' ClimateR dry
+#' ClimateR dry run
 #' @param id The resource name, agency, or catalog identifier
 #' @param args The parent function arguments
 #' @param verbose Should messages be emited?
@@ -41,8 +43,7 @@ climater_dap = function(id, args, verbose, dryrun, print.arg = FALSE){
 getTerraClim = function(AOI, varname = NULL, 
                         startDate = NULL, endDate = NULL, 
                         verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("terraclim",test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap("terraclim",call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get Terra Climate Normals for an Area of Interest
@@ -85,8 +86,7 @@ getDaymet = function(AOI, varname = NULL,
                      startDate = NULL, endDate = NULL, 
                      verbose = FALSE, dryrun = FALSE){
   
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("daymet4", test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap("daymet4", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get MACA Climate Data for an Area of Interest
@@ -104,8 +104,7 @@ getMACA = function(AOI, varname, timeRes = 'day',
                    startDate, endDate = NULL,
                    verbose = FALSE, dryrun = FALSE){
   if(!timeRes %in% c('day', 'month')){ stop("timeRes must be month or day") }
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap(paste0('maca_', timeRes), test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap(paste0('maca_', timeRes), call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get GridMet Climate Data for an Area of Interest
@@ -119,8 +118,7 @@ getMACA = function(AOI, varname, timeRes = 'day',
 getGridMET = function(AOI, varname, 
                       startDate, endDate = NULL,
                       verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("gridmet", test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap("gridmet", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 
@@ -138,8 +136,9 @@ getLOCA = function(AOI, varname,
                    model = 'CCSM4', scenario = 'rcp45', 
                    startDate, endDate = NULL, 
                    verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap('loca', test(as.list(match.call.defaults()[-1])), verbose, dryrun, print.arg = TRUE)
+  climater_dap('loca', 
+               call_aoi(as.list(match.call.defaults()[-1]), AOI), 
+               verbose, dryrun)
 }
 
 #' @title Get VIC data
@@ -152,8 +151,7 @@ getVIC = function(AOI, varname,
                   model = 'CCSM4', scenario = 'rcp45', 
                   startDate, endDate = NULL,
                   verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap('vic', test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap('vic', call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get BCCA data
@@ -166,8 +164,7 @@ getBCCA = function(AOI, varname,
                    model = 'CCSM4', scenario = 'rcp45', ensemble = NULL, 
                    startDate, endDate = NULL,
                    verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap('bcca', test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap('bcca', call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get CHIRPS data
@@ -187,8 +184,10 @@ getCHIRPS = function(AOI, varname = NULL,
   
   if(!period %in% good_periods){ stop("Period must be one of: ", paste(good_periods, collapse = ", "),  call. = FALSE) }
   
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap(paste0("chirps20Global", period, "P05"), test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap(paste0("chirps20Global", period, "P05"), 
+               call_aoi(as.list(match.call.defaults()[-1]), AOI), 
+               verbose, 
+               dryrun)
 }
 
 #' @title Get NLDAS data
@@ -201,8 +200,7 @@ getNLDAS = function(AOI, varname = NULL,
                     model = NULL, 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("NLDAS", test(as.list(match.call.defaults()[-1])), verbose, dryrun, print.arg = FALSE)
+  climater_dap("NLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun, print.arg = FALSE)
 }
 
 #' @title Get GLDAS data
@@ -214,8 +212,7 @@ getNLDAS = function(AOI, varname = NULL,
 getGLDAS = function(AOI, varname = NULL, model = NULL, 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("GLDAS", test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap("GLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 
@@ -229,9 +226,7 @@ getGLDAS = function(AOI, varname = NULL, model = NULL,
 getMODIS = function(AOI, asset = NULL, varname = NULL,
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("MODIS", test(as.list(match.call.defaults()[-1])), verbose, dryrun)
-
+  climater_dap("MODIS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get Livneh data
@@ -245,11 +240,9 @@ getLivneh = function(AOI, varname = NULL,
                      startDate, endDate = NULL,  timeRes = "daily",
                      verbose = FALSE, dryrun = FALSE){
   if(timeRes == "daily"){
-    test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-    climater_dap("Livneh_daily", test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+    climater_dap("Livneh_daily", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
   } else {
-    test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-    climater_dap("Livneh_monthly", test(as.list(match.call.defaults()[-1])), verbose, dryrun, print.arg = FALSE)
+    climater_dap("Livneh_monthly", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
   }
 }
 
@@ -263,8 +256,7 @@ getLivneh = function(AOI, varname = NULL,
 getLivneh_fluxes = function(AOI, varname = NULL, 
                             startDate, endDate = NULL,
                             verbose = FALSE, dryrun = FALSE){
-  test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-  climater_dap("Livneh_fluxes", test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+  climater_dap("Livneh_fluxes", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get PRISM data
@@ -299,8 +291,7 @@ getPRISM = function(AOI, varname = NULL,
       dap(catalog = d,  AOI = AOI, verbose = verbose)
     }
   } else {
-    test = function(x){ if(x$AOI == "."){ x$AOI =  eval(parse(text=deparse(AOI)))}; x }
-    climater_dap(id = "prism_monthly",  test(as.list(match.call.defaults()[-1])), verbose, dryrun)
+    climater_dap(id = "prism_monthly",  call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
    }
 }
 

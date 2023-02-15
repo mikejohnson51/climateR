@@ -122,13 +122,13 @@ climater_filter <- function(id = NULL,
       scenario <- c("historical", scenario)
     }
     
-    if ("total" %in% catalog$scenario) {
-      scenario <- c("total", scenario)
-    }
+    # if ("total" %in% catalog$scenario) {
+    #   scenario <- c("total", scenario)
+    # }
     
     if(!is.null(scenario)){
       catalog <- filter(catalog, scenario %in% !!scenario)
-    }
+    }covr:
   }
   
   ### ---- AOI filter

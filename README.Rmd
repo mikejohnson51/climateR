@@ -27,6 +27,7 @@ library(tidyterra)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![codecov](https://codecov.io/gh/mikejohnson51/climateR/branch/automation/graph/badge.svg)](https://codecov.io/gh/mikejohnson51/climateR)
 <!-- badges: end -->
 
 `climateR` seeks to simplify the steps needed to get climate data into R. It currently provides access to the following gridded climate sources using a consistent parameter set and variable name structure:
