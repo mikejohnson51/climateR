@@ -128,7 +128,7 @@ climater_filter <- function(id = NULL,
     
     if(!is.null(scenario)){
       catalog <- filter(catalog, scenario %in% !!scenario)
-    }covr:
+    }
   }
   
   ### ---- AOI filter
