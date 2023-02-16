@@ -1,6 +1,6 @@
 #' @title Extract Sites
 #' @description extract timeseries values from a raster stack for a set of points
-#' @param r a raster object
+#' @param r a SpatRaster object
 #' @param pts point to extract from
 #' @param id the unique identifier of each point (column name from pts)
 #' @return a data.frame with columes representing points, and rows time periods
