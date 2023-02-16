@@ -85,6 +85,7 @@ getTerraClimNormals = function(AOI, varname,
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
 #' @inherit getTerraClim return
+#' @export
 
 getDaymet = function(AOI, varname = NULL, 
                      startDate = NULL, endDate = NULL, 

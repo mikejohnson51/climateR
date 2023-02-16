@@ -8,3 +8,5 @@ help
 ^README\.Rmd$
 ^data-raw$
 .github
+^codecov\.yml$
+^\.github$

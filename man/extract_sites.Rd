@@ -7,7 +7,7 @@
 extract_sites(r, pts, id)
 }
 \arguments{
-\item{r}{a raster object}
+\item{r}{a SpatRaster object}
 
 \item{pts}{point to extract from}
 

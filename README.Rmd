@@ -31,6 +31,7 @@ library(climateR)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![LifeCycle](https://img.shields.io/badge/lifecycle-experimental-orange)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![codecov](https://codecov.io/gh/mikejohnson51/climateR/branch/automation/graph/badge.svg)](https://codecov.io/gh/mikejohnson51/climateR)
+[![Codecov test coverage](https://codecov.io/gh/mikejohnson51/climateR/branch/master/graph/badge.svg)](https://app.codecov.io/gh/mikejohnson51/climateR?branch=master)
 <!-- badges: end -->
 
 `climateR` simplifies the steps needed to get climate data into R. At its core it provides three main things:
