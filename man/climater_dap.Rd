@@ -2,7 +2,7 @@
 % Please edit documentation in R/shortcuts.R
 \name{climater_dap}
 \alias{climater_dap}
-\title{ClimateR dry}
+\title{ClimateR dry run}
 \usage{
 climater_dap(id, args, verbose, dryrun, print.arg = FALSE)
 }
@@ -19,5 +19,5 @@ climater_dap(id, args, verbose, dryrun, print.arg = FALSE)
 data.frame
 }
 \description{
-ClimateR dry
+ClimateR dry run
 }

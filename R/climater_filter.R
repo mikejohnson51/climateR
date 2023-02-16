@@ -15,9 +15,11 @@
 climater_filter <- function(id = NULL,
                             asset = NULL,
                             AOI = NULL, 
-                            startDate = NULL, endDate = NULL, 
+                            startDate = NULL, 
+                            endDate = NULL, 
                             varname = NULL, 
-                            model = NULL, scenario= NULL,
+                            model = NULL, 
+                            scenario= NULL,
                             ensemble = NULL) {
   
   variable <- description <- duration <- e <- s <- URL <- NULL
@@ -105,7 +107,7 @@ climater_filter <- function(id = NULL,
         e = do.call("rbind", strsplit(duration, "/"))[, 2]
       ) |>
       mutate(e = ifelse(e == "..", as.character(Sys.Date()), e)) %>% 
-      filter(as.Date(e) > as.Date(startDate) & as.Date(s) < as.Date(endDate))
+      filter(as.Date(e) >= as.Date(startDate) & as.Date(s) <= as.Date(endDate))
     
     if(nrow(tmp) == 0){
       stop("Valid Date Range(s) includes: ", 

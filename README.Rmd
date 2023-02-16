@@ -16,6 +16,9 @@ knitr::opts_chunk$set(
 
 library(ggplot2)
 library(tidyterra)
+library(AOI)
+library(patchwork)
+library(climateR)
 ```
 
 # climateR <img src="man/figures/logo.png" width=230 align="right" />
@@ -26,29 +29,24 @@ library(tidyterra)
 [![Dependencies](https://img.shields.io/badge/dependencies-7/25-orange?style=flat)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicense.com/licenses/mit/)
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![LifeCycle](man/figures/lifecycle/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![LifeCycle](https://img.shields.io/badge/lifecycle-experimental-orange)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![codecov](https://codecov.io/gh/mikejohnson51/climateR/branch/automation/graph/badge.svg)](https://codecov.io/gh/mikejohnson51/climateR)
 <!-- badges: end -->
 
-`climateR` seeks to simplify the steps needed to get climate data into R. It currently provides access to the following gridded climate sources using a consistent parameter set and variable name structure:
+`climateR` simplifies the steps needed to get climate data into R. At its core it provides three main things:
+
+1. A climate catalog of over 100,000k datasets from over 2,000 data providers/archives. See (climateR::params)
+
+```{r}
+nrow(params)
+length(unique(params$id))
+length(unique(params$asset))
+```
+
+2. A general toolkit for accessing remote and local gridded data files bounded by space, time, and variable constants
 
 
-
-|**Number**|**Dataset**          | **Description**                                            | **Dates**            |
-|----------|---------------------| -----------------------------------------------------------|----------------------|
-|1         | **GridMET**         | Gridded Meteorological Data.                               | 1979 - Yesterday     |
-|2         | **Daymet**          | Daily Surface Weather and Climatological Summaries         | 1980 - 2019          |
-|3         | **TopoWX**          | Topoclimatic Daily Air Temperature Dataset                 | 1948 - 2016          |
-|4         | **PRISM**           | Parameter-elevation Regressions on Independent Slopes      | 1981 - (Yesterday-1) |
-|5         | **MACA**            | Multivariate Adaptive Constructed Analogs                  | 1950 - 2099          |
-|6         | **LOCA**            | Localized Constructed Analogs                              | 1950 - 2100          |
-|7         | **BCCA**            | Bias Corrected Constructed Analogs                         | 1950 - 2100          |
-|8         | **BCSD**            | Bias Corrected Spatially Downscaled VIC: Monthly Hydrology | 1950 - 2099          |
-|9         | **TerraClimate**    | TerraClimate Monthly Gridded Data                          | 1958 - 2019          |
-|10        | **TerraClimate Normals**    | TerraClimate Normals Gridded Data                  | Monthly for 1961-1990, 1981-2010, 2C & 4C |
-|11        | **CHIRPS**          | Climate Hazards Group InfraRed Precipitation with Station  | 1980 - Current month |
-|12        | **EDDI**            | Evaporative Demand Drought Index                           | 1980 - Current year  |
-
+3. A set of shortcuts that implement these methdods for a core set of selcted  catalog elements
 
 # Installation
 
@@ -58,11 +56,15 @@ remotes::install_github("mikejohnson51/climateR")
 ```
 
 # Usful Packages for climate data
+
 ```{r}
 library(AOI)
 library(climateR)
 library(tidyterra)
 library(ggplot2)
+library(terra)
+library(tidyr)
+library(sf)
 ```
 
 # Examples
@@ -86,7 +88,7 @@ system.time({
 })
 ```
 
-```{r, eval = FALSE}
+```{r, echo = FALSE}
 ggplot() +
   geom_spatraster(data = rast(p)) +
   facet_wrap(~lyr) +
@@ -101,10 +103,11 @@ ggplot() +
 `climateR` offers support for `sf`, `sfc`, and `bbox` objects. Here we are requesting wind velocity data for the four corners region of the USA by bounding coordinates.
 
 ```{r}
-library(sf)
-AOI = st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326)\
+AOI = st_as_sfc(st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326))
 
-g = getGridMET(AOI, varname = "pet", startDate = "2018-09-01")
+g = getGridMET(AOI, 
+               varname = "vs",
+               startDate = "2018-09-01")
 
 ggplot() +
   geom_spatraster(data = rast(g)) +
@@ -112,7 +115,9 @@ ggplot() +
   scale_fill_whitebox_c(
     palette = "muted",
     na.value = "white"
-  ) + theme_minimal()
+  ) + 
+  geom_sf(data = AOI::aoi_get(state  = c("CO", "NM", "AZ", "UT")), fill = NA) + 
+  theme_minimal()
 ```
 
 # Data through time ...
@@ -125,7 +130,7 @@ harvey = getGridMET(aoi_get(state = c("TX", "FL")),
                   startDate = "2017-08-20", endDate = "2017-08-31")
 
 ggplot() +
-  geom_spatraster(data = harvey$precipitation_amount_total) +
+  geom_spatraster(data = harvey$precipitation_amount) +
   facet_wrap(~lyr) +
   scale_fill_whitebox_c(
     palette = "muted",
@@ -145,6 +150,8 @@ m = getMACA(AOI = aoi_get(state = "FL"),
             scenario = c('rcp45', 'rcp85'), 
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
+
+
 ```
 
 ```{r, fig.width = 15}
@@ -160,13 +167,14 @@ ggplot() +
 Getting multiple models results is also quite simple:
 
 ```{r}
-models = c("BNU-ESM","CanESM2", "CCSM4", "CNRM-CM5", "CSIRO-Mk3-6-0")
+models = c("BNU-ESM","CanESM2", "CCSM4")
 
-temp =  getMACA(AOI = aoi_get(state = "conus"),
+temp =  getMACA(AOI = aoi_get(state = "CO"),
                 varname = 'tasmin', 
                 model = models, 
                 startDate = "2080-11-29")
-temp$air_temperature$mea =  terra::app(temp$air_temperature, mean)
+
+temp$air_temperature$mean =  terra::app(temp$air_temperature, mean)
 names(temp[[1]]) = c(models, "Ensemble Mean")
 
 # Plot
@@ -181,8 +189,11 @@ ggplot() +
 If you don't know your models, you can always grab a random set by specifying a number:
 
 ```{r, fig.width= 15}
-random = getMACA(aoi_get(state = "MI"), model = 3, varname = "pr", startDate = "2050-10-29")
-names(random$precipitation) = paste("models", 1:3)
+random = getMACA(aoi_get(state = "MI"), 
+                 model = 3, 
+                 varname = "pr", 
+                 startDate = "2050-10-29")
+
 # Plot
 ggplot() +
   geom_spatraster(data = random$precipitation) +
@@ -226,41 +237,49 @@ ggplot() +
 
 ```
 
-This raises the question "_what is available for each resource?_". This can be checked in the appropriate `meta_data` objects. For example let's see what parameter data is offered for gridMET, and what models and scenarios are offered for MACA.
-
 # Point Based Data
 
 Finally, data gathering is not limited to areal extents and can be retrieved as a time series at locations. 
 
 ```{r}
-AOI = AOI::geocode('Colorado Springs', pt = TRUE)
-ts  = getGridMET(AOI, varname = 'srad', startDate = "2019-01-01", endDate = "2019-12-31")
+AOI = 
 
-ggplot(data = ts) + 
-  aes(x = date, y = srad) + 
+ts  = getGridMET(geocode('Fort Collins', pt = TRUE), 
+                 varname =  c("pr", 'srad'), 
+                 startDate = "2021-01-01", 
+                 endDate = "2021-12-31")
+```
+
+```{r}
+ggplot(data = ts, aes(x = date, y = srad)) + 
   geom_line() +
   stat_smooth(col = "red") + 
   theme_linedraw() + 
-  labs(title = "Solar Radiation: Colorado Springs 2019", x = "Date", y = "Solar Radiation")
+  labs(title = "Solar Radiation: Fort Collins 2019",
+       x = "Date", y = "Solar Radiation") +
+ggplot(data = ts, aes(x = date, y = cumsum(pr))) + 
+  geom_line(color = "blue", lwd = 1) +
+  theme_linedraw() + 
+  labs(title = "Cumulative Rainfall: Fort Collins 2019",
+       x = "Date", y = "Rainfall")
 
 ```
 
 # Point Based Ensemble
 
 ```{r}
-future = getMACA(geocode("UCSB", pt = TRUE), 
-                 model = 5, varname = "vpd", 
+future = getMACA(geocode("Fort Collins", pt = TRUE), 
+                 model = 5, varname = "tasmax", 
                  startDate = "2050-01-01", endDate = "2050-01-31")
 
-future_long = future %>% 
-  dplyr::select(-source, -lat, -lon) %>% 
-  tidyr::pivot_longer(-date) 
+future_long = pivot_longer(future, -date) 
+
 
 ggplot(data = future_long, aes(x = date, y = value, col = name)) + 
   geom_line() + 
   theme_linedraw() + 
   scale_color_brewer(palette = "Dark2") + 
-  labs(title = "UCSB Temperture: January, 2050",
+  labs(title = "Fort Collins Temperture: January, 2050",
        x = "Date",
        y = "Degree K",
        color = "Model")
@@ -271,36 +290,40 @@ ggplot(data = future_long, aes(x = date, y = value, col = name)) +
 
 Extracting data for a set of points is an interesting challenge. It turns it is much more efficient to grab the underlying raster stack and then extract time series as opposed to iterating over the locations:
 
-1. Starting with a set of locations in Brazil:
+1. Starting with a set of locations in Colorado:
 
 ```{r}
-(sites = read.csv('./inst/extdata/example.csv') %>% 
-  st_as_sf(coords = c("long", "lat"), crs = 4326))
+(f = system.file("co/co_cities.rds", package = "climateR"))
+cities = readRDS(f)
 ```
 
 2. `climateR` will grab the RasterStack underlying the bounding area of the points
 
 ```{r}
-sites_stack = getTerraClim(AOI   = sites, 
-                           param = "tmax", 
+sites_stack = getTerraClim(AOI   = cities, 
+                           varname = "tmax", 
                            startDate = "2018-01-01", 
                            endDate   = "2018-12-31")
+```
 
-plot(sites_stack$terraclim_tmax$X2018.01)
-plot(sites$geometry, add = TRUE, pch = 16, cex = .5)
+```{r}
+{
+  plot(sites_stack$tmax_total[[1]])
+  plot(vect(cities), add = TRUE, pch = 16, cex = .5)
+}
 ```
 
 3. Use `extract_sites` to extract the times series from these locations. The `id` parameter is the unique identifier from the site data with which to names the resulting columns.
 
-````{r}
-sites_wide = extract_sites(sites_stack, sites, "ID")
-sites_wide$terraclim_tmax[1:5, 1:5]
+```{r}
+sites_wide = extract_sites(r = sites_stack, pts = cities, id = "NAME")
+sites_wide[[1]][1:5, 1:5]
 ```
 
 To make the data 'tidy' simply pivot on the `date` column:
 
-```{r}
-tmax = tidyr::pivot_longer(sites_wide$terraclim_tmax, -date)
+```{r,echo = FALSE}
+tmax = tidyr::pivot_longer(sites_wide[[1]], -date)
 head(tmax)
 
 ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
@@ -308,9 +331,6 @@ ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) +
   geom_line() + 
   theme_linedraw() + 
   theme(legend.position = "none") 
+
 ```
 
-
-### Support:
-
-`climateR` is written by [Mike Johnson](https://mikejohnson51.github.io), a graduate Student at the [University of California, Santa Barbara](https://geog.ucsb.edu) in [Keith C. Clarke's](http://www.geog.ucsb.edu/~kclarke/) Lab.

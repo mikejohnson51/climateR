@@ -311,8 +311,35 @@ make_vect = function (cat) { as.polygons(make_ext(cat), crs = cat$crs) }
 #' @export
 
 var_to_terra <- function(var, dap) {
+  
+  dates <- seq.POSIXt(as.POSIXct(dap$startDate),
+                      as.POSIXct(dap$endDate),
+                      length.out  = dap$Tdim)
+  
+  name <-  gsub("_NA", "",paste(dap$variable, 
+                                dates,
+                                dap$model, 
+                                dap$ensemble, 
+                                dap$scenario,
+                                sep = "_"))
+  
+  vars = dap$variable
+  if(length(vars) == 0){ vars = dap$varname }
+  
+  names_ts = sub("_$", "", 
+    gsub("__", "", gsub("_NA", "", 
+                   paste(
+                   vars,
+                   dap$model, 
+                   dap$ensemble, 
+                   dap$scenario,
+                   sep = "_")))
+  )
+  
   if (dap$ncols == 1 & dap$nrows == 1) {
-    return(var)
+    df = data.frame(date = dates, var)
+    names(df) = c("date", names_ts)
+    return(df)
   }
   
   resx <- (dap$Xn - dap$X1) / (dap$ncols - 1)
@@ -347,10 +374,8 @@ var_to_terra <- function(var, dap) {
   }
   
   units(r) <- dap$units
-  
-  names(r) <- seq.POSIXt(as.POSIXct(dap$startDate),
-                         as.POSIXct(dap$endDate),
-                         length.out  = dap$Tdim)
+  time(r) <- dates
+  names(r) = name
   
   r
 }

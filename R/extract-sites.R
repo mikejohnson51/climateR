@@ -12,23 +12,12 @@ extract_sites = function(r, pts, id){
   if(inherits(pts, "sf")){
     pts = vect(pts)
   }
-  
-  my.to.date = function(x){
-    d = gsub("[.]", "-",gsub("X", "", x))
-    #if(nchar(d[1]) == 7){d = paste0(d, "-01")}
-    
-    if(nchar(d[1]) !=10){
-      as.POSIXct(d, tz = "UTC")
-    } else {
-      as.Date(d)
-    }
-  }
-  
+
   flip = function(x, r, pts, id){
     df = data.frame(t(extract(r[[x]], pts, ID = FALSE)), row.names = NULL)
-    names(df) <- paste0("site_", gsub(" ", "",  pts[[id]][,1]))
+    names(df) <- paste0(gsub(" ", "",  pts[[id]][,1]))
     df = mutate_all(df, as.numeric)
-    df$date = my.to.date(names(r[[x]]))
+    df$date = terra::time(r[[x]])
     select(df, date, everything())
   }
   
@@ -36,7 +25,11 @@ extract_sites = function(r, pts, id){
   # Extract your climate data via the points
   extdata = lapply(1:length(r), function(x){ flip(x, r, pts, id) } )
   
-  names(extdata) = names(r)
-  
+  if(length(r) == 1){
+    extdata[[1]]
+  } else {
+    names(extdata) = names(r)
+  }
+
   extdata
 }

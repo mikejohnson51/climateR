@@ -7,7 +7,7 @@ go_get_dap_data <- function(dap) {
     if (grepl("http", dap$URL)) {
       var_to_terra(var = get_data(dap), dap)
     } else {
-      var_to_terra(dap_to_local(dap), dap)
+      var_to_terra(var = dap_to_local(dap), dap)
     }
   },
   error = function(e) {
@@ -233,7 +233,7 @@ dap_crop <- function(URL = NULL,
     
     catalog = catalog %>%
       mutate(interval = ifelse(interval == "monthly normal", "month", interval))
-    
+  
     for (i in 1:nrow(catalog)) {
       
       time_steps <- parse_date(duration = catalog$duration[i], interval = catalog$interval[i])
@@ -248,7 +248,7 @@ dap_crop <- function(URL = NULL,
             endDate = time_steps[1]
           )
         )
-      } else if (startDate >= max(time_steps) |  endDate  <= min(time_steps)) {
+      } else if (startDate > max(time_steps) |  endDate  < min(time_steps)) {
         out[[i]] <- NULL
       } else {
         T1 <- which.min(abs(time_steps - startDate)) - 1
@@ -405,7 +405,12 @@ dap_get <- function(dap, varname = NULL) {
                                        is.na(dap$scenario), "", paste0("_", dap$scenario)
                                      )))
   
-  if (any(grepl("XY", dap$tiled))) {
+  if(!inherits(out[[1]], "SpatRaster")){
+   Reduce(function(dtf1, dtf2)
+      merge(dtf1, dtf2, by = "date", all.x = TRUE),
+      out)
+    
+  } else if (any(grepl("XY", dap$tiled))) {
     ll = list()
     u <- unique(unlist(lapply(out, units)))
     if (length(u) == 1) {

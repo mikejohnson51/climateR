@@ -21,6 +21,7 @@ climater_dap = function(id, args, verbose, dryrun, print.arg = FALSE){
   args$id = id
   args$catalog = do.call(climater_filter, args[names(args) %in% formalArgs(climater_filter)])
   args$verbose = verbose
+  if(print.arg){print(args)}
   
   if(dryrun){
     args$verbose = TRUE
@@ -43,7 +44,10 @@ climater_dap = function(id, args, verbose, dryrun, print.arg = FALSE){
 getTerraClim = function(AOI, varname = NULL, 
                         startDate = NULL, endDate = NULL, 
                         verbose = FALSE, dryrun = FALSE){
-  climater_dap("terraclim",call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
+  climater_dap("terraclim",
+               call_aoi(as.list(match.call.defaults()[-1]), AOI), 
+               verbose, dryrun,
+               print.arg = FALSE)
 }
 
 #' @title Get Terra Climate Normals for an Area of Interest
