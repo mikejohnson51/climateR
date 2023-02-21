@@ -293,11 +293,94 @@ getPRISM = function(AOI, varname = NULL,
     if(dryrun){
       dap_crop(catalog = d,  AOI = AOI, verbose = TRUE)
     } else {
-      dap(catalog = d,  AOI = AOI, verbose = verbose)
+      o = lapply(1:nrow(d), function(x){
+        dap(catalog = d[x,],  AOI = AOI, verbose = FALSE)
+      }) 
+    
+      if(!inherits(o[[1]][[1]], "SpatRaster")){
+        
+        o = bind_rows(o)
+        
+        out = list()
+        for(i in 1:length(varname)){
+          out[[varname[i]]] = select(o, date, varname[i]) %>% 
+            filter(complete.cases(.))
+        }
+        
+        Reduce(function(dtf1, dtf2)
+          merge(dtf1, dtf2, by = "date", all.x = TRUE),
+          out)
+      } else {
+        
+        merge_across_time(unlist(o))
+        
+      }
     }
+    
   } else {
     climater_dap(id = "prism_monthly",  call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
    }
+}
+
+#' @title Get LOCA Hydrology data
+#' @inheritParams climater_filter
+#' @inheritParams climater_dap
+#' @inherit getTerraClim return
+#' @export
+
+getLOCA_hydro = function(AOI, varname, 
+                         model = 'CCSM4', scenario = 'rcp45', 
+                         startDate, endDate = NULL, 
+                         verbose = FALSE, dryrun = FALSE){
+  
+  x  = climater_filter(id = "loca_hydrology", 
+                       AOI = AOI, varname = varname, 
+                       model = model, scenario = scenario,
+                       startDate = startDate, endDate = endDate)
+  
+  if(is.null(endDate)){ endDate = startDate}
+  
+  dap = data.frame(date = seq.Date(as.Date(startDate), as.Date(endDate), by = "day")) %>% 
+    mutate(year = format(date, "%Y"),
+           J = as.numeric(format(date, "%j"))) %>% 
+    group_by(year) %>% 
+    mutate(lyr1 = min(J), lyr2 = max(J),
+           d1 = min(date), d2 = max(date)) %>% 
+    slice(1) %>% 
+    ungroup() %>% 
+    merge(varname) %>%
+    rename(varname = y) %>%
+    left_join(x, by = "varname") %>% 
+    mutate(URL = URL)
+  
+  if(dryrun){
+    for(i in 1:nrow(dap)){
+      r = rast(ext = make_ext(dap[i,]), crs = dap$crs[i], res = c(dap$resX[i], dap$resY[i])) %>% 
+        crop(project(vect(AOI), dap$crs[i]))
+      dap$URL[i]    = paste0('/vsicurl/', glue(dap$URL[i], year = dap$year[i]))
+      dap$layers[i] = dap$lyr2[i] - dap$lyr1[i] + 1
+      dap$nrows[i]  = nrow(r)
+      dap$ncols[i]  = ncol(r)
+      dap$values[i] = dap$layers[i] * dap$ncols[i] * dap$nrows[i]
+    }
+    
+   return(select(dap,  varname, URL, layers, nrows, ncols,values))
+    
+  } else {
+    out = lapply(1:nrow(dap), function(x){ 
+      read_ftp(cat   = dap[x, ], 
+               URL   = paste0('/vsicurl/', glue(dap$URL[x], year = dap$year[x])), 
+               lyrs  = c(dap$lyr1[x]:dap$lyr2[x]), 
+               AOI   = AOI, 
+               ext   = make_ext(dap[x,]), 
+               crs   = dap$crs[x], 
+               dates = seq.Date(dap$d1[x], dap$d2[x], by = dap$interval[x]))
+    })
+
+    names(out) = dap$varname
+    
+    merge_across_time(out)
+  }
 }
 
 

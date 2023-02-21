@@ -1,3 +1,30 @@
+#' Merge List of SpatRaster's across time
+#' @description Given a list of SpatRasters with possiblly shared names, merge across time
+#' @param data list of names SpatRasters
+#' @return data.frame with (varname, X_name, Y_name, T_name)
+#' @export
+
+merge_across_time = function(data){
+  
+  ll = list()
+  g = unique(names(data))
+  
+  for (v in unique(g)) {
+    g_tmp = g[g == v]
+    ind = grepl(v, names(data))
+    tmp = data[ind]
+    n = unlist(lapply(1:length(tmp), function(x) { names(tmp[[x]]) }))
+    o = order(n)
+    tmp = rast(tmp)
+    tmp = tmp[[o]]
+    names(tmp) = n
+    ll[[v]] = tmp
+  }
+  
+  ll
+  
+}
+
 #' Get XYTV data from DAP URL
 #' @param obj an OpenDap URL or NetCDF object
 #' @param varmeta should variable metadata be appended?
@@ -274,7 +301,7 @@ go_get_dap_data <- function(dap) {
     if (grepl("http", dap$URL)) {
       var_to_terra(var = get_data(dap), dap)
     } else {
-      var_to_terra(dap_to_local(dap), dap)
+      var_to_terra(var = dap_to_local(dap), dap)
     }
   },
   error = function(e) {

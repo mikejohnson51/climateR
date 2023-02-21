@@ -1,20 +1,3 @@
-#' Read formated DAP URL as SpatRast
-#' @param dap output from dap_crop
-#' @return SpatRast
-
-go_get_dap_data <- function(dap) {
-  tryCatch({
-    if (grepl("http", dap$URL)) {
-      var_to_terra(var = get_data(dap), dap)
-    } else {
-      var_to_terra(var = dap_to_local(dap), dap)
-    }
-  },
-  error = function(e) {
-    dap$URL
-  })
-}
-
 #' Convert catalog entry to extent
 #' @param cat catalog entry
 #' @return SpatExtent
@@ -400,15 +383,10 @@ dap_get <- function(dap, varname = NULL) {
     }
   )
   
-  names(out) <- sub("_$", "", paste0(dap$varname,
-                                     ifelse(
-                                       is.na(dap$scenario), "", paste0("_", dap$scenario)
-                                     )))
+  names(out) <- sub("_$", "", paste0(dap$varname))
   
   if(!inherits(out[[1]], "SpatRaster")){
-   Reduce(function(dtf1, dtf2)
-      merge(dtf1, dtf2, by = "date", all.x = TRUE),
-      out)
+   Reduce(function(dtf1, dtf2) { merge(dtf1, dtf2, by = "date", all.x = TRUE) }, out)
     
   } else if (any(grepl("XY", dap$tiled))) {
     ll = list()
@@ -426,24 +404,7 @@ dap_get <- function(dap, varname = NULL) {
     ll[[dap$varname[1]]] = out
     ll
   } else if (any(dap$tiled == "T")) {
-    ll = list()
-    g = expand.grid(v = unique(dap$varname), s = unique(dap$scenario))
-    
-    for (v in unique(g$v)) {
-      g_tmp = g[g$v == v,]
-      ind = grepl(v, names(out))
-      tmp = out[ind]
-      n = unlist(lapply(1:length(tmp), function(x) {
-        names(tmp[[x]])
-      }))
-      o = order(n)
-      tmp = rast(tmp)
-      tmp = tmp[[o]]
-      names(tmp) = n
-      ll[[v]] = tmp
-    }
-    
-    ll
+    merge_across_time(out)
   } else {
     out
   }
@@ -560,4 +521,60 @@ dap_summary <- function(dap = NULL, url = NULL) {
           )
           }
     }
+}
+
+
+#' Read from FTP
+#' @param url Unique Resource Identifier (http or local)
+#' @param cat catalog element
+#' @param lyrs lyrs to extract
+#' @param AOI Area of Interest
+#' @param ext extent of source (if needed)
+#' @param crs crs of source (if needed) 
+#' @param dates dates of data
+#' @return SpatRaster
+#' @export
+
+read_ftp = function(URL, cat, lyrs = 1, AOI, ext = NULL, crs = NULL, dates = NULL){
+  
+  o = suppressWarnings(rast(URL , lyrs = lyrs))
+  
+  
+  if(!is.null(crs)){
+    crs(o) = crs
   }
+  
+  if(!is.null(ext)){
+    ext(o) = ext
+  }
+  
+  e =  align(ext(project(vect(AOI), crs(o))), o)
+  
+  if(cat$toptobottom){
+    z = crop(o, e)
+  } else {
+    
+    e =  align(ext(project(vect(AOI), crs(o))), o)
+    
+    ymax <- ymax(o) - (e$ymin - ymin(o))
+    ymin <- ymax(o) - (e$ymax - ymin(o))
+    
+    flipe <- ext(c(xmin(e), xmax(e), as.numeric(ymin),  as.numeric(ymax)))
+    
+    z <- flip(crop(o, flipe), "vertical")
+    ext(z) <- e
+  }
+  
+  if(!is.null(dates)){
+    time(z) = dates
+  }
+  
+  names(z) <-  gsub("_NA", "",paste(cat$variable, 
+                                    dates,
+                                    cat$model, 
+                                    cat$ensemble, 
+                                    cat$scenario,
+                                    sep = "_"))
+  z
+}
+

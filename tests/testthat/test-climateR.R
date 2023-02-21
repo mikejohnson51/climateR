@@ -1,6 +1,5 @@
 library(AOI)
 library(terra)
-library(AOI)
 
 AOI = aoi_get("Fort Collins")
 
@@ -19,7 +18,7 @@ test_that("TerraClim", {
   out = getTerraClim(AOI = AOI, varname = "tmin", startDate = "2020-01-01")
   expect_true(class(out) == "list")
   expect_true(class(out[[1]]) == "SpatRaster")
-  expect_true(names(out) == "tmin_total")
+  expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_2020-01-01_total")
   expect_true(nrow(out[[1]]) == 5)
   expect_true(ncol(out[[1]]) == 5)
@@ -40,7 +39,7 @@ test_that("TerraClimNormals", {
   
   expect_true(class(out) == "list")
   expect_true(class(out[[1]]) == "SpatRaster")
-  expect_true(names(out) == "tmin_19812010")
+  expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_1961-04-01_19812010")
   expect_true(nrow(out[[1]]) == 5)
   expect_true(ncol(out[[1]]) == 5)
@@ -52,12 +51,12 @@ test_that("end and start dates", {
   tc = climater_filter(id = 'terraclim')[1,]
   
   start = getTerraClim(AOI        = AOI,
-                   varname    = "aet", 
-                   startDate  =   strsplit(tc$duration, "/")[[1]][1])
+                       varname    = "aet", 
+                       startDate  = strsplit(tc$duration, "/")[[1]][1])
   
   expect_equal(length(start), 1)
   
-  end = getTerraClim(AOI        = AOI,
+  end = getTerraClim(AOI      = AOI,
                    varname    = "aet", 
                    startDate  =   strsplit(tc$duration, "/")[[1]][2])
   
@@ -84,7 +83,7 @@ test_that("Daymet", {
   
   expect_true(class(out) == "list")
   expect_true(class(out[[1]]) == "SpatRaster")
-  expect_true(names(out) == "tmin_total")
+  expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_2019-12-31 12:00:00_na_total")
   expect_true(nrow(out[[1]]) == 20)
   expect_true(ncol(out[[1]]) == 16)
@@ -112,7 +111,7 @@ test_that("loca", {
   expect_equal(nrow(out), 1)
   
   out = getLOCA(AOI = AOI, varname = "pr", startDate = "2020-01-01" )
-  
+
   expect_true(class(out) == "list")
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "pr_CCSM4_r6i1p1_rcp45")
@@ -173,8 +172,6 @@ test_that("GLDAS", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out)[1] == "snowt_tavg")
   expect_true(nlyr(out[[1]]) == 1)
-
-  
 })
 
 
@@ -230,6 +227,16 @@ test_that("PRISM", {
   
   expect_equal(nrow(daily), 1)
   
+  pt<- geocode("Fort Collins", pt = TRUE) 
+  
+  prism <- getPRISM(AOI = pt,
+                    varname=c('tmax','tmin'),
+                    startDate="2021-01-01",endDate="2021-01-10")
+ 
+  expect_true(nrow(prism) == 10)
+  expect_true(ncol(prism) == 3)
+  expect_true(all(prism$tmax > prism$tmin))
+  
   daily = getPRISM(AOI = AOI,
                    varname = "tmin",
                    startDate = "2015-01-10", endDate = "2015-01-15")
@@ -269,7 +276,6 @@ test_that("local & extract pts", {
  expect_true(length(dat) == length(x))
   
 })
-
 
 test_that("Remote VRT", {
   
@@ -439,4 +445,23 @@ test_that("VRTS", {
   expect_true(all(names(hbv_2) == names(hbv)[2:3]))
   
 })
+
+
+test_that("FTP", {
+  oo = getLOCA_hydro(AOI = AOI::aoi_get(state = "FL"), 
+                     varname = "baseflow", 
+                     startDate = "1990-12-31", endDate = "1991-01-01")
+  
+  expect_true(length(oo) == 1)
+  expect_true(nlyr(oo[[1]]) == 2)
+  
+  oo = getLOCA_hydro(AOI = AOI::aoi_get(state = "FL"), 
+                     varname = c("baseflow", "ET"), 
+                     startDate = "1990-12-31", endDate = "1991-01-01")
+  
+  expect_true(length(oo) == 2)
+  expect_true(nlyr(oo[[1]]) == 2)
+  
+})
+
 
