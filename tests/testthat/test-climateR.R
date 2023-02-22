@@ -237,6 +237,11 @@ test_that("MACA", {
 test_that("NLDAS", {
   # skip of covr - no netrc/dodsrc
   skip_on_covr()
+  skip_on_covr()
+  skip_on_ci()
+  skip_on_cran()
+  skip_if_offline()
+  
   out = getNLDAS(
     AOI = aoi_get("Fort Collins"),
     varname = "ugrd10m",
@@ -255,6 +260,11 @@ test_that("NLDAS", {
 test_that("GLDAS", {
   # skip of covr - no netrc/dodsrc
   skip_on_covr()
+  skip_on_covr()
+  skip_on_ci()
+  skip_on_cran()
+  skip_if_offline()
+  
   out = getGLDAS(
     AOI = aoi_get("Fort Collins"),
     varname = "snowt_tavg",
@@ -271,6 +281,9 @@ test_that("GLDAS", {
 test_that("MODIS", {
   # skip of covr - no netrc/dodsrc
   skip_on_covr()
+  skip_on_ci()
+  skip_on_cran()
+  skip_if_offline()
   
   dead_url  = tryCatch({
     httr::GET('https://opendap.cr.usgs.gov')
