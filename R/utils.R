@@ -41,12 +41,20 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
 
   raw = suppressWarnings({
     tryCatch({
-      nc_coord_var(obj, variable = varname)[, c("variable", "X", "Y", "T")]
-    }, error = function(e){ stop(glue(
-      "Error in file format. Try specifying variable using one of: \n{paste(nc_vars(obj)$name, collapse = '\n')}"))
-    })
+      nc_coord_var(obj, variable = NULL)[, c("variable", "X", "Y", "T")]
+    }, error = function(e){ 
+      vars = nc_vars(obj)$name
+      lapply(1:length(vars), FUN = function(j){ 
+          tryCatch({
+          nc_coord_var(obj, variable = vars[j])[, c("variable", "X", "Y", "T")]},
+          error = function(x){
+            NULL
+          })
+        }) 
+      }) %>% 
+        bind_rows() 
   })
-  
+
   raw <- raw[!apply(raw, 1, function(x) {
     any(is.na(x))
   }), ]
@@ -54,6 +62,7 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
   if(is.null(varname)){
     varname = raw$variable[1]
   }
+  
   o = rev(var.inq.nc(obj, varname)$dimids)
   o = sapply(1:length(o), function(x){ dim.inq.nc(obj, o[x])$name } )
   o = names(raw)[match(o ,raw[raw$variable == varname,])]
