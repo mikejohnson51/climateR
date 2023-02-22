@@ -235,6 +235,8 @@ test_that("MACA", {
 
 
 test_that("NLDAS", {
+  # skip of covr - no netrc/dodsrc
+  skip_on_covr()
   out = getNLDAS(
     AOI = aoi_get("Fort Collins"),
     varname = "ugrd10m",
@@ -251,6 +253,8 @@ test_that("NLDAS", {
 
 
 test_that("GLDAS", {
+  # skip of covr - no netrc/dodsrc
+  skip_on_covr()
   out = getGLDAS(
     AOI = aoi_get("Fort Collins"),
     varname = "snowt_tavg",
@@ -282,6 +286,8 @@ test_that("MODIS", {
   
   expect_true(nrow(out) == 3)
   
+  # skip of covr - no netrc/dodsrc
+  skip_on_covr()
   skip_if(dead_url, "MODIS server is down! Skipping tests")
   
   out = getMODIS(

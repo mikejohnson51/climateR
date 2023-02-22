@@ -235,6 +235,7 @@ getGLDAS = function(AOI, varname = NULL, model = NULL,
 getMODIS = function(AOI, asset = NULL, varname = NULL,
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
+  check_rc_files()
   climater_dap("MODIS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
