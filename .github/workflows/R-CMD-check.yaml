@@ -1,6 +1,3 @@
-# Workflow derived from https://github.com/r-lib/actions/tree/master/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-
 on:
   push:
     branches: [main, master]
@@ -44,3 +41,14 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+      
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: results
+          path: check
+
+      - name: Test coverage
+        run: covr::codecov()
+        shell: Rscript {0}
