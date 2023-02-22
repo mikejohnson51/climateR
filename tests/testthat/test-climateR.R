@@ -569,7 +569,7 @@ test_that("pts", {
   
 })
 
-test_that("VRTS", {
+test_that("VRT", {
   tmp = filter(params,  id == "HBV")[1, ]
   
   hbv = vrt_crop_get(catalog = tmp, AOI = aoi_get("Fort Collins"))
