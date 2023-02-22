@@ -25,8 +25,6 @@ getLivneh_fluxes(
 \item{verbose}{Should messages be emited?}
 
 \item{dryrun}{Return summary of data prior to retrieving it}
-
-\item{timeRes}{daily or monthly}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.

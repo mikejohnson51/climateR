@@ -10,3 +10,4 @@ help
 .github
 ^codecov\.yml$
 ^\.github$
+.lazytest

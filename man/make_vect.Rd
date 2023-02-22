@@ -7,7 +7,7 @@
 make_vect(cat)
 }
 \arguments{
-\item{cat}{catalog entry (data.frame with an {Xn, X1, Yn, Y1, proj})}
+\item{cat}{catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})}
 }
 \value{
 SpatVect

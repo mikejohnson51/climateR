@@ -9,6 +9,8 @@ dap_xyzv(obj, varname = NULL, varmeta = FALSE)
 \arguments{
 \item{obj}{an OpenDap URL or NetCDF object}
 
+\item{varname}{name of variable to extract. If NULL, then get all}
+
 \item{varmeta}{should variable metadata be appended?}
 }
 \value{

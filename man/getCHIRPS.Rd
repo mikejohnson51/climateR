@@ -7,7 +7,7 @@
 getCHIRPS(
   AOI,
   varname = NULL,
-  period = "daily",
+  timeRes = "daily",
   startDate,
   endDate = NULL,
   verbose = FALSE,
@@ -18,6 +18,8 @@ getCHIRPS(
 \item{AOI}{an sf point or polygon to extract data for}
 
 \item{varname}{variable name to extract (e.g. tmin)}
+
+\item{timeRes}{"Pentad", "Annual", "Daily" (default), or "Monthly"}
 
 \item{startDate}{a start date given as "YYYY-MM-DD" to extract data for}
 

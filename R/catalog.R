@@ -10,5 +10,6 @@
 #' @importFrom ncmeta nc_coord_var nc_grid_mapping_atts nc_gm_to_prj nc_vars nc_var
 #' @importFrom utils head tail
 #' @importFrom methods formalArgs
+#' @importFrom stats complete.cases
 
 NULL

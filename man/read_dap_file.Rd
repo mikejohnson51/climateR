@@ -9,6 +9,8 @@ read_dap_file(URL, varname = NULL, id, varmeta = TRUE)
 \arguments{
 \item{URL}{URL to OpenDap resource}
 
+\item{varname}{name of variable to extract. If NULL, then get all}
+
 \item{id}{character. Uniquely named dataset identifier}
 
 \item{varmeta}{should variable metadata be appended?}

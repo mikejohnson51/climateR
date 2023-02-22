@@ -15,6 +15,7 @@ match.call.defaults <- function(...) {
 #' @param args The parent function arguments
 #' @param verbose Should messages be emited?
 #' @param dryrun Return summary of data prior to retrieving it
+#' @param print.arg should arguments be printed? Usefull for debugging
 #' @return data.frame
 
 climater_dap = function(id, args, verbose, dryrun, print.arg = FALSE){
@@ -175,21 +176,22 @@ getBCCA = function(AOI, varname,
 #' @title Get CHIRPS data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @param timeRes "Pentad", "Annual", "Daily" (default), or "Monthly"
 #' @inherit getTerraClim return
 #' @export
 
 getCHIRPS = function(AOI, varname = NULL, 
-                     period = "daily", 
+                     timeRes = "daily", 
                      startDate, endDate = NULL,
                      verbose = FALSE, dryrun = FALSE){
   
-  period =  gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", tolower(period), perl = TRUE)
+  timeRes =  gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", tolower(timeRes), perl = TRUE)
   
-  good_periods = c("Pentad", "Annual", "Daily", "Monthly")
+  good_timeRes = c("Pentad", "Annual", "Daily", "Monthly")
   
-  if(!period %in% good_periods){ stop("Period must be one of: ", paste(good_periods, collapse = ", "),  call. = FALSE) }
+  if(!timeRes %in% good_timeRes){ stop("timeRes must be one of: ", paste(good_timeRes, collapse = ", "),  call. = FALSE) }
   
-  climater_dap(paste0("chirps20Global", period, "P05"), 
+  climater_dap(paste0("chirps20Global", timeRes, "P05"), 
                call_aoi(as.list(match.call.defaults()[-1]), AOI), 
                verbose, 
                dryrun)
@@ -205,6 +207,7 @@ getNLDAS = function(AOI, varname = NULL,
                     model = NULL, 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
+  check_rc_files()
   climater_dap("NLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun, print.arg = FALSE)
 }
 
@@ -217,6 +220,7 @@ getNLDAS = function(AOI, varname = NULL,
 getGLDAS = function(AOI, varname = NULL, model = NULL, 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
+  check_rc_files()
   climater_dap("GLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
@@ -254,7 +258,6 @@ getLivneh = function(AOI, varname = NULL,
 #' @title Get Livneh Flux data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
-#' @param timeRes daily or monthly
 #' @inherit getTerraClim return
 #' @export
 
@@ -275,7 +278,7 @@ getPRISM = function(AOI, varname = NULL,
                     startDate, endDate = NULL, timeRes = "daily",
                     verbose = FALSE, dryrun = FALSE){
   
-  x <- NULL
+  x <- . <- NULL
   
   if(timeRes == "daily"){
     
@@ -333,6 +336,9 @@ getLOCA_hydro = function(AOI, varname,
                          startDate, endDate = NULL, 
                          verbose = FALSE, dryrun = FALSE){
   
+  J <- year <- y <- URL <- layers <- nrows <- ncols <- n_values <- NULL
+  
+  
   x  = climater_filter(id = "loca_hydrology", 
                        AOI = AOI, varname = varname, 
                        model = model, scenario = scenario,
@@ -361,10 +367,10 @@ getLOCA_hydro = function(AOI, varname,
       dap$layers[i] = dap$lyr2[i] - dap$lyr1[i] + 1
       dap$nrows[i]  = nrow(r)
       dap$ncols[i]  = ncol(r)
-      dap$values[i] = dap$layers[i] * dap$ncols[i] * dap$nrows[i]
+      dap$n_values[i] = dap$layers[i] * dap$ncols[i] * dap$nrows[i]
     }
     
-   return(select(dap,  varname, URL, layers, nrows, ncols,values))
+   return(select(dap, varname, URL, layers, nrows, ncols, n_values))
     
   } else {
     out = lapply(1:nrow(dap), function(x){ 

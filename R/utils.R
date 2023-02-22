@@ -27,6 +27,7 @@ merge_across_time = function(data){
 
 #' Get XYTV data from DAP URL
 #' @param obj an OpenDap URL or NetCDF object
+#' @param varname name of variable to extract. If NULL, then get all
 #' @param varmeta should variable metadata be appended?
 #' @return data.frame with (varname, X_name, Y_name, T_name)
 #' @export
@@ -136,7 +137,7 @@ try_att <- function(nc, variable, attribute) {
     }
   } else {
     crs <- try(nc_gm_to_prj(nc_grid_mapping))
-    if (inherits(proj, "try-error")) {
+    if (inherits(crs, "try-error")) {
       crs <- NA
     } else {
       crs
@@ -271,13 +272,13 @@ try_att <- function(nc, variable, attribute) {
 #' @description Reads an OpenDap resources and returns metadata
 #' @param URL URL to OpenDap resource
 #' @param id character. Uniquely named dataset identifier
-#' @param varmeta should variable metadata be appended?
+#' @inheritParams dap_xyzv
 #' @return data.frame
 #' @export
 
 read_dap_file <- function(URL, varname = NULL, id, varmeta = TRUE) {
   
-  nc <- RNetCDF::open.nc(URL)
+  nc <- open.nc(URL)
   on.exit(close.nc(nc))
   
   raw <- dap_xyzv(obj = nc, varname, varmeta = varmeta)
@@ -310,7 +311,7 @@ go_get_dap_data <- function(dap) {
 }
 
 #' Convert catalog entry to extent
-#' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, proj})
+#' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})
 #' @return SpatExtent 
 #' @export
 
@@ -325,7 +326,7 @@ make_ext <-
   }
 
 #' Make Vector
-#' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, proj})
+#' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})
 #' @return SpatVect
 #' @export
 

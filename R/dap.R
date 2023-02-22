@@ -525,7 +525,7 @@ dap_summary <- function(dap = NULL, url = NULL) {
 
 
 #' Read from FTP
-#' @param url Unique Resource Identifier (http or local)
+#' @param URL Unique Resource Identifier (http or local)
 #' @param cat catalog element
 #' @param lyrs lyrs to extract
 #' @param AOI Area of Interest

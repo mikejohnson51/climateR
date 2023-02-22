@@ -17,12 +17,17 @@ Imports:
     RNetCDF,
     terra,
     utils,
-    methods
+    methods,
+    stats
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1
-Suggests: 
+Suggests:
+    httr,
+    AOI,
     covr,
     testthat (>= 3.0.0)
+Remotes:
+    mikejohnson51/AOI
 Config/testthat/edition: 3

@@ -7,6 +7,8 @@
 read_ftp(URL, cat, lyrs = 1, AOI, ext = NULL, crs = NULL, dates = NULL)
 }
 \arguments{
+\item{URL}{Unique Resource Identifier (http or local)}
+
 \item{cat}{catalog element}
 
 \item{lyrs}{lyrs to extract}
@@ -18,8 +20,6 @@ read_ftp(URL, cat, lyrs = 1, AOI, ext = NULL, crs = NULL, dates = NULL)
 \item{crs}{crs of source (if needed)}
 
 \item{dates}{dates of data}
-
-\item{url}{Unique Resource Identifier (http or local)}
 }
 \value{
 SpatRaster

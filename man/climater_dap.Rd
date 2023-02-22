@@ -14,6 +14,8 @@ climater_dap(id, args, verbose, dryrun, print.arg = FALSE)
 \item{verbose}{Should messages be emited?}
 
 \item{dryrun}{Return summary of data prior to retrieving it}
+
+\item{print.arg}{should arguments be printed? Usefull for debugging}
 }
 \value{
 data.frame
