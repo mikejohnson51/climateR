@@ -269,6 +269,9 @@ test_that("GLDAS", {
 
 
 test_that("MODIS", {
+  # skip of covr - no netrc/dodsrc
+  skip_on_covr()
+  
   dead_url  = tryCatch({
     httr::GET('https://opendap.cr.usgs.gov')
     FALSE
@@ -286,8 +289,6 @@ test_that("MODIS", {
   
   expect_true(nrow(out) == 3)
   
-  # skip of covr - no netrc/dodsrc
-  skip_on_covr()
   skip_if(dead_url, "MODIS server is down! Skipping tests")
   
   out = getMODIS(
