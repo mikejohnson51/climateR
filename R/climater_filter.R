@@ -101,11 +101,11 @@ climater_filter <- function(id = NULL,
     
     endDate = ifelse(is.null(endDate), as.character(startDate), as.character(endDate))
     
-    tmp <- catalog |>
+    tmp <- catalog %>% 
       mutate(
         s = do.call("rbind", strsplit(duration, "/"))[, 1],
         e = do.call("rbind", strsplit(duration, "/"))[, 2]
-      ) |>
+      ) %>% 
       mutate(e = ifelse(e == "..", as.character(Sys.Date()), e)) %>% 
       filter(as.Date(e) >= as.Date(startDate) & as.Date(s) <= as.Date(endDate))
     
