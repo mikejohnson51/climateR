@@ -43,10 +43,10 @@ length(unique(params$id))
 length(unique(params$asset))
 ```
 
-2. A general toolkit for accessing remote and local gridded data files bounded by space, time, and variable constants
+2. A general toolkit for accessing remote and local gridded data files bounded by space, time, and variable constraints (`dap`, `dap_crop`, `read_dap_file`)
 
 
-3. A set of shortcuts that implement these methdods for a core set of selcted  catalog elements
+3. A set of shortcuts that implement these methods for a core set of selected  catalog elements
 
 # Installation
 
@@ -69,7 +69,7 @@ library(sf)
 
 # Examples
 
-The climateR package is supplemented by the [AOI](https://github.com/mikejohnson51/AOI) framework established in the AOI R package. 
+The climateR package is supplemented by the [AOI](https://github.com/mikejohnson51/AOI) framework established in the `AOI` R package. 
 
 To get a climate product, an area of interest must be defined:
 
@@ -298,7 +298,7 @@ f = system.file("co/co_cities.rds", package = "climateR")
 cities = readRDS(f)
 ```
 
-2. `climateR` will grab the RasterStack underlying the bounding area of the points
+2. `climateR` will grab the SpatRaster underlying the bounding area of the points
 
 ```{r}
 sites_stack = getTerraClim(AOI   = cities, 

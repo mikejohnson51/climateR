@@ -33,10 +33,11 @@ length(unique(params$asset))
 ```
 
 2.  A general toolkit for accessing remote and local gridded data files
-    bounded by space, time, and variable constants
+    bounded by space, time, and variable constraints (`dap`, `dap_crop`,
+    `read_dap_file`)
 
-3.  A set of shortcuts that implement these methdods for a core set of
-    selcted catalog elements
+3.  A set of shortcuts that implement these methods for a core set of
+    selected catalog elements
 
 # Installation
 
@@ -61,7 +62,7 @@ library(sf)
 
 The climateR package is supplemented by the
 [AOI](https://github.com/mikejohnson51/AOI) framework established in the
-AOI R package.
+`AOI` R package.
 
 To get a climate product, an area of interest must be defined:
 
@@ -85,7 +86,7 @@ system.time({
  p = getPRISM(AOI, varname = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.426   0.042   1.552
+#>   0.406   0.040   1.681
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -153,7 +154,7 @@ m = getMACA(AOI = aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.192   0.033   1.901
+#>   0.207   0.028   6.568
 ```
 
 ``` r
@@ -314,7 +315,7 @@ f = system.file("co/co_cities.rds", package = "climateR")
 cities = readRDS(f)
 ```
 
-2.  `climateR` will grab the RasterStack underlying the bounding area of
+2.  `climateR` will grab the SpatRaster underlying the bounding area of
     the points
 
 ``` r
