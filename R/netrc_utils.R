@@ -67,7 +67,7 @@ writeNetrc <- function(login,
          call. = FALSE)
   }
   
-  if (checkNetrc() && !overwrite) {
+  if (file.exists(netrcFile) && !overwrite) {
     stop("'", netrcFile, "' already exists. Set `overwrite=TRUE`
          if you'd like to overwrite.",
          call. = FALSE
@@ -145,12 +145,14 @@ getDodsrcPath <- function() {
 
 writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = getDodsrcPath(), overwrite = FALSE){
   
-  if (checkDodsrc() && !overwrite) {
+  if (checkDodsrc(dodsrcFile, netrcFile) && !overwrite) {
     stop("'", dodsrcFile, "' already exists. Set `overwrite=TRUE`
          if you'd like to overwrite.",
          call. = FALSE
     )
   }
+  
+  dir = dirname(dodsrcFile)
   
   string <- paste0(
     'USE_CACHE=0\n',
@@ -193,11 +195,12 @@ checkDodsrc <- function(dodsrcFile = getDodsrcPath(),
   return(any(grepl(netrcFile, lines)))
 }
 
-check_rc_files = function(){
-  if(!checkDodsrc()){
-    if(checkNetrc()){
+check_rc_files = function(dodsrcFile = getDodsrcPath(),
+                          netrcFile = getNetrcPath()){
+  if(!checkDodsrc(dodsrcFile, netrcFile)){
+    if(checkNetrc(netrcFile)){
       message("Found Netrc file. Writing dodsrs file to: ", getDodsrcPath())
-      writeDodsrc()
+      writeDodsrc(netrcFile, dodsrcFile)
     } else{
       stop("Netrc file not found. Please run writeNetrc() with earth data credentials.")
     }

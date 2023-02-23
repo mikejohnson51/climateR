@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# climateR <img src="man/figures/logo.png" width=230 align="right" />
+# climateR
 
 <!-- badges: start -->
 
@@ -14,7 +14,7 @@ MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://choosealicens
 [![Project Status:
 Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![LifeCycle](https://img.shields.io/badge/lifecycle-experimental-orange)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![codecov](https://codecov.io/gh/mikejohnson51/climateR/branch/automation/graph/badge.svg)](https://codecov.io/gh/mikejohnson51/climateR)
+[![codecov](https://codecov.io/gh/mikejohnson51/climateR/branch/master/graph/badge.svg?token=7zs6C91SDw)](https://codecov.io/gh/mikejohnson51/climateR)
 <!-- badges: end -->
 
 `climateR` simplifies the steps needed to get climate data into R. At
@@ -25,11 +25,11 @@ its core it provides three main things:
 
 ``` r
 nrow(params)
-#> [1] 105307
+#> [1] 107857
 length(unique(params$id))
-#> [1] 2074
+#> [1] 2075
 length(unique(params$asset))
-#> [1] 4628
+#> [1] 4653
 ```
 
 2.  A general toolkit for accessing remote and local gridded data files
@@ -85,7 +85,7 @@ system.time({
  p = getPRISM(AOI, varname = c('tmax','tmin'), startDate = "2018-10-29")
 })
 #>    user  system elapsed 
-#>   0.368   0.037   1.424
+#>   0.426   0.042   1.552
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -153,7 +153,7 @@ m = getMACA(AOI = aoi_get(state = "FL"),
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
 #>    user  system elapsed 
-#>   0.191   0.025   1.616
+#>   0.192   0.033   1.901
 ```
 
 ``` r
@@ -221,7 +221,6 @@ monthly data up to the current year for many variables, and CHIRPS
 provides daily rainfall data:
 
 ``` r
-
 kenya = aoi_get(country = "Kenya")
 tc = getTerraClim(kenya, varname = "pet", startDate = "2018-01-01")
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
@@ -229,12 +228,13 @@ chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
 library(patchwork)
 
 ggplot() +
-  geom_spatraster(data = tc$pet_total) +
+  geom_spatraster(data = tc$pet) +
   facet_wrap(~lyr) +
   scale_fill_whitebox_c(
     palette = "muted",
     na.value = "white"
   ) + 
+  geom_sf(data = kenya, fill = NA, lwd = 2, col = "black") + 
   theme_minimal() + 
   ggplot() +
   geom_spatraster(data = chirps$precip) +
@@ -243,7 +243,8 @@ ggplot() +
     palette = "muted",
     na.value = "white"
   ) + 
-  theme_minimal()
+  geom_sf(data = kenya, fill = NA, lwd = 2, col = "black") + 
+  theme_minimal() 
 ```
 
 <img src="man/figures/README-unnamed-chunk-14-1.png" width="100%" />
@@ -309,8 +310,7 @@ then extract time series as opposed to iterating over the locations:
 1.  Starting with a set of locations in Colorado:
 
 ``` r
-(f = system.file("co/co_cities.rds", package = "climateR"))
-#> [1] "/Users/mjohnson/Library/R/x86_64/4.2/library/climateR/co/co_cities.rds"
+f = system.file("co/co_cities.rds", package = "climateR")
 cities = readRDS(f)
 ```
 
@@ -326,7 +326,7 @@ sites_stack = getTerraClim(AOI   = cities,
 
 ``` r
 {
-  plot(sites_stack$tmax_total[[1]])
+  plot(sites_stack$tmax[[1]])
   plot(vect(cities), add = TRUE, pch = 16, cex = .5)
 }
 ```

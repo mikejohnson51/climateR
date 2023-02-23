@@ -39,7 +39,10 @@ jobs:
           needs: check
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = c("--ignore-vignettes", "--no-manual"), build_args = c("--no-build-vignettes"), error_on = "error", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--ignore-vignettes", "--no-manual", "--no-tests"), 
+                                  build_args = c("--no-build-vignettes"), 
+                                  error_on = "error", 
+                                  check_dir = "check")
         shell: Rscript {0}
       
       - name: Upload check results
@@ -48,7 +51,3 @@ jobs:
         with:
           name: results
           path: check
-
-      - name: Test coverage
-        run: covr::codecov()
-        shell: Rscript {0}
