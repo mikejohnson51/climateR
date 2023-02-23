@@ -1,3 +1,5 @@
+omit.na <- function(x) { x[!is.na(x)] }
+
 #' Merge List of SpatRaster's across time
 #' @description Given a list of SpatRasters with possiblly shared names, merge across time
 #' @param data list of names SpatRasters
@@ -119,9 +121,7 @@ try_att <- function(nc, variable, attribute) {
 #' @return list 
 
 .resource_grid <- function(nc, X_name = NULL, Y_name = NULL, stopIfNotEqualSpaced = TRUE) {
-  
-  omit.na <- function(x) { x[!is.na(x)] }
-  
+
   if (is.null(X_name) | is.null(Y_name)) {
     atts <- dap_xyzv(nc)
     X_name <- omit.na(unique(atts$X_name))
@@ -224,13 +224,10 @@ try_att <- function(nc, variable, attribute) {
 #' @return list
 
 .resource_time <- function(nc, T_name = NULL) {
-  omit.na <- function(x) {
-    x[!is.na(x)]
-  }
   
   if (is.null(T_name)) {
-    atts <- nc_coord_var(nc)
-    T_name <- omit.na(unique(atts$T))
+    atts <- dap_xyzv(nc)
+    T_name <- omit.na(unique(atts$T_name))
   }
   
   T_var_info <- var.inq.nc(nc, T_name)

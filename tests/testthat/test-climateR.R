@@ -235,12 +235,8 @@ test_that("MACA", {
 
 
 test_that("NLDAS", {
-  # skip of covr - no netrc/dodsrc
-  skip_on_covr()
-  skip_on_covr()
+  # skip on CI - no netrc/dodsrc
   skip_on_ci()
-  skip_on_cran()
-  skip_if_offline()
   
   out = getNLDAS(
     AOI = aoi_get("Fort Collins"),
@@ -258,12 +254,8 @@ test_that("NLDAS", {
 
 
 test_that("GLDAS", {
-  # skip of covr - no netrc/dodsrc
-  skip_on_covr()
-  skip_on_covr()
+  # skip on CI - no netrc/dodsrc
   skip_on_ci()
-  skip_on_cran()
-  skip_if_offline()
   
   out = getGLDAS(
     AOI = aoi_get("Fort Collins"),
@@ -279,11 +271,8 @@ test_that("GLDAS", {
 
 
 test_that("MODIS", {
-  # skip of covr - no netrc/dodsrc
-  skip_on_covr()
+  # skip on CI - no netrc/dodsrc
   skip_on_ci()
-  skip_on_cran()
-  skip_if_offline()
   
   dead_url  = tryCatch({
     httr::GET('https://opendap.cr.usgs.gov')
@@ -448,6 +437,14 @@ test_that("Livneh", {
 
 
 test_that("CHIRPS", {
+  
+  expect_error(getCHIRPS(
+    AOI = aoi_get("Fort Collins"),
+    startDate = "2011-11-29",
+    endDate = "2011-12-03",
+    timeRes = "BLAH"
+  ))
+  
   xx = getCHIRPS(
     AOI = aoi_get("Fort Collins"),
     startDate = "2011-11-29",
@@ -502,6 +499,12 @@ test_that("dap_xyzv", {
   expect_true(.resource_grid(RNetCDF::open.nc(f))$resX == .125)
   
   expect_error(dap_xyzv(f, varname = "BLAH"))
+  
+  URL = "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/hyrax/GPM_L3/GPM_3IMERGHH.06/2021/001/3B-HHR.MS.MRG.3IMERG.20210101-S000000-E002959.0000.V06B.HDF5"
+  dap = dap_xyzv(URL)
+  expect_true(nrow(dap) == 10)
+  
+  .resource_time(nc = RNetCDF::open.nc(URL))
   
 })
 
@@ -600,6 +603,18 @@ test_that("VRT", {
 })
 
 test_that("FTP", {
+  
+  dr = getLOCA_hydro(
+    AOI = aoi_get(state = "FL"),
+    varname = "baseflow",
+    startDate = "1990-12-31",
+    endDate = "1991-01-01",
+    dryrun = TRUE
+  )
+  
+  expect_true(nrow(dr) == 2)
+  expect_true(ncol(dr) == 6)
+  
   oo = getLOCA_hydro(
     AOI = aoi_get(state = "FL"),
     varname = "baseflow",
