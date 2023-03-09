@@ -80,7 +80,7 @@ dap <- function(URL = NULL,
   
   if (any(getExtension(urls) %in% c('vrt', "tif")) |  all(grepl("vsi", urls))) {
     vrt_crop_get(
-      URL = urls,
+      URL = URL,
       catalog = catalog,
       AOI = AOI,
       varname = varname,
@@ -121,11 +121,18 @@ vrt_crop_get = function(URL = NULL,
                         end = NULL,
                         toptobottom = FALSE,
                         verbose = TRUE) {
+  
   if (is.null(URL)) {
     URL <- catalog$URL
   }
   
-  vrts =  suppressWarnings({ rast(URL) })
+  vrts = tryCatch({
+    suppressWarnings({ rast(URL) })
+  }, error = function(e){
+   NULL
+  })
+  
+  if(!is.null(vrts)){
   
   if (!is.null(varname)) {
     vrts = vrts[[grepl(paste(varname, collapse = "|"), names(vrts))]]
@@ -152,6 +159,11 @@ vrt_crop_get = function(URL = NULL,
     fin = vrts
     flag = TRUE
   }
+    
+  } else {
+    flag = TRUE
+    fin = suppressWarnings({ lapply(URL, rast) })
+  }
   
   if (!is.null(AOI) & flag) {
     AOIv =  vect(AOI)
@@ -166,11 +178,19 @@ vrt_crop_get = function(URL = NULL,
   }
   
   if (toptobottom) {
-    fin <- flip(fin)
+    fin <- lapply(fin, flip)
+  } else {
+    fin <-  list(fin)
+  }
+  
+  names(fin) = if(!is.null(catalog)){
+    catalog$asset
+  } else {
+    as.vector(sapply(fin, names))
   }
   
   fin
-  
+
 }
 
 #' @title Crop DAP file
@@ -185,6 +205,7 @@ dap_crop <- function(URL = NULL,
                      endDate = NULL,
                      varname = NULL,
                      verbose = TRUE) {
+  
   interval <- NULL
   
   if (!is.null(URL)) {
@@ -200,9 +221,8 @@ dap_crop <- function(URL = NULL,
     catalog <-
       cbind(catalog, data.frame(startDate = tmp[, 1], endDate = tmp[, 2]))
   } else {
-    if (is.null(endDate)) {
-      endDate <- startDate
-    }
+    
+    if (is.null(endDate)) { endDate <- startDate }
     
     if (grepl("hour", catalog$interval[1])) {
       startDate <- paste(startDate, "00:00:00")
@@ -332,8 +352,7 @@ dap_crop <- function(URL = NULL,
   }
   
   if (!is.null(varname)) {
-    if (!varname %in% catalog$varname |
-        !varname %in% catalog$variable) {
+    if (all(!varname %in% catalog$varname, !varname %in% catalog$variable)) {
       stop(
         "variable(s) in resource include:\n\t> ",
         paste(unique(catalog$varname), collapse = "\t >"),
@@ -417,6 +436,7 @@ dap_get <- function(dap, varname = NULL) {
 #' @export
 
 dap_summary <- function(dap = NULL, url = NULL) {
+  
   if (!is.null(url) & is.null(dap)) {
     dap <- dap_crop(url)
   } else {

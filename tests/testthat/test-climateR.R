@@ -31,6 +31,7 @@ test_that("TerraClim", {
     varname = "tmin",
     startDate = "2020-01-01"
   )
+  
   expect_true(class(out) == "list")
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "tmin")
@@ -391,9 +392,9 @@ test_that("local & extract pts", {
 test_that("Remote VRT", {
   cat = climater_filter(asset = '2019 Land Cover L48')
   nlcd = dap(catalog = cat, AOI = aoi_get("Fort Collins"))
-  expect_true(class(nlcd) == "SpatRaster")
-  expect_true(nlyr(nlcd) == 1)
-  expect_true(res(nlcd)[1] == 30)
+  expect_true(class(nlcd[[1]]) == "SpatRaster")
+  expect_true(nlyr(nlcd[[1]]) == 1)
+  expect_true(res(nlcd[[1]])[1] == 30)
   
 })
 
@@ -588,7 +589,7 @@ test_that("VRT", {
   )
   
   expect_true(all.equal(hbv1, hbv1_2))
-  expect_true(names(hbv1) == names(hbv)[2])
+  expect_true(names(hbv1) == names(hbv))
   
   hbv_2 = vrt_crop_get(
     catalog = tmp,
@@ -597,8 +598,8 @@ test_that("VRT", {
     end = 3
   )
   
-  expect_true(all.equal(hbv_2, hbv[[2:3]]))
-  expect_true(all(names(hbv_2) == names(hbv)[2:3]))
+  expect_true(all.equal(hbv_2[[1]], hbv[[1]][[2:3]]))
+  expect_true(all(names(hbv_2[[1]]) == names(hbv[[1]])[2:3]))
   
 })
 

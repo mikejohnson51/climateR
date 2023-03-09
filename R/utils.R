@@ -1,7 +1,7 @@
 omit.na <- function(x) { x[!is.na(x)] }
 
 #' Merge List of SpatRaster's across time
-#' @description Given a list of SpatRasters with possiblly shared names, merge across time
+#' @description Given a list of SpatRasters with possibly shared names, merge across time
 #' @param data list of names SpatRasters
 #' @return data.frame with (varname, X_name, Y_name, T_name)
 #' @export
@@ -40,51 +40,86 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
     obj <- open.nc(obj)
     on.exit(close.nc(obj))
   }
-
-  raw = suppressWarnings({
-    tryCatch({
-      nc_coord_var(obj, variable = NULL)[, c("variable", "X", "Y", "T")]
-    }, error = function(e){ 
-      vars = nc_vars(obj)$name
-      lapply(1:length(vars), FUN = function(j){ 
+  
+  
+  if(is.null(varname)){
+    raw = suppressWarnings({
+      tryCatch({
+        nc_coord_var(obj, variable = NULL)[, c("variable", "X", "Y", "T", "Z")]
+      }, error = function(e){ 
+        vars = nc_vars(obj)$name
+        lapply(1:length(vars), FUN = function(j){ 
           tryCatch({
-          nc_coord_var(obj, variable = vars[j])[, c("variable", "X", "Y", "T")]},
+            nc_coord_var(obj, variable = vars[j])[, c("variable", "X", "Y", "T", "Z")]
+          },
           error = function(x){
             NULL
           })
         }) 
       }) %>% 
         bind_rows() 
-  })
+    })
+    
+  } else {
+    
+    raw = suppressWarnings({
+      tryCatch({
+        nc_coord_var(obj, variable = varname)[, c("variable", "X", "Y", "T", "Z")]
+      }, error = function(e){ 
+            NULL
+        }) 
+      })
+  }
 
+  
   raw <- raw[!apply(raw, 1, function(x) {
-    any(is.na(x))
+    sum(!is.na(x)) <= 3
   }), ]
   
-  if(is.null(varname)){
-    varname = raw$variable[1]
+  
+  raw$dim_order = NA
+  raw$nX = NA
+  raw$nY = NA
+  #raw$nT = NA
+  raw$nZ = NA
+  
+
+  for(i in 1:nrow(raw)){
+    o    = rev(var.inq.nc(obj, raw$variable[i])$dimids)
+    dims = nc_dims(obj, varname)$name[o + 1]
+    length = nc_dims(obj, varname)$length[o + 1]
+    
+    if(is.na(raw$Z[i]) & length(dims) == 4){
+      raw$Z[i] =  dims[!dims %in% as.vector(raw[i,-1])]
+    }
+    
+    o = names(raw)[match(dims, raw[i,])]
+    raw$dim_order[i] = paste(o, collapse = "")
+    raw$nX[i] = length[which(dims == raw$X[i])]
+    raw$nY[i] = length[which(dims == raw$Y[i])]
+    #raw$nT[i] = length[which(dims == raw$T[i])]
+    if(all(is.na(raw$Z))){
+      raw$nZ[i] = NA
+    } else {
+      raw$nZ[i] = length[which(dims == raw$Z[i])]
+    }
   }
   
-  o = rev(var.inq.nc(obj, varname)$dimids)
-  o = sapply(1:length(o), function(x){ dim.inq.nc(obj, o[x])$name } )
-  o = names(raw)[match(o ,raw[raw$variable == varname,])]
-  
-  names(raw) <- c("varname", "X_name", "Y_name", "T_name")
-  
-  raw$dim_order = paste(o, collapse = "")
+  names(raw) <- c("varname", "X_name", "Y_name", "T_name", "Z_name", "dim_order",
+                  "nX", "nY", "nZ")
   
   ll <- list()
   
   if (varmeta) {
     for (i in 1:nrow(raw)) {
-      if (unique(nc_var(obj, raw$varname[i])$ndims) > 3) {
+      if (unique(nc_var(obj, raw$varname[i])$ndims) > 4) {
         ll[[i]] <- NULL
-        warning("We do not support 4D datasets:", raw$varname[i])
+        warning("We do not support 5D datasets:", raw$varname[i])
       } else {
         ll[[i]] <- data.frame(
           varname = raw$varname[i],
           units = try_att(obj, raw$varname[i], "units"),
-          long_name = try_att(obj, raw$varname[i], "long_name")
+          description = try_att(obj, raw$varname[i], "long_name")
         )
       }
     }

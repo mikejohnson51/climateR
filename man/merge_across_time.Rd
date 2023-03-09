@@ -13,5 +13,5 @@ merge_across_time(data)
 data.frame with (varname, X_name, Y_name, T_name)
 }
 \description{
-Given a list of SpatRasters with possiblly shared names, merge across time
+Given a list of SpatRasters with possibly shared names, merge across time
 }
