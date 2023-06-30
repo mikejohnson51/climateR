@@ -11,3 +11,4 @@ help
 ^codecov\.yml$
 ^\.github$
 .lazytest
+img
