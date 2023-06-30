@@ -2,7 +2,7 @@ Package: climateR
 Type: Package
 Title: climateR
 Description: A set of functions to subset climate data.
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: person("Mike", "Johnson", role = c("aut", "cre"), email = "mikecp11@gmail.com")
 Maintainer: Mike Johnson <mikecp11@gmail.com>
 BugReports: https://github.com/mikejohnson51/climateR/issues
@@ -22,7 +22,7 @@ Imports:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Suggests:
     httr,
     AOI,

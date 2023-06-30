@@ -399,6 +399,12 @@ test_that("Remote VRT", {
 })
 
 
+terra::rast('/Users/mjohnson/github/opendap.catalog/data-raw/ned/USGS_seamless_13.vrt')
+
+terra::rast('/vsicurl/https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/USGS_Seamless_DEM_13.vrt')
+
+terra::rast('/vsis3/nextgen-hydrofabric/DEM-products/USGS_seamless_13.vrt')
+
 test_that("Livneh", {
   xx = getLivneh(
     AOI = aoi_get("Fort Collins"),
