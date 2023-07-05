@@ -126,15 +126,8 @@ checkNetrc <- function(netrcFile = getNetrcPath(), machine = "urs.earthdata.nasa
 #' By default will go to your home directory, which is advised
 #' @param overwrite A logical. overwrite the existing dodsrc file?
 #' @return A character vector containing the netrc file path
-#' @seealso \code{\link{checkNetrc}}
+#' @seealso \code{\link{checkDodsrc}}
 #' @family netrc
-#' @examples
-#' \dontrun{
-#' writeNetrc(
-#'   login = "XXX@email.com",
-#'   password = "yourSecretPassword"
-#' )
-#' }
 #' @export
 
 writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = getDodsrcPath(), overwrite = FALSE){
@@ -190,7 +183,7 @@ checkDodsrc <- function(dodsrcFile = getDodsrcPath(),
 }
 
 check_rc_files = function(dodsrcFile = getDodsrcPath(),
-                          netrcFile = getNetrcPath()){
+                          netrcFile  = getNetrcPath()){
   if(!checkDodsrc(dodsrcFile, netrcFile)){
     if(checkNetrc(netrcFile)){
       message("Found Netrc file. Writing dodsrs file to: ", getDodsrcPath())
