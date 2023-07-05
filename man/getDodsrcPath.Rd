@@ -2,7 +2,7 @@
 % Please edit documentation in R/netrc_utils.R
 \name{getDodsrcPath}
 \alias{getDodsrcPath}
-\title{Get a default dods file path}
+\title{Get a default dodsrc file path}
 \usage{
 getDodsrcPath()
 }
@@ -10,10 +10,10 @@ getDodsrcPath()
 A character vector containing the default netrc file path
 }
 \description{
-Get a default netrc file path
+Get a default dodsrc file path
 }
 \examples{
-getNetrcPath()
+getDodsrcPath()
 }
 \seealso{
 Other netrc: 
