@@ -14,6 +14,22 @@ whatOS = function(){
   tolower(os)
 }
 
+#' @title Get a default dodsrc file path
+#' @description Get a default dodsrc file path
+#' @return A character vector containing the default netrc file path
+#' @examples
+#' getDodsrcPath()
+#' @export
+#' @family netrc
+
+getDodsrcPath <- function() {
+  if (whatOS() == "windows") {
+    file.path(Sys.getenv("UserProfile"), "_dodsrc")
+  } else {
+    file.path(Sys.getenv("HOME"), ".dodsrc")
+  }
+}
+
 #' @title Get the default netrc file path
 #' @description Get a default netrc file path
 #' @return A character vector containing the default netrc file path
@@ -23,11 +39,10 @@ whatOS = function(){
 #' @family netrc
 
 getNetrcPath <- function() {
-  home <- Sys.getenv("HOME")
   if (whatOS() == "windows") {
-    file.path(home, "_netrc")
+    file.path(Sys.getenv("UserProfile"), "_netrc")
   } else {
-    file.path(home, ".netrc")
+    file.path(Sys.getenv("HOME"), ".netrc")
   }
 }
 
@@ -107,23 +122,6 @@ checkNetrc <- function(netrcFile = getNetrcPath(), machine = "urs.earthdata.nasa
   return(any(grepl(machine, lines)))
 }
 
-
-#' @title Get a default dods file path
-#' @description Get a default netrc file path
-#' @return A character vector containing the default netrc file path
-#' @examples
-#' getNetrcPath()
-#' @export
-#' @family netrc
-
-getDodsrcPath <- function() {
-  home <- Sys.getenv("HOME")
-  if (whatOS() == "windows") {
-    file.path(home, "_dodsrc")
-  } else {
-    file.path(home, ".dodsrc")
-  }
-}
 
 #' @title Write dodsrc file
 #' @description Write a dodsrc file that is valid for a netrc file
