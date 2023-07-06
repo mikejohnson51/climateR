@@ -139,23 +139,18 @@ Getting multiple models results is also quite simple:
 ```{r}
 models = c("BNU-ESM","CanESM2", "CCSM4")
 
-climater_filter(id  = "maca_day",
-                AOI = aoi_get(state = "CO"),
-                varname = 'tasmin', 
-                model = models, 
-                startDate = "2080-11-29" )
-
-names(temp[[1]])
-
 temp =  getMACA(AOI = aoi_get(state = "CO"),
                 varname = 'tasmin', 
                 model = models, 
                 startDate = "2080-11-29")
 
-temp$air_temperature$mean =  app(temp$air_temperature, mean)
+temp[[1]]$mean =  app(temp[[1]], mean)
 
 names(temp[[1]]) = c(models, "Ensemble Mean")
 
+```
+
+```{r, echo = FALSE, fig.width = 15}
 # Plot
 ggplot() +
   geom_spatraster(data = temp$air_temperature) +
@@ -163,7 +158,8 @@ ggplot() +
   scale_fill_whitebox_c(
     palette = "muted",
     na.value = "white"
-  ) + theme_minimal()
+  ) + 
+  theme_minimal()
 ```
 If you don't know your models, you can always grab a random set by specifying a number:
 
@@ -172,7 +168,9 @@ random = getMACA(aoi_get(state = "MI"),
                  model = 3, 
                  varname = "pr", 
                  startDate = "2050-10-29")
+```
 
+```{r, echo = FALSE, fig.width = 15}
 # Plot
 ggplot() +
   geom_spatraster(data = random$precipitation) +
@@ -192,7 +190,9 @@ Not all datasets are USA focused either. TerraClimate offers global, monthly dat
 kenya = aoi_get(country = "Kenya")
 tc = getTerraClim(kenya, varname = "pet", startDate = "2018-01-01")
 chirps = getCHIRPS(kenya, startDate = "2018-01-01", endDate = "2018-01-04" )
+```
 
+```{r, echo = FALSE, fig.width = 15}
 library(patchwork)
 
 ggplot() +
@@ -213,8 +213,6 @@ ggplot() +
   ) + 
   geom_sf(data = kenya, fill = NA, lwd = 2, col = "black") + 
   theme_minimal() 
-
-
 ```
 
 # Point Based Data
@@ -222,15 +220,13 @@ ggplot() +
 Finally, data gathering is not limited to areal extents and can be retrieved as a time series at locations. 
 
 ```{r}
-AOI = 
-
 ts  = getGridMET(geocode('Fort Collins', pt = TRUE), 
                  varname =  c("pr", 'srad'), 
                  startDate = "2021-01-01", 
                  endDate = "2021-12-31")
 ```
 
-```{r}
+```{r, echo = FALSE, fig.width = 15}
 ggplot(data = ts, aes(x = date, y = srad)) + 
   geom_line() +
   stat_smooth(col = "red") + 
@@ -286,7 +282,7 @@ sites_stack = getTerraClim(AOI   = cities,
                            endDate   = "2018-12-31")
 ```
 
-```{r}
+```{r, echo = FALSE, fig.width = 15}
 {
   plot(sites_stack$tmax[[1]])
   plot(vect(cities), add = TRUE, pch = 16, cex = .5)
@@ -302,9 +298,9 @@ sites_wide[[1]][1:5, 1:5]
 
 To make the data 'tidy' simply pivot on the `date` column:
 
-```{r,echo = FALSE}
+```{r, echo = FALSE}
 tmax = tidyr::pivot_longer(sites_wide[[1]], -date)
-head(tmax)
+
 
 ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
   scale_color_viridis_d() +
