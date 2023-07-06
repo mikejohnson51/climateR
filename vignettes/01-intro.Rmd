@@ -298,10 +298,12 @@ sites_wide[[1]][1:5, 1:5]
 
 To make the data 'tidy' simply pivot on the `date` column:
 
-```{r, echo = FALSE}
+```{r}
 tmax = tidyr::pivot_longer(sites_wide[[1]], -date)
+head(tmax)
+```
 
-
+```{r, echo = FALSE}
 ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) + 
   scale_color_viridis_d() +
   geom_line() + 
