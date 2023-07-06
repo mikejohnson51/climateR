@@ -123,10 +123,6 @@ climater_filter <- function(id = NULL,
       scenario <- c("historical", scenario)
     }
     
-    # if ("total" %in% catalog$scenario) {
-    #   scenario <- c("total", scenario)
-    # }
-    
     if(!is.null(scenario)){
       catalog <- filter(catalog, scenario %in% !!scenario)
     }
@@ -134,6 +130,13 @@ climater_filter <- function(id = NULL,
   
   
   ### 3 ---- ensemble filter
+  
+  if(length(ensemble) != length(model)){
+    catalog = catalog %>% 
+      group_by(model, ensemble) %>% 
+      slice(1) %>% 
+      ungroup()
+  } else {
   
     u <- unique(catalog$ensemble)
     
@@ -156,6 +159,7 @@ climater_filter <- function(id = NULL,
         )
       }
     }
+  }
 
     
   

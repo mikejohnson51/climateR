@@ -12,3 +12,7 @@ help
 ^\.github$
 .lazytest
 img
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^vignettes/articles$

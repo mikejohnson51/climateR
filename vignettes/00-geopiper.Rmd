@@ -1,0 +1,10 @@
+---
+title: "Welcome to GeoPiper"
+output: distill::distill_article
+---
+
+# [GeoPiper]()
+
+```{r, echo = FALSE, out.width='200%'}
+knitr::include_graphics('../man/figures/geopiper.gif')
+```

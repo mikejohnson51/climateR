@@ -1,0 +1,19 @@
+url: ~
+template:
+  bootstrap: 5
+  bootswatch: litera
+authors:
+   ESIP: 
+     html: "<img src='man/figures/esip-logo.png' height='36' alt='ESIP'/>"
+     href: "https://www.esipfed.org"
+   footer:
+    roles: [cre]
+   citation:
+    roles: [cre]
+articles:
+
+- title: climateR
+  contents:
+  - 00-geopiper
+  - 01-intro
+  
