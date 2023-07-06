@@ -34,7 +34,6 @@ climater_filter <- function(id = NULL,
     stop("no data to filter.", call. = FALSE)
   }
   
-  
   if(!is.null(asset)){
     catalog = filter(catalog, asset == !!asset)
   }
@@ -132,6 +131,33 @@ climater_filter <- function(id = NULL,
       catalog <- filter(catalog, scenario %in% !!scenario)
     }
   }
+  
+  
+  ### 3 ---- ensemble filter
+  
+    u <- unique(catalog$ensemble)
+    
+    if (length(u) > 1 & is.null(ensemble)) {
+        warning("There are ", length(u), " ensembles available. Since ensemble was left NULL, we default to ", u[1] , call. = FALSE)
+        catalog <- filter(catalog, ensemble %in% u[1])
+    } else if(is.null(ensemble)){
+      catalog = catalog 
+    } else {
+      if (all(ensemble %in% catalog$ensemble)) {
+        catalog <- filter(catalog, ensemble %in% !!ensemble)
+      } else {
+        bad <- ensemble[!ensemble %in% u]
+        
+        m <- distinct(select(catalog, model, ensemble))
+        
+        stop("'", bad, "' not availiable ensemble for '", catalog$id[1], "'. Try: \n\t",
+             paste(">",  m$ensemble, collapse = "\n\t"),
+             call. = FALSE
+        )
+      }
+    }
+
+    
   
   ### ---- AOI filter
   if(!is.null(AOI)){
