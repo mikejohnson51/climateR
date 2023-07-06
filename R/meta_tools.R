@@ -143,7 +143,7 @@ grid_meta = function (raw){
       "Xn",
       "Y1",
       "Yn",
-      "proj"
+      "crs"
     ) %in% names(raw)
   )) {
     message("Grid metadata already exists")
