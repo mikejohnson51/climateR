@@ -22,6 +22,26 @@ test_that("climater_filter", {
   ))
   expect_error(climater_filter(AOI = aoi_get(country = "Egypt"), asset = '2019 Land Cover L48'))
   expect_equal(nrow(climater_filter(id = "gridmet", varname = "pr")), 1)
+  
+  expect_equal(nrow(climater_filter(id = "bcca",
+                  varname = c('pr', 'tasmax','tasmin'),
+                  ensemble = 'r1i1p1',
+                  model = c("CSIRO-Mk3-6-0"),
+                  scenario = c('rcp45', 'rcp85'),
+                  startDate = "2079-10-01")), 6)
+  
+  expect_warning(climater_filter(id = "bcca",
+                                    varname = c('pr', 'tasmax','tasmin'),
+                                    model = c("CSIRO-Mk3-6-0"),
+                                    scenario = c('rcp45', 'rcp85'),
+                                    startDate = "2079-10-01"))
+  
+  expect_error(climater_filter(id = "bcca",
+                                 varname = c('pr', 'tasmax','tasmin'),
+                                 model = c("CSIRO-Mk3-6-0"),
+                                 ensemble = "XXXX",
+                                 scenario = c('rcp45', 'rcp85'),
+                                 startDate = "2079-10-01"))
 })
 
 
