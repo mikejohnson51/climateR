@@ -18,6 +18,7 @@ dap_meta = function(raw){
 #' @export
 
 variable_meta = function (raw, verbose = TRUE){
+  
   if (!"variable" %in% names(raw)) {
     warning("raw must include variable column")
     if (!"variable" %in% names(raw)) {
@@ -25,13 +26,14 @@ variable_meta = function (raw, verbose = TRUE){
       raw$variable <- raw$varname
     }
   }
-  if (all(c("units", "long_name") %in% names(raw))) {
+  
+  if (all(c("units", "description") %in% names(raw))) {
     if (verbose) {
       message("Variable metadata already exists")
     }
     return(raw)
-  }
-  else {
+  } else {
+    
     res <- by(raw, list(raw$variable), function(x) {
       c(
         URL = x$URL[1],
@@ -39,8 +41,11 @@ variable_meta = function (raw, verbose = TRUE){
         id = x$id[1]
       )
     })
+    
     tmp <- data.frame(do.call(rbind, res))
+    
     ll <- list()
+    
     for (i in 1:nrow(tmp)) {
       ll[[i]] <- tryCatch({
         t <- dap_xyzv(obj = paste0(tmp$URL[i], "#fillmismatch"),
@@ -62,6 +67,9 @@ variable_meta = function (raw, verbose = TRUE){
                 ")")
       }
     }
+    
+    x = do.call(rbind, ll)
+    x = x[!names(x) %in% names(raw)]
     return(merge(raw, do.call(rbind, ll), by = "variable"))
   }
 }
