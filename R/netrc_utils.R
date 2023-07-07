@@ -16,9 +16,9 @@ whatOS = function(){
 
 build_file = function(file){
   if (whatOS() == "windows") {
-    paste0(Sys.getenv("HOMEDRIVE"), "\\", paste0("_", file))
+    paste0(Sys.getenv("UserProfile"), "\\", paste0(".", file))
   } else {
-    file.path(Sys.getenv("HOME"),  paste0(".", file))
+    paste0(Sys.getenv("HOME"), "/" , paste0(".", file))
   }
 }
 
