@@ -4,19 +4,13 @@
 \alias{writeDodsrc}
 \title{Write dodsrc file}
 \usage{
-writeDodsrc(
-  netrcFile = getNetrcPath(),
-  dodsrcFile = getDodsrcPath(),
-  overwrite = FALSE
-)
+writeDodsrc(netrcFile = getNetrcPath(), dodsrcFile = ".dodsrc")
 }
 \arguments{
 \item{netrcFile}{A character. A path to where the netrc file should be.}
 
-\item{dodsrcFile}{the machine you are logging into
+\item{dodsrcFile}{The path to the dodsrc file you want to write
 By default will go to your home directory, which is advised}
-
-\item{overwrite}{A logical. overwrite the existing dodsrc file?}
 }
 \value{
 A character vector containing the netrc file path
@@ -24,16 +18,8 @@ A character vector containing the netrc file path
 \description{
 Write a dodsrc file that is valid for a netrc file
 }
-\examples{
-\dontrun{
-writeNetrc(
-  login = "XXX@email.com",
-  password = "yourSecretPassword"
-)
-}
-}
 \seealso{
-\code{\link{checkNetrc}}
+\code{\link{checkDodsrc}}
 
 Other netrc: 
 \code{\link{getDodsrcPath}()},

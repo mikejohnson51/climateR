@@ -16,7 +16,7 @@ whatOS = function(){
 
 build_file = function(file){
   if (whatOS() == "windows") {
-    file.path(Sys.getenv("UserProfile"), paste0("_", file))
+    paste0(Sys.getenv("HOMEDRIVE"), "\\", paste0("_", file))
   } else {
     file.path(Sys.getenv("HOME"),  paste0(".", file))
   }
@@ -122,23 +122,16 @@ checkNetrc <- function(netrcFile = getNetrcPath(), machine = "urs.earthdata.nasa
 #' @title Write dodsrc file
 #' @description Write a dodsrc file that is valid for a netrc file
 #' @param netrcFile A character. A path to where the netrc file should be.
-#' @param dodsrcFile the machine you are logging into
+#' @param dodsrcFile The path to the dodsrc file you want to write
 #' By default will go to your home directory, which is advised
-#' @param overwrite A logical. overwrite the existing dodsrc file?
 #' @return A character vector containing the netrc file path
 #' @seealso \code{\link{checkDodsrc}}
 #' @family netrc
 #' @export
 
-writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = getDodsrcPath(), overwrite = FALSE){
+writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = ".dodsrc"){
   
-  if (checkDodsrc(dodsrcFile, netrcFile) && !overwrite) {
-    stop("'", dodsrcFile, "' already exists. Set `overwrite=TRUE`
-         if you'd like to overwrite.",
-         call. = FALSE
-    )
-  }
-  
+  unlink(dodsrcFile)
   dir = dirname(dodsrcFile)
   
   string <- paste0(
@@ -146,19 +139,20 @@ writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = getDodsrcPath(),
     'MAX_CACHE_SIZE=20\n',
     'MAX_CACHED_OBJ=5\n',
     'IGNORE_EXPIRES=0\n',
-    paste0('CACHE_ROOT=', dir, '/.dods_cache/\n'),
     'DEFAULT_EXPIRES=86400\n',
     'ALWAYS_VALIDATE=0\n',
     'DEFLATE=0\n',
     'VALIDATE_SSL=1\n',
-    paste0('HTTP.COOKIEJAR=', dir, '/.cookies\n'),
+    paste0('HTTP.COOKIEJAR=', dir, '/.urs_cookies\n'),
     paste0('HTTP.NETRC=', netrcFile))
 
   # create a netrc file
-  write(string,  path.expand(dodsrcFile), append=TRUE)
+  write(string, path.expand(dodsrcFile))
   
   # set the owner-only permission
   Sys.chmod(dodsrcFile, mode = "600")
+  
+  dodsrcFile
   
 }
 

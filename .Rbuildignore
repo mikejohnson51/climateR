@@ -16,3 +16,5 @@ img
 ^docs$
 ^pkgdown$
 ^vignettes/articles$
+.dodsrc
+.urs_cookies

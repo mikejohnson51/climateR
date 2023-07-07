@@ -6,3 +6,5 @@ sampleFiles
 inProgress
 data_backup.DS_Store
 .lazytest
+.dodsrc
+.urs_cookies

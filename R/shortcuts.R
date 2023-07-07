@@ -207,8 +207,14 @@ getNLDAS = function(AOI, varname = NULL,
                     model = NULL, 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
-  check_rc_files()
-  climater_dap("NLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun, print.arg = FALSE)
+  if(!checkNetrc()){
+    stop('netrc file not found. Please run writeNetrc() with earth data credentials.')
+  } else {
+    x = writeDodsrc()
+    data = climater_dap("NLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
+    unlink(x)
+    return(data)
+  }
 }
 
 #' @title Get GLDAS data
@@ -220,8 +226,14 @@ getNLDAS = function(AOI, varname = NULL,
 getGLDAS = function(AOI, varname = NULL, model = NULL, 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
-  check_rc_files()
-  climater_dap("GLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
+  if(!checkNetrc()){
+    stop('netrc file not found. Please run writeNetrc() with earth data credentials.')
+  } else {
+    x = writeDodsrc()
+    data = climater_dap("GLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
+    unlink(x)
+    return(data)
+  }
 }
 
 
@@ -235,8 +247,15 @@ getGLDAS = function(AOI, varname = NULL, model = NULL,
 getMODIS = function(AOI, asset = NULL, varname = NULL,
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
-  check_rc_files()
-  climater_dap("MODIS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
+  if(!checkNetrc()){
+    stop('netrc file not found. Please run writeNetrc() with earth data credentials.')
+  } else {
+    x = writeDodsrc()
+    data = climater_dap("MODIS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
+    unlink(x)
+    return(data)
+  }
+  
 }
 
 #' @title Get Livneh data
