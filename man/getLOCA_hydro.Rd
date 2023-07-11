@@ -38,3 +38,26 @@ if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of 
 \description{
 Get LOCA Hydrology data
 }
+\seealso{
+Other shortcuts: 
+\code{\link{get3DEP}()},
+\code{\link{getBCCA}()},
+\code{\link{getCHIRPS}()},
+\code{\link{getDaymet}()},
+\code{\link{getGLDAS}()},
+\code{\link{getGridMET}()},
+\code{\link{getLCMAP}()},
+\code{\link{getLOCA}()},
+\code{\link{getLivneh_fluxes}()},
+\code{\link{getLivneh}()},
+\code{\link{getMACA}()},
+\code{\link{getMODIS}()},
+\code{\link{getNASADEM}()},
+\code{\link{getNLCD}()},
+\code{\link{getNLDAS}()},
+\code{\link{getPRISM}()},
+\code{\link{getTerraClimNormals}()},
+\code{\link{getTerraClim}()},
+\code{\link{getVIC}()}
+}
+\concept{shortcuts}

@@ -10,6 +10,7 @@
 #' @param ensemble The model ensemble member used to generate data
 #' @param scenario A climate or modeling scenario used
 #' @return data.frame
+#' @family dap
 #' @export
 
 climater_filter <- function(id = NULL,

@@ -13,4 +13,5 @@ params
 \description{
 ClimateR Catalog
 }
+\concept{catalog}
 \keyword{datasets}

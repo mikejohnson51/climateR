@@ -93,13 +93,17 @@ By default will go to your home directory, which is advised</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The database is accessed with the user's credentials.
 A netrc file storing login and password information is required.
-See <a href="https://urs.earthdata.nasa.gov/" class="external-link">here</a>
+See <a href="https://urs.earthdata.nasa.gov/" class="external-link">here</a>. Once set up you must do the following
+(1) Login to EarthData (2) Go to Applications &gt; Authorized Apps (3) If NASA GESDISC DATA ARCHIVE is not in the Approved Applications list, select APPROVE MORE APPLICATIONS
+(4) Find NASA GESDISC DATA ARCHIVE and click AUTHORIZE
 for instruction on how to register and set DataSpace credential.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="checkNetrc.html">checkNetrc</a></code></p>
 <p>Other netrc: 
+<code><a href="checkDodsrc.html">checkDodsrc</a>()</code>,
+<code><a href="checkNetrc.html">checkNetrc</a>()</code>,
 <code><a href="getDodsrcPath.html">getDodsrcPath</a>()</code>,
 <code><a href="getNetrcPath.html">getNetrcPath</a>()</code>,
 <code><a href="writeDodsrc.html">writeDodsrc</a>()</code></p></div>

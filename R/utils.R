@@ -4,6 +4,7 @@ omit.na <- function(x) { x[!is.na(x)] }
 #' @description Given a list of SpatRasters with possibly shared names, merge across time
 #' @param data list of names SpatRasters
 #' @return data.frame with (varname, X_name, Y_name, T_name)
+#' @family dap
 #' @export
 
 merge_across_time = function(data){
@@ -32,6 +33,7 @@ merge_across_time = function(data){
 #' @param varname name of variable to extract. If NULL, then get all
 #' @param varmeta should variable metadata be appended?
 #' @return data.frame with (varname, X_name, Y_name, T_name)
+#' @family dap
 #' @export
 
 dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
@@ -136,6 +138,7 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
 #' @param attribute  Attribute name or ID.
 #' @return Vector with a data type that depends on the NetCDF variable. For NetCDF variables of type NC_CHAR, the R type is either character or raw, as specified by argument rawchar. For NC_STRING, the R type is character. Numeric variables are read as double precision by default, but the smallest R type that exactly represents each external type is used if fitnum is TRUE.
 #' @importFrom RNetCDF att.get.nc
+#' @family dap
 
 try_att <- function(nc, variable, attribute) {
   tryCatch(
@@ -154,6 +157,7 @@ try_att <- function(nc, variable, attribute) {
 #' @param Y_name Name of Y diminsion. If NULL it is found
 #' @param stopIfNotEqualSpaced stop if not equal space grid
 #' @return list 
+#' @family dap
 
 .resource_grid <- function(nc, X_name = NULL, Y_name = NULL, stopIfNotEqualSpaced = TRUE) {
 
@@ -257,6 +261,7 @@ try_att <- function(nc, variable, attribute) {
 #' @param nc "NetCDF" object which points to the NetCDF dataset.
 #' @param T_name Name of T diminsion. If NULL it is found
 #' @return list
+#' @family dap
 
 .resource_time <- function(nc, T_name = NULL) {
   
@@ -315,6 +320,7 @@ try_att <- function(nc, variable, attribute) {
 #' @param id character. Uniquely named dataset identifier
 #' @inheritParams dap_xyzv
 #' @return data.frame
+#' @family dap
 #' @export
 
 read_dap_file <- function(URL, varname = NULL, id, varmeta = TRUE) {
@@ -336,6 +342,7 @@ read_dap_file <- function(URL, varname = NULL, id, varmeta = TRUE) {
 #' Read formated DAP URL as SpatRast
 #' @param dap output from dap_crop
 #' @return SpatRast
+#' @family dap
 #' @export
 
 go_get_dap_data <- function(dap) {
@@ -354,6 +361,7 @@ go_get_dap_data <- function(dap) {
 #' Convert catalog entry to extent
 #' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})
 #' @return SpatExtent 
+#' @family dap
 #' @export
 
 make_ext <-
@@ -369,6 +377,7 @@ make_ext <-
 #' Make Vector
 #' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})
 #' @return SpatVect
+#' @family dap
 #' @export
 
 make_vect = function (cat) { as.polygons(make_ext(cat), crs = cat$crs) }
@@ -377,6 +386,7 @@ make_vect = function (cat) { as.polygons(make_ext(cat), crs = cat$crs) }
 #' @param var numeric array
 #' @param dap dap description
 #' @return SpatRast
+#' @family dap
 #' @export
 
 var_to_terra <- function(var, dap) {
@@ -452,6 +462,7 @@ var_to_terra <- function(var, dap) {
 #' Get DAP Array
 #' @param dap dap description
 #' @return SpatRast
+#' @family dap
 #' @export
 
 get_data <- function(dap) {
@@ -464,6 +475,7 @@ get_data <- function(dap) {
 #' @param dap dap description
 #' @param get should data be collected?
 #' @return numeric array
+#' @family dap
 #' @export
 
 dap_to_local <- function(dap, get = TRUE) {

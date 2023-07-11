@@ -54,3 +54,32 @@ Define and get data from a DAP resource
 Wraps dap_get and dap_crop into one.
 If AOI is NULL no spatial crop is executed. If startDate AND endDate are NULL, no temporal crop is executed. If just endDate is NULL it defaults to the startDate.
 }
+\seealso{
+Other dap: 
+\code{\link{.resource_grid}()},
+\code{\link{.resource_time}()},
+\code{\link{climater_dap}()},
+\code{\link{climater_filter}()},
+\code{\link{dap_crop}()},
+\code{\link{dap_get}()},
+\code{\link{dap_meta}()},
+\code{\link{dap_summary}()},
+\code{\link{dap_to_local}()},
+\code{\link{dap_xyzv}()},
+\code{\link{extract_sites}()},
+\code{\link{get_data}()},
+\code{\link{go_get_dap_data}()},
+\code{\link{grid_meta}()},
+\code{\link{make_ext}()},
+\code{\link{make_vect}()},
+\code{\link{merge_across_time}()},
+\code{\link{parse_date}()},
+\code{\link{read_dap_file}()},
+\code{\link{read_ftp}()},
+\code{\link{time_meta}()},
+\code{\link{try_att}()},
+\code{\link{var_to_terra}()},
+\code{\link{variable_meta}()},
+\code{\link{vrt_crop_get}()}
+}
+\concept{dap}

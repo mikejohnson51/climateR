@@ -1,20 +1,7 @@
-#' Convert catalog entry to extent
-#' @param cat catalog entry
-#' @return SpatExtent
-#' @export
-
-make_ext <- function(cat) {
-  ext(c(
-    min(cat$Xn, cat$X1),
-    max(cat$Xn, cat$X1),
-    min(cat$Yn, cat$Y1),
-    max(cat$Yn, cat$Y1)
-  ))
-}
-
 #' Parse Dates from duration and interval
 #' @param duration time duration
 #' @param interval time interval
+#' @family dap
 #' @export
 
 parse_date <- function(duration, interval) {
@@ -62,6 +49,7 @@ getExtension = function(x) {
 #' @details Wraps dap_get and dap_crop into one.
 #' If AOI is NULL no spatial crop is executed. If startDate AND endDate are NULL, no temporal crop is executed. If just endDate is NULL it defaults to the startDate.
 #' @return data.frame
+#' @family dap
 #' @export
 
 dap <- function(URL = NULL,
@@ -110,6 +98,7 @@ dap <- function(URL = NULL,
 #' VRT Crop
 #' @inheritParams dap
 #' @return SpatRaster
+#' @family dap
 #' @export
 
 vrt_crop_get = function(URL = NULL,
@@ -196,6 +185,7 @@ vrt_crop_get = function(URL = NULL,
 #' @title Crop DAP file
 #' @inheritParams dap
 #' @return data.frame
+#' @family dap
 #' @export
 
 dap_crop <- function(URL = NULL,
@@ -378,6 +368,7 @@ dap_crop <- function(URL = NULL,
 #' @param dap data.frame from catalog or dap_crop
 #' @param varname  name of variable to extract. If NULL, then get all
 #' @return SpatRaster
+#' @family dap
 #' @export
 
 dap_get <- function(dap, varname = NULL) {
@@ -433,6 +424,7 @@ dap_get <- function(dap, varname = NULL) {
 #' @description Print summary information about a DAP summary
 #' @param dap data.frame from catalog or dap_crop
 #' @param url Unique Resource Identifier (http or local)
+#' @family dap
 #' @export
 
 dap_summary <- function(dap = NULL, url = NULL) {
@@ -553,6 +545,7 @@ dap_summary <- function(dap = NULL, url = NULL) {
 #' @param crs crs of source (if needed) 
 #' @param dates dates of data
 #' @return SpatRaster
+#' @family dap
 #' @export
 
 read_ftp = function(URL, cat, lyrs = 1, AOI, ext = NULL, crs = NULL, dates = NULL){

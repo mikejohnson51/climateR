@@ -47,7 +47,9 @@ getNetrcPath <- function() { build_file("netrc") }
 #' @details
 #' The database is accessed with the user's credentials.
 #' A netrc file storing login and password information is required.
-#' See \href{https://urs.earthdata.nasa.gov/}{here}
+#' See \href{https://urs.earthdata.nasa.gov/}{here}. Once set up you must do the following
+#' (1) Login to EarthData (2) Go to Applications > Authorized Apps (3) If NASA GESDISC DATA ARCHIVE is not in the Approved Applications list, select APPROVE MORE APPLICATIONS
+#' (4) Find NASA GESDISC DATA ARCHIVE and click AUTHORIZE
 #' for instruction on how to register and set DataSpace credential.
 #' @param login A character. Email address used for logging in on earthdata
 #' @param password A character. Password associated with the login.
@@ -107,6 +109,7 @@ writeNetrc <- function(login,
 #' @param machine the machine you are logging into
 #' @return logical
 #' @seealso \code{\link{writeNetrc}}
+#' @family netrc
 #' @export
 
 checkNetrc <- function(netrcFile = getNetrcPath(), machine = "urs.earthdata.nasa.gov" ) {
@@ -163,6 +166,7 @@ writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = ".dodsrc"){
 #' @param netrcFile  File path to netrc file to check.
 #' @return logical
 #' @seealso \code{\link{writeDodsrc}}
+#' @family netrc
 #' @export
 
 checkDodsrc <- function(dodsrcFile = getDodsrcPath(),

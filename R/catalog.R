@@ -1,4 +1,5 @@
 #' ClimateR Catalog
+#' @family catalog
 
 "params"
 

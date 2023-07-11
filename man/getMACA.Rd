@@ -42,3 +42,26 @@ if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of 
 Multivariate Adaptive Constructed Analogs (MACA) is a statistical method for downscaling Global Climate Models
 (GCMs) from their native coarse resolution to a higher spatial resolution that captures reflects observed patterns of daily near-surface meteorology and simulated changes in GCMs experiments.
 }
+\seealso{
+Other shortcuts: 
+\code{\link{get3DEP}()},
+\code{\link{getBCCA}()},
+\code{\link{getCHIRPS}()},
+\code{\link{getDaymet}()},
+\code{\link{getGLDAS}()},
+\code{\link{getGridMET}()},
+\code{\link{getLCMAP}()},
+\code{\link{getLOCA_hydro}()},
+\code{\link{getLOCA}()},
+\code{\link{getLivneh_fluxes}()},
+\code{\link{getLivneh}()},
+\code{\link{getMODIS}()},
+\code{\link{getNASADEM}()},
+\code{\link{getNLCD}()},
+\code{\link{getNLDAS}()},
+\code{\link{getPRISM}()},
+\code{\link{getTerraClimNormals}()},
+\code{\link{getTerraClim}()},
+\code{\link{getVIC}()}
+}
+\concept{shortcuts}

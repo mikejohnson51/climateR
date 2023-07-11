@@ -32,3 +32,26 @@ if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of 
 \description{
 These layers from TerraClimate were creating using climatically aided interpolation of monthly anomalies from the CRU Ts4.0 and Japanese 55-year Reanalysis (JRA-55) datasets with WorldClim v2.0 climatologies.
 }
+\seealso{
+Other shortcuts: 
+\code{\link{get3DEP}()},
+\code{\link{getBCCA}()},
+\code{\link{getCHIRPS}()},
+\code{\link{getDaymet}()},
+\code{\link{getGLDAS}()},
+\code{\link{getGridMET}()},
+\code{\link{getLCMAP}()},
+\code{\link{getLOCA_hydro}()},
+\code{\link{getLOCA}()},
+\code{\link{getLivneh_fluxes}()},
+\code{\link{getLivneh}()},
+\code{\link{getMACA}()},
+\code{\link{getMODIS}()},
+\code{\link{getNASADEM}()},
+\code{\link{getNLCD}()},
+\code{\link{getNLDAS}()},
+\code{\link{getPRISM}()},
+\code{\link{getTerraClim}()},
+\code{\link{getVIC}()}
+}
+\concept{shortcuts}

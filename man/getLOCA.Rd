@@ -41,3 +41,26 @@ LOCA has been used to downscale 32 global climate models from the CMIP5 archive 
 and there are two future scenarios available: RCP 4.5 and RCP 8.5 over the period 2006-2100 (although some models stop in 2099). The variables currently available are daily minimum and maximum temperature, and daily precipitation.
 For more information visit: http://loca.ucsd.edu/.
 }
+\seealso{
+Other shortcuts: 
+\code{\link{get3DEP}()},
+\code{\link{getBCCA}()},
+\code{\link{getCHIRPS}()},
+\code{\link{getDaymet}()},
+\code{\link{getGLDAS}()},
+\code{\link{getGridMET}()},
+\code{\link{getLCMAP}()},
+\code{\link{getLOCA_hydro}()},
+\code{\link{getLivneh_fluxes}()},
+\code{\link{getLivneh}()},
+\code{\link{getMACA}()},
+\code{\link{getMODIS}()},
+\code{\link{getNASADEM}()},
+\code{\link{getNLCD}()},
+\code{\link{getNLDAS}()},
+\code{\link{getPRISM}()},
+\code{\link{getTerraClimNormals}()},
+\code{\link{getTerraClim}()},
+\code{\link{getVIC}()}
+}
+\concept{shortcuts}

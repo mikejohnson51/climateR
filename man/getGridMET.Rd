@@ -33,3 +33,26 @@ if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of 
 gridMET is a dataset of daily high-spatial resolution (~4-km, 1/24th degree) surface meteorological data covering the contiguous US from 1979-yesterday.
 These data are updated daily.
 }
+\seealso{
+Other shortcuts: 
+\code{\link{get3DEP}()},
+\code{\link{getBCCA}()},
+\code{\link{getCHIRPS}()},
+\code{\link{getDaymet}()},
+\code{\link{getGLDAS}()},
+\code{\link{getLCMAP}()},
+\code{\link{getLOCA_hydro}()},
+\code{\link{getLOCA}()},
+\code{\link{getLivneh_fluxes}()},
+\code{\link{getLivneh}()},
+\code{\link{getMACA}()},
+\code{\link{getMODIS}()},
+\code{\link{getNASADEM}()},
+\code{\link{getNLCD}()},
+\code{\link{getNLDAS}()},
+\code{\link{getPRISM}()},
+\code{\link{getTerraClimNormals}()},
+\code{\link{getTerraClim}()},
+\code{\link{getVIC}()}
+}
+\concept{shortcuts}

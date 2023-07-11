@@ -33,7 +33,9 @@ Write a netrc file that is valid for accessing urs.earthdata.nasa.gov
 \details{
 The database is accessed with the user's credentials.
 A netrc file storing login and password information is required.
-See \href{https://urs.earthdata.nasa.gov/}{here}
+See \href{https://urs.earthdata.nasa.gov/}{here}. Once set up you must do the following
+(1) Login to EarthData (2) Go to Applications > Authorized Apps (3) If NASA GESDISC DATA ARCHIVE is not in the Approved Applications list, select APPROVE MORE APPLICATIONS
+(4) Find NASA GESDISC DATA ARCHIVE and click AUTHORIZE
 for instruction on how to register and set DataSpace credential.
 }
 \examples{
@@ -48,6 +50,8 @@ writeNetrc(
 \code{\link{checkNetrc}}
 
 Other netrc: 
+\code{\link{checkDodsrc}()},
+\code{\link{checkNetrc}()},
 \code{\link{getDodsrcPath}()},
 \code{\link{getNetrcPath}()},
 \code{\link{writeDodsrc}()}

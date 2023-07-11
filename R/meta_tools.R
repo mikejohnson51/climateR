@@ -1,7 +1,7 @@
-
 #' Find DAP Metadata
 #' @param raw data.frame
 #' @return data.frame
+#' @family dap
 #' @export
 
 dap_meta = function(raw){
@@ -15,6 +15,7 @@ dap_meta = function(raw){
 #' @param raw data.frame
 #' @param verbose emit messages
 #' @return data.frame
+#' @family dap
 #' @export
 
 variable_meta = function (raw, verbose = TRUE){
@@ -77,6 +78,7 @@ variable_meta = function (raw, verbose = TRUE){
 #' Find DAP time metadata
 #' @param raw data.frame
 #' @return data.frame
+#' @family dap
 #' @export
 
 time_meta = function (raw){
@@ -137,6 +139,7 @@ time_meta = function (raw){
 #' Find DAP grid metadata
 #' @param raw data.frame
 #' @return data.frame
+#' @family dap
 #' @export
 
 grid_meta = function (raw){

@@ -2,11 +2,12 @@ Package: climateR
 Type: Package
 Title: climateR
 Description: A set of functions to subset climate data.
-Version: 0.3.1
+Version: 0.3.1.1
 Authors@R: c(person("Mike", "Johnson", 
              role = c("aut", "cre"), 
              email = "mikecp11@gmail.com"),
-             person("ESIP", role = "fnd"))
+             person("ESIP", role = "fnd"),
+             person("NOAA OWP", role = "fnd"))
 Maintainer: Mike Johnson <mikecp11@gmail.com>
 BugReports: https://github.com/mikejohnson51/climateR/issues
 URL: https://github.com/mikejohnson51/climateR

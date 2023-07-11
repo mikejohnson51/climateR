@@ -36,3 +36,26 @@ vapor pressure, snow water equivalent, and day length. The dataset covers the pe
 allowing adequate time for input weather station data to be of archive quality.  Daymet variables are continuous surfaces provided as individual files, by year, at a 1-km x 1-km spatial resolution and a daily temporal resolution. Data are in a Lambert Conformal
 Conic projection for North America and are in a netCDF file format compliant with Climate and Forecast (CF) metadata conventions.
 }
+\seealso{
+Other shortcuts: 
+\code{\link{get3DEP}()},
+\code{\link{getBCCA}()},
+\code{\link{getCHIRPS}()},
+\code{\link{getGLDAS}()},
+\code{\link{getGridMET}()},
+\code{\link{getLCMAP}()},
+\code{\link{getLOCA_hydro}()},
+\code{\link{getLOCA}()},
+\code{\link{getLivneh_fluxes}()},
+\code{\link{getLivneh}()},
+\code{\link{getMACA}()},
+\code{\link{getMODIS}()},
+\code{\link{getNASADEM}()},
+\code{\link{getNLCD}()},
+\code{\link{getNLDAS}()},
+\code{\link{getPRISM}()},
+\code{\link{getTerraClimNormals}()},
+\code{\link{getTerraClim}()},
+\code{\link{getVIC}()}
+}
+\concept{shortcuts}

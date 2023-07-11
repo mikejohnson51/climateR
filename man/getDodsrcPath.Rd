@@ -17,6 +17,8 @@ getDodsrcPath()
 }
 \seealso{
 Other netrc: 
+\code{\link{checkDodsrc}()},
+\code{\link{checkNetrc}()},
 \code{\link{getNetrcPath}()},
 \code{\link{writeDodsrc}()},
 \code{\link{writeNetrc}()}

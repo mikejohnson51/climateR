@@ -20,4 +20,12 @@ entry for urs.earthdata.nasa.gov.
 }
 \seealso{
 \code{\link{writeDodsrc}}
+
+Other netrc: 
+\code{\link{checkNetrc}()},
+\code{\link{getDodsrcPath}()},
+\code{\link{getNetrcPath}()},
+\code{\link{writeDodsrc}()},
+\code{\link{writeNetrc}()}
 }
+\concept{netrc}

@@ -6,14 +6,34 @@ authors:
    ESIP: 
      html: "<img src='man/figures/esip-logo.png' height='36' alt='ESIP'/>"
      href: "https://www.esipfed.org"
+   NOAA OWP: 
+     html: "<img src='man/figures/noaa-logo.png' height='36' alt='ESIP'/>"
+     href: "https://www.esipfed.org"
    footer:
     roles: [cre]
    citation:
     roles: [cre]
 articles:
-
 - title: climateR
   contents:
   - 00-geopiper
   - 01-intro
   
+reference:
+- title: 
+- subtitle: Shortcuts
+  desc: Prebuilt data access shortcuts
+- contents:
+  - has_concept("shortcuts")
+- subtitle: Data Access
+  desc: General tools for data access
+  contents:
+  - has_concept("dap")
+- subtitle: EarthData Access
+  desc: General tools for configuring NASA EarthData Access
+  contents:
+  - has_concept("netrc")
+- subtitle: Exported climateR-catalog
+  desc: Parquet file exported to package dataset
+  contents:
+  - has_concept("catalog")

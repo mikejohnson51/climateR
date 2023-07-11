@@ -19,7 +19,7 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 `climateR` simplifies the steps needed to get climate data into R. At
 its core it provides three main things:
 
-1.  A climate catalog of over 100,000k datasets from over 2,000 data
+1.  A catalog of over 100,000k datasets from over 2,000 data
     providers/archives. See (climateR::params)
 
 ``` r
@@ -31,12 +31,15 @@ length(unique(params$asset))
 #> [1] 4653
 ```
 
-2.  A general toolkit for accessing remote and local gridded data files
-    bounded by space, time, and variable constraints (`dap`, `dap_crop`,
-    `read_dap_file`)
+This catalog is an ever evolving, set of documented and federated
+datasets that can be accessed by the data access utilites.
 
-3.  A set of shortcuts that implement these methods for a core set of
-    selected catalog elements
+2.  A general [toolkit for accessing remote and local gridded
+    data](docs/reference/index.html#data-access) files bounded by space,
+    time, and variable constraints (`dap`, `dap_crop`, `read_dap_file`)
+
+3.  A set of [shortcuts](docs/reference/index.html#shortcuts) that
+    implement these methods for a core set of selected catalog elements
 
 # Installation
 

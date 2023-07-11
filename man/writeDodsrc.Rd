@@ -22,6 +22,8 @@ Write a dodsrc file that is valid for a netrc file
 \code{\link{checkDodsrc}}
 
 Other netrc: 
+\code{\link{checkDodsrc}()},
+\code{\link{checkNetrc}()},
 \code{\link{getDodsrcPath}()},
 \code{\link{getNetrcPath}()},
 \code{\link{writeNetrc}()}
