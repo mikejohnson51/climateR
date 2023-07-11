@@ -220,10 +220,11 @@ ggplot() +
 Finally, data gathering is not limited to areal extents and can be retrieved as a time series at locations. 
 
 ```{r}
-ts  = getGridMET(geocode('Fort Collins', pt = TRUE), 
-                 varname =  c("pr", 'srad'), 
-                 startDate = "2021-01-01", 
-                 endDate = "2021-12-31")
+ts = data.frame(lng  = -105.0668, lat = 40.55085) %>% 
+  sf::st_as_sf(coords = c('lng', 'lat'), crs = 4326) %>% 
+  getGridMET(varname =  c("pr", 'srad'), 
+             startDate = "2021-01-01", 
+             endDate = "2021-12-31")
 ```
 
 ```{r, echo = FALSE, fig.width = 15}

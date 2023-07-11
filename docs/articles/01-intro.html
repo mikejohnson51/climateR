@@ -28,7 +28,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">climateR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -112,7 +112,7 @@ maximum and minimum temperature on October 29, 2018:</p>
 <span>              startDate <span class="op">=</span> <span class="st">"2018-10-29"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.842   0.114   2.268</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.900   0.137   2.104</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 <div class="section level2">
@@ -166,7 +166,7 @@ climate scenarios. One example is from the MACA dataset:</p>
 <span>            startDate <span class="op">=</span> <span class="st">"2080-06-29"</span>, endDate <span class="op">=</span> <span class="st">"2080-06-30"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.102   0.018   0.899</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.099   0.014   1.803</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-10-1.png" width="100%"></p>
 <p>Getting multiple models results is also quite simple:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -208,10 +208,11 @@ provides daily rainfall data:</p>
 <p>Finally, data gathering is not limited to areal extents and can be
 retrieved as a time series at locations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ts</span>  <span class="op">=</span> <span class="fu"><a href="../reference/getGridMET.html">getGridMET</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AOI/man/geocode.html" class="external-link">geocode</a></span><span class="op">(</span><span class="st">'Fort Collins'</span>, pt <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, </span>
-<span>                 varname <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pr"</span>, <span class="st">'srad'</span><span class="op">)</span>, </span>
-<span>                 startDate <span class="op">=</span> <span class="st">"2021-01-01"</span>, </span>
-<span>                 endDate <span class="op">=</span> <span class="st">"2021-12-31"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>lng  <span class="op">=</span> <span class="op">-</span><span class="fl">105.0668</span>, lat <span class="op">=</span> <span class="fl">40.55085</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_as_sf.html" class="external-link">st_as_sf</a></span><span class="op">(</span>coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'lng'</span>, <span class="st">'lat'</span><span class="op">)</span>, crs <span class="op">=</span> <span class="fl">4326</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="../reference/getGridMET.html">getGridMET</a></span><span class="op">(</span>varname <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pr"</span>, <span class="st">'srad'</span><span class="op">)</span>, </span>
+<span>             startDate <span class="op">=</span> <span class="st">"2021-01-01"</span>, </span>
+<span>             endDate <span class="op">=</span> <span class="st">"2021-12-31"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-18-1.png" width="100%"></p>
 </div>
 <div class="section level2">
