@@ -100,7 +100,7 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
     raw$nX[i] = length[which(dims == raw$X[i])]
     raw$nY[i] = length[which(dims == raw$Y[i])]
     #raw$nT[i] = length[which(dims == raw$T[i])]
-    if(all(is.na(raw$Z))){
+    if(is.na(raw$Z)[i]){
       raw$nZ[i] = NA
     } else {
       raw$nZ[i] = length[which(dims == raw$Z[i])]
