@@ -435,6 +435,8 @@ getLOCA_hydro = function(AOI, varname,
 
 get3DEP = function(AOI, resolution = "30m"){
   
+  description = NULL
+  
   x = climater_filter(id = "USGS 3DEP") %>% 
     filter(grepl(resolution, description))
   
@@ -455,7 +457,7 @@ getNASADEM = function(AOI){
 #' @title Get USGS National Land Cover Dataset 
 #' @inheritParams climater_filter
 #' @param year Landcover product year (2001, 2011,2016,2019)
-#' @param resolution DEM resolution (10m or 30m (default))
+#' @param type product type
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
@@ -483,6 +485,8 @@ getNLCD = function(AOI, year = 2019, type = "land cover"){
 #' @export
 
 getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
+  
+  x = NULL
   
   cat = climater_filter(id = "LCMAP")
   cat = cat[grepl(year, tolower(cat$description)), ]

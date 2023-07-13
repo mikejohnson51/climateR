@@ -58,7 +58,6 @@ getNetrcPath <- function() { build_file("netrc") }
 #' By default will go to your home directory, which is advised
 #' @param overwrite A logical. overwrite the existing netrc file?
 #' @return A character vector containing the netrc file path
-#' @seealso \code{\link{checkNetrc}}
 #' @family netrc
 #' @examples
 #' \dontrun{
@@ -108,7 +107,6 @@ writeNetrc <- function(login,
 #' @param netrcFile A character. File path to netrc file to check.
 #' @param machine the machine you are logging into
 #' @return logical
-#' @seealso \code{\link{writeNetrc}}
 #' @family netrc
 #' @export
 
@@ -128,7 +126,6 @@ checkNetrc <- function(netrcFile = getNetrcPath(), machine = "urs.earthdata.nasa
 #' @param dodsrcFile The path to the dodsrc file you want to write
 #' By default will go to your home directory, which is advised
 #' @return A character vector containing the netrc file path
-#' @seealso \code{\link{checkDodsrc}}
 #' @family netrc
 #' @export
 
@@ -165,7 +162,6 @@ writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = ".dodsrc"){
 #' @param dodsrcFile File path to dodsrc file to check.
 #' @param netrcFile  File path to netrc file to check.
 #' @return logical
-#' @seealso \code{\link{writeDodsrc}}
 #' @family netrc
 #' @export
 

@@ -49,7 +49,7 @@ be accessed by the data access utilities.
 > through the USGS
 > [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package.
 > Directly analogous climateR functionality can be found in
-> [`climtePy`](https://github.com/LynkerIntel/climatePy)
+> [`climatePy`](https://github.com/LynkerIntel/climatePy)
 
 # Installation
 
@@ -81,19 +81,21 @@ system.time({
                endDate  = "1991-11-06")
 })
 #>    user  system elapsed 
-#>   0.471   0.097   1.962
+#>   0.257   0.056   1.223
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
 
-# Integration with
+# Integration with `zonal`
 
 ``` r
+library(zonal)
+
 system.time({
   county = zonal::execute_zonal(d, geom = AOI, ID = "fip_code")
 })
 #>    user  system elapsed 
-#>   2.715   0.257   3.344
+#>   0.421   0.025   0.494
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />

@@ -82,7 +82,6 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
   raw$dim_order = NA
   raw$nX = NA
   raw$nY = NA
-  #raw$nT = NA
   raw$nZ = NA
   
 

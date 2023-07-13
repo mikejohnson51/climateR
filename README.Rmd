@@ -47,7 +47,7 @@ This catalog is an [evolving, federated collection of datasets](https://github.c
 3. A set of [shortcuts](https://mikejohnson51.github.io/climateR/reference/index.html#shortcuts) that implement these methods for a core set of selected catalog elements
 
 
-> :warning: **Python Users**: Access the to data catalogs is available through the USGS [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package. Directly analogous climateR functionality can be found in [`climtePy`](https://github.com/LynkerIntel/climatePy)
+> :warning: **Python Users**: Access the to data catalogs is available through the USGS [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package. Directly analogous climateR functionality can be found in [`climatePy`](https://github.com/LynkerIntel/climatePy)
 
 
 # Installation
@@ -86,8 +86,11 @@ system.time({
 plot(d$precipitation_amount)
 ```
 
-# Integration with 
+# Integration with `zonal`
+
 ```{r}
+library(zonal)
+
 system.time({
   county = zonal::execute_zonal(d, geom = AOI, ID = "fip_code")
 })

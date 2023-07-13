@@ -19,8 +19,6 @@ A character vector containing the netrc file path
 Write a dodsrc file that is valid for a netrc file
 }
 \seealso{
-\code{\link{checkDodsrc}}
-
 Other netrc: 
 \code{\link{checkDodsrc}()},
 \code{\link{checkNetrc}()},

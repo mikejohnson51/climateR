@@ -11,7 +11,7 @@ getNLCD(AOI, year = 2019, type = "land cover")
 
 \item{year}{Landcover product year (2001, 2011,2016,2019)}
 
-\item{resolution}{DEM resolution (10m or 30m (default))}
+\item{type}{product type}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.

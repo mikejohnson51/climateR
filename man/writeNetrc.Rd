@@ -47,8 +47,6 @@ writeNetrc(
 }
 }
 \seealso{
-\code{\link{checkNetrc}}
-
 Other netrc: 
 \code{\link{checkDodsrc}()},
 \code{\link{checkNetrc}()},

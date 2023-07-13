@@ -278,7 +278,7 @@ dap_crop <- function(URL = NULL,
     
     out <- lapply(1:nrow(catalog), function(i) {
       tryCatch({
-        intersect(ext(project(AOIspat, catalog$crs[i])), make_ext(catalog[i,]))
+        ext(intersect(project(AOIspat, catalog$crs[i]), make_ext(catalog[i,])))
       },
       error = function(e) {
         NULL
@@ -295,7 +295,6 @@ dap_crop <- function(URL = NULL,
     if (nrow(catalog) < 1) {
       stop("No resources intersect with provided AOI", call. = FALSE)
     }
-    
     
     for (i in 1:nrow(catalog)) {
       X_coords <-

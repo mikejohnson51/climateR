@@ -288,6 +288,7 @@ test_that("GLDAS", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out)[1] == "snowt_tavg")
   expect_true(nlyr(out[[1]]) == 1)
+  
 })
 
 

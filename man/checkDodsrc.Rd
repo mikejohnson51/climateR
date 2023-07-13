@@ -19,8 +19,6 @@ Check that there is a netrc file with a valid
 entry for urs.earthdata.nasa.gov.
 }
 \seealso{
-\code{\link{writeDodsrc}}
-
 Other netrc: 
 \code{\link{checkNetrc}()},
 \code{\link{getDodsrcPath}()},
