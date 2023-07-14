@@ -1,13 +1,13 @@
 ---
 title: "climateR Catalogs"
 author:
-  - name: "Mike Johnson"
-    url: https://github.com/mikejohnson51
+  - name: "Justin Singh-Mohudpur"
+    url: https://github.com/program--
     affiliation: Lynker
     affiliation_url: https://lynker.com
 
-  - name: "Justin Singh-Mohudpur"
-    url: https://github.com/program--
+  - name: "Mike Johnson"
+    url: https://github.com/mikejohnson51
     affiliation: Lynker
     affiliation_url: https://lynker.com
   
