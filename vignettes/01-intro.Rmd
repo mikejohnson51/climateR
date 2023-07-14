@@ -1,7 +1,5 @@
 ---
 title: "Welcome to climateR"
-description: |
-  "GeoPiper in R"
 author:
   - name: "Mike Johnson"
     url: https://github.com/mikejohnson51

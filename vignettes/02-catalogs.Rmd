@@ -1,5 +1,5 @@
 ---
-title: "climateR Catalogs"
+title: "Catalog Automation"
 author:
   - name: "Justin Singh-Mohudpur"
     url: https://github.com/program--
@@ -86,3 +86,8 @@ calls `targets::tar_make()` to run the pipeline. When all of the targets are com
 catalog files and uploads them to the GitHub repository as a release. Furthermore, this workflow is scheduled to run on
 a monthly basis, ensuring that the catalog stays consistently up to date with the latest datasets offered by the data providers
 that are described in the data source plugins.
+
+#### Release Strategy
+
+With each monthly Github Actions update, a new release of the catalog will be provided in JSON and parquet formats at the [release page](https://github.com/mikejohnson51/climateR-catalogs/releases/latest/download/).
+

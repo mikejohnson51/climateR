@@ -15,9 +15,16 @@ authors:
     roles: [cre]
 articles:
 - title: climateR
-  contents:
-  - 00-geopiper
+  desc: Data access in R
+  contents: 
   - 01-intro
+  
+- title: climatePy
+  desc: Data acces in Python
+  contents: 
+  
+- title: Data Catalogs
+  contents:
   - 02-catalogs
   
 reference:
