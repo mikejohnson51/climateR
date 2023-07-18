@@ -25,8 +25,9 @@ articles:
   
 - title: Data Catalogs
   contents:
+  - schema
   - 02-catalogs
-  
+
 reference:
 - title: 
 - subtitle: Shortcuts

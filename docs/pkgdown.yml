@@ -4,5 +4,6 @@ pkgdown_sha: ~
 articles:
   01-intro: 01-intro.html
   02-catalogs: 02-catalogs.html
-last_built: 2023-07-14T17:17Z
+  schema: schema.html
+last_built: 2023-07-18T19:17Z
 

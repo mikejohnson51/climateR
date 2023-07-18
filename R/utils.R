@@ -271,6 +271,8 @@ try_att <- function(nc, variable, attribute) {
   
   T_var_info <- var.inq.nc(nc, T_name)
   
+  var.get.nc(nc, "time")
+  
   time_steps <- utcal.nc(
     unitstring = att.get.nc(nc, T_var_info$name, "units"),
     value = var.get.nc(nc, T_var_info$name, unpack = TRUE),
@@ -331,7 +333,7 @@ read_dap_file <- function(URL, varname = NULL, id, varmeta = TRUE) {
   raw$URL <- URL
   raw$id <- id
   
-  raw <- merge(raw, data.frame(.resource_time(nc, raw$T_name[1]), id = id), by = "id")
+  raw <- merge(raw, data.frame(.resource_time(nc, T_name = raw$T_name[1]), id = id), by = "id")
   
   raw <- merge(raw, .resource_grid(nc, X_name = raw$X_name[1], Y_name = raw$Y_name[1]))
   

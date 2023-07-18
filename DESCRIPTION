@@ -32,7 +32,9 @@ Suggests:
     AOI,
     covr,
     testthat (>= 3.0.0),
-    rmarkdown
+    rmarkdown,
+    knitr
 Remotes:
     mikejohnson51/AOI
 Config/testthat/edition: 3
+VignetteBuilder: knitr

@@ -279,7 +279,7 @@ test_that("GLDAS", {
   skip_on_ci()
   
   out = getGLDAS(
-    AOI = aoi_get("Fort Collins"),
+    AOI = AOI::aoi_get("Fort Collins"),
     varname = "snowt_tavg",
     startDate = "2020-01-01"
   )
