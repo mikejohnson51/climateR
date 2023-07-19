@@ -170,7 +170,7 @@ climater_filter <- function(id = NULL,
     gid = sapply(1:nrow(catalog), function(x) {
       suppressWarnings({
         tryCatch({
-          nrow(intersect(make_vect(cat = catalog[x, ]), project(vect(AOI), crs(catalog$crs[x])))) > 0
+          nrow(intersect(make_vect(cat = catalog[x, ]), project(spatAOI(AOI), crs(catalog$crs[x])))) > 0
         }, error = function(e) {
           FALSE
         })

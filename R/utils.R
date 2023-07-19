@@ -1,3 +1,11 @@
+spatAOI = function(AOI){
+  if(inherits(AOI, "sf")){ 
+    terra::vect(AOI) 
+  } else { 
+    AOI
+  }
+}
+
 omit.na <- function(x) { x[!is.na(x)] }
 
 #' Merge List of SpatRaster's across time

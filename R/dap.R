@@ -1,3 +1,8 @@
+getExtension = function(x) {
+  pos <- regexpr("\\.([[:alnum:]]+)$", x)
+  ifelse(pos > -1L, substring(x, pos + 1L), "")
+}
+
 #' Parse Dates from duration and interval
 #' @param duration time duration
 #' @param interval time interval
@@ -27,12 +32,6 @@ parse_date <- function(duration, interval) {
              interval)
 
   }
-
-
-getExtension = function(x) {
-  pos <- regexpr("\\.([[:alnum:]]+)$", x)
-  ifelse(pos > -1L, substring(x, pos + 1L), "")
-}
 
 #' @title Get Data (Data Access Protocol)
 #' @description this function provides a consistent data access protocol (dap) to a wide
@@ -155,13 +154,11 @@ vrt_crop_get = function(URL = NULL,
   }
   
   if (!is.null(AOI) & flag) {
-    AOIv =  vect(AOI)
-    
     fin = tryCatch({
-      crop(fin, project(AOIv, crs(fin[[1]])))
+      crop(fin, project(spatAOI(AOI), crs(fin[[1]])))
     }, error = function(e) {
       lapply(1:length(fin), function(x) {
-        crop(fin[[x]], project(AOIv, crs(fin[[x]])))
+        crop(fin[[x]], project(spatAOI(AOI), crs(fin[[x]])))
       })
     })
   }
@@ -274,11 +271,10 @@ dap_crop <- function(URL = NULL,
     catalog$X <- paste0("[0:1:", catalog$ncols - 1, "]")
     catalog$Y <- paste0("[0:1:", catalog$nrows - 1, "]")
   } else {
-    AOIspat <- vect(AOI)
     
     out <- lapply(1:nrow(catalog), function(i) {
       tryCatch({
-        ext(intersect(project(AOIspat, catalog$crs[i]), make_ext(catalog[i,])))
+        ext(intersect(project(spatAOI(AOI), catalog$crs[i]), make_ext(catalog[i,])))
       },
       error = function(e) {
         NULL
@@ -560,13 +556,13 @@ read_ftp = function(URL, cat, lyrs = 1, AOI, ext = NULL, crs = NULL, dates = NUL
     ext(o) = ext
   }
   
-  e =  align(ext(project(vect(AOI), crs(o))), o)
+  e =  align(ext(project(spatAOI(AOI), crs(o))), o)
   
   if(cat$toptobottom){
     z = crop(o, e)
   } else {
     
-    e =  align(ext(project(vect(AOI), crs(o))), o)
+    e =  align(ext(project(spatAOI(AOI), crs(o))), o)
     
     ymax <- ymax(o) - (e$ymin - ymin(o))
     ymin <- ymax(o) - (e$ymax - ymin(o))

@@ -10,9 +10,7 @@
 
 extract_sites = function(r, pts, id){
   
-  if(inherits(pts, "sf")){
-    pts = vect(pts)
-  }
+  pts = spatAOI(pts)
 
   flip = function(x, r, pts, id){
     df = data.frame(t(extract(r[[x]], pts, ID = FALSE)), row.names = NULL)
