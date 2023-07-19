@@ -7,7 +7,7 @@
 getLCMAP(AOI, year = 2019, type = "primary landcover")
 }
 \arguments{
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{year}{Land cover product year 1985 - 2019 (default = 2019)}
 

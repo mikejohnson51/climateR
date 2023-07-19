@@ -15,7 +15,7 @@ getGLDAS(
 )
 }
 \arguments{
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{varname}{variable name to extract (e.g. tmin)}
 

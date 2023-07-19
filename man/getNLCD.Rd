@@ -7,7 +7,7 @@
 getNLCD(AOI, year = 2019, type = "land cover")
 }
 \arguments{
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{year}{Landcover product year (2001, 2011,2016,2019)}
 

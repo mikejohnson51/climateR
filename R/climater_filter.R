@@ -2,7 +2,7 @@
 #' @description Filter the climateR catalog based on a set of constraints
 #' @param id The resource, agency, or catalog identifier
 #' @param asset The subdataset or asset in a given resource
-#' @param AOI an sf point or polygon to extract data for
+#' @param AOI an sf of SpatVect point or polygon to extract data for
 #' @param startDate a start date given as "YYYY-MM-DD" to extract data for
 #' @param endDate an end date given as "YYYY-MM-DD" to extract data for
 #' @param varname variable name to extract (e.g. tmin)
@@ -170,7 +170,7 @@ climater_filter <- function(id = NULL,
     gid = sapply(1:nrow(catalog), function(x) {
       suppressWarnings({
         tryCatch({
-          nrow(intersect(make_vect(cat = catalog[x, ]), project(vect(AOI), crs(catalog$crs[x])))) > 0
+          nrow(intersect(make_vect(cat = catalog[x, ]), project(spatAOI(AOI), crs(catalog$crs[x])))) > 0
         }, error = function(e) {
           FALSE
         })

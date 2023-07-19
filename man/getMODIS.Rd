@@ -15,7 +15,7 @@ getMODIS(
 )
 }
 \arguments{
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{asset}{The MODIS sensor}
 

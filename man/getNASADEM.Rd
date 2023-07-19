@@ -7,7 +7,7 @@
 getNASADEM(AOI)
 }
 \arguments{
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.

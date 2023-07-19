@@ -7,7 +7,7 @@
 get3DEP(AOI, resolution = "30m")
 }
 \arguments{
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{resolution}{DEM resolution (10m or 30m (default))}
 }

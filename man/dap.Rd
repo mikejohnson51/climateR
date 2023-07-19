@@ -23,7 +23,7 @@ dap(
 
 \item{catalog}{subset of open.dap catalog}
 
-\item{AOI}{an sf point or polygon to extract data for}
+\item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{startDate}{a start date given as "YYYY-MM-DD" to extract data for}
 

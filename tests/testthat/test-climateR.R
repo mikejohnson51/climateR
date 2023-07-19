@@ -1,6 +1,23 @@
 library(AOI)
 library(terra)
 
+test_that("AOI input type", { 
+  
+  out = getTerraClimNormals(AOI = AOI::aoi_get(state = "CO"),
+                            varname = "tmin",
+                            month = 4)
+  
+  
+  out2 = getTerraClimNormals(AOI = vect(AOI::aoi_get(state = "CO")),
+                            varname = "tmin",
+                            month = 4)
+  
+  expect_identical(nrow(out$tmin), nrow(out2$tmin))
+  expect_identical(ncol(out$tmin), ncol(out2$tmin))
+  expect_identical(nlyr(out$tmin), nlyr(out2$tmin))
+  expect_identical(crs(out$tmin),  crs(out2$tmin))
+  
+})
 
 test_that("climater_filter", {
   expect_equal(nrow(climater_filter(asset = '2019 Land Cover L48')), 1)
