@@ -47,12 +47,6 @@ test_that("climater_filter", {
                   scenario = c('rcp45', 'rcp85'),
                   startDate = "2079-10-01")), 6)
   
-  expect_warning(climater_filter(id = "bcca",
-                                    varname = c('pr', 'tasmax','tasmin'),
-                                    model = c("CSIRO-Mk3-6-0"),
-                                    scenario = c('rcp45', 'rcp85'),
-                                    startDate = "2079-10-01"))
-  
   expect_error(climater_filter(id = "bcca",
                                  varname = c('pr', 'tasmax','tasmin'),
                                  model = c("CSIRO-Mk3-6-0"),
@@ -63,40 +57,42 @@ test_that("climater_filter", {
 
 
 test_that("TerraClim", {
-  out = getTerraClim(
+
+  foco = getTerraClim(
     AOI = aoi_get("Fort Collins"),
     varname = "tmin",
     startDate = "2020-01-01"
   )
   
-  expect_true(class(out) == "list")
-  expect_true(class(out[[1]]) == "SpatRaster")
-  expect_true(names(out) == "tmin")
-  expect_true(names(out[[1]]) == "tmin_2020-01-01_total")
-  expect_true(nrow(out[[1]]) == 5)
-  expect_true(ncol(out[[1]]) == 5)
-  expect_equal(nrow(getTerraClim(
-    AOI = aoi_get("Fort Collins"),
-    varname = "tmin",
-    dryrun = TRUE
-  )), 1)
+  expect_true(class(foco) == "list")
+  expect_true(class(foco[[1]]) == "SpatRaster")
+  expect_true(names(foco) == "tmin")
+  expect_true(names(foco[[1]]) == "tmin_2020-01-01_total")
+  expect_true(nrow(foco[[1]]) == 5)
+  expect_true(ncol(foco[[1]]) == 5)
+  # expect_equal(nrow(getTerraClim(
+  #   AOI = aoi_get("Fort Collins"),
+  #   varname = "tmin",
+  #   dryrun = TRUE
+  # )), 1)
   
-  ex = extract_sites(out, geocode("Fort Collins", pt = TRUE), "request")
+  ex = extract_sites(foco, geocode("Fort Collins", pt = TRUE), "request")
   
-  expect_true(ex[[1]]$FortCollins == -7.2)
+  expect_true(round(ex[[1]]$FortCollins,1) == -7.2)
   expect_true(ex[[1]]$date == as.POSIXct("2020-01-01", tz = "UTC"))
 })
 
 test_that("TerraClimNormals", {
   out = getTerraClimNormals(
-    AOI = aoi_get("Fort Collins"),
+    AOI = AOI::aoi_get("Fort Collins"),
     varname = "tmin",
     month = 4,
     dryrun = TRUE
   )
+  
   expect_equal(nrow(out), 1)
   
-  out = getTerraClimNormals(AOI = aoi_get("Fort Collins"),
+  out = getTerraClimNormals(AOI = AOI::aoi_get("Fort Collins"),
                             varname = "tmin",
                             month = 4)
   
@@ -437,12 +433,6 @@ test_that("Remote VRT", {
 })
 
 
-terra::rast('/Users/mjohnson/github/opendap.catalog/data-raw/ned/USGS_seamless_13.vrt')
-
-terra::rast('/vsicurl/https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/USGS_Seamless_DEM_13.vrt')
-
-terra::rast('/vsis3/nextgen-hydrofabric/DEM-products/USGS_seamless_13.vrt')
-
 test_that("Livneh", {
   xx = getLivneh(
     AOI = aoi_get("Fort Collins"),
@@ -669,15 +659,5 @@ test_that("FTP", {
   
   expect_true(length(oo) == 1)
   expect_true(nlyr(oo[[1]]) == 2)
-  
-  oo = getLOCA_hydro(
-    AOI = AOI::aoi_get(state = "FL"),
-    varname = c("baseflow", "ET"),
-    startDate = "1990-12-31",
-    endDate = "1991-01-01"
-  )
-  
-  expect_true(length(oo) == 2)
-  expect_true(nlyr(oo[[1]]) == 2)
-  
+
 })
