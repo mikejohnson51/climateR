@@ -46,3 +46,7 @@ reference:
   desc: Parquet file exported to package dataset
   contents:
   - has_concept("catalog")
+- subtitle: Visualization
+  desc: Parquet file exported to package dataset
+  contents:
+  - has_concept("viz")

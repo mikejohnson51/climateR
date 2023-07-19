@@ -17,6 +17,7 @@ Imports:
     dplyr,
     future.apply,
     glue,
+    gifski,
     ncmeta,
     RNetCDF,
     terra,
