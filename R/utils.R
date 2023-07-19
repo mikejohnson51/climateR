@@ -279,8 +279,6 @@ try_att <- function(nc, variable, attribute) {
   
   T_var_info <- var.inq.nc(nc, T_name)
   
-  var.get.nc(nc, "time")
-  
   time_steps <- utcal.nc(
     unitstring = att.get.nc(nc, T_var_info$name, "units"),
     value = var.get.nc(nc, T_var_info$name, unpack = TRUE),
