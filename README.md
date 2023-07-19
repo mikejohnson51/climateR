@@ -45,10 +45,9 @@ be accessed by the data access utilities.
     that implement these methods for a core set of selected catalog
     elements
 
-> :warning: **Python Users**: Access the to data catalogs is available
-> through the USGS
-> [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package.
-> Directly analogous climateR functionality can be found in
+> :warning: **Python Users**: Data catalog access is available through
+> the USGS [`gdptools`](https://gdptools.readthedocs.io/en/latest/)
+> package. Directly analogous climateR functionality can be found in
 > [`climatePy`](https://github.com/LynkerIntel/climatePy)
 
 # Installation
@@ -81,10 +80,19 @@ system.time({
                endDate  = "1991-11-06")
 })
 #>    user  system elapsed 
-#>   0.257   0.056   1.223
+#>   0.225   0.060   5.582
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
+
+# Basic Animation
+
+``` r
+animation(d$precipitation_amount, AOI = AOI, "man/figures/ex_gif.gif")
+```
+
+<img src="man/figures/ex_gif.gif" width="100%" />
+![“man/ex_gif.gif”](%22man/ex_gif.gif%22)
 
 # Integration with `zonal`
 
@@ -95,7 +103,7 @@ system.time({
   county = zonal::execute_zonal(d, geom = AOI, ID = "fip_code")
 })
 #>    user  system elapsed 
-#>   0.421   0.025   0.494
+#>   0.332   0.013   0.347
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />

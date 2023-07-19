@@ -47,8 +47,7 @@ This catalog is an [evolving, federated collection of datasets](https://github.c
 3. A set of [shortcuts](https://mikejohnson51.github.io/climateR/reference/index.html#shortcuts) that implement these methods for a core set of selected catalog elements
 
 
-> :warning: **Python Users**: Access the to data catalogs is available through the USGS [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package. Directly analogous climateR functionality can be found in [`climatePy`](https://github.com/LynkerIntel/climatePy)
-
+> :warning: **Python Users**: Data catalog access is available through the USGS [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package. Directly analogous climateR functionality can be found in [`climatePy`](https://github.com/LynkerIntel/climatePy)
 
 # Installation
 
@@ -85,6 +84,17 @@ system.time({
 ```{r,echo = FALSE}
 plot(d$precipitation_amount)
 ```
+
+# Basic Animation
+
+```{r, eval = FALSE}
+animation(d$precipitation_amount, AOI = AOI, "man/figures/ex_gif.gif")
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/ex_gif.gif")
+```
+!["man/ex_gif.gif"]("man/ex_gif.gif")
 
 # Integration with `zonal`
 

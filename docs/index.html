@@ -70,11 +70,11 @@
 <li>A catalog of over 100,000k datasets from over 2,000 data providers/archives. See (<code><a href="reference/params.html">climateR::params</a></code>)</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 107857</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2075</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">asset</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">asset</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4653</span></span></code></pre></div>
 <p>This catalog is an <a href="https://github.com/mikejohnson51/climateR-catalogs" class="external-link">evolving, federated collection of datasets</a> that can be accessed by the data access utilities.</p>
 <ol start="2" style="list-style-type: decimal">
@@ -82,7 +82,7 @@
 <li><p>A set of <a href="https://mikejohnson51.github.io/climateR/reference/index.html#shortcuts" class="external-link">shortcuts</a> that implement these methods for a core set of selected catalog elements</p></li>
 </ol>
 <blockquote>
-<p><span class="emoji" data-emoji="warning">⚠️</span> <strong>Python Users</strong>: Access the to data catalogs is available through the USGS <a href="https://gdptools.readthedocs.io/en/latest/" class="external-link"><code>gdptools</code></a> package. Directly analogous climateR functionality can be found in <a href="https://github.com/LynkerIntel/climatePy" class="external-link"><code>climatePy</code></a></p>
+<p><span class="emoji" data-emoji="warning">⚠️</span> <strong>Python Users</strong>: Data catalog access is available through the USGS <a href="https://gdptools.readthedocs.io/en/latest/" class="external-link"><code>gdptools</code></a> package. Directly analogous climateR functionality can be found in <a href="https://github.com/LynkerIntel/climatePy" class="external-link"><code>climatePy</code></a></p>
 </blockquote>
 </div>
 <div class="section level1">
@@ -111,22 +111,29 @@
 <span>               endDate  <span class="op">=</span> <span class="st">"1991-11-06"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.257   0.056   1.223</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.225   0.060   5.582</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+</div>
+<div class="section level1">
+<h1 id="basic-animation">Basic Animation<a class="anchor" aria-label="anchor" href="#basic-animation"></a>
+</h1>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/animation.html">animation</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">precipitation_amount</span>, AOI <span class="op">=</span> <span class="va">AOI</span>, <span class="st">"man/figures/ex_gif.gif"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/ex_gif.gif" width="100%"><img src="%22man/ex_gif.gif%22" alt="“man/ex_gif.gif”"></p>
 </div>
 <div class="section level1">
 <h1 id="integration-with-zonal">Integration with <code>zonal</code>
 <a class="anchor" aria-label="anchor" href="#integration-with-zonal"></a>
 </h1>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">zonal</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="va">county</span> <span class="op">=</span> <span class="fu">zonal</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/zonal/man/execute_zonal.html" class="external-link">execute_zonal</a></span><span class="op">(</span><span class="va">d</span>, geom <span class="op">=</span> <span class="va">AOI</span>, ID <span class="op">=</span> <span class="st">"fip_code"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.421   0.025   0.494</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
+<span><span class="co">#&gt;   0.332   0.013   0.347</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
