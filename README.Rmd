@@ -88,13 +88,12 @@ plot(d$precipitation_amount)
 # Basic Animation
 
 ```{r, eval = FALSE}
-animation(d$precipitation_amount, AOI = AOI, "man/figures/ex_gif.gif")
+animation(d$precipitation_amount, AOI = AOI, outfile = "man/figures/rast_gif.gif")
 ```
 
 ```{r, echo = FALSE}
-knitr::include_graphics("man/figures/ex_gif.gif")
+knitr::include_graphics("man/figures/rast_gif.gif")
 ```
-!["man/ex_gif.gif"]("man/ex_gif.gif")
 
 # Integration with `zonal`
 
@@ -102,10 +101,20 @@ knitr::include_graphics("man/figures/ex_gif.gif")
 library(zonal)
 
 system.time({
-  county = zonal::execute_zonal(d, geom = AOI, ID = "fip_code")
+  county = execute_zonal(d, geom = AOI, ID = "fip_code")
 })
 ```
 
 ```{r, echo = FALSE}
 plot(county[grepl("pr_", names(county))])
+```
+
+```{r, eval = FALSE}
+animation(county, feild_pattern = "pr_", outfile = "man/figures/vect_gif.gif")
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("man/figures/vect_gif.gif")
+```
 ```

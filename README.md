@@ -80,7 +80,7 @@ system.time({
                endDate  = "1991-11-06")
 })
 #>    user  system elapsed 
-#>   0.225   0.060   5.582
+#>   0.222   0.079   1.954
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -88,11 +88,10 @@ system.time({
 # Basic Animation
 
 ``` r
-animation(d$precipitation_amount, AOI = AOI, "man/figures/ex_gif.gif")
+animation(d$precipitation_amount, AOI = AOI, outfile = "man/figures/rast_gif.gif")
 ```
 
-<img src="man/figures/ex_gif.gif" width="100%" />
-![“man/ex_gif.gif”](%22man/ex_gif.gif%22)
+<img src="man/figures/rast_gif.gif" width="100%" />
 
 # Integration with `zonal`
 
@@ -100,10 +99,16 @@ animation(d$precipitation_amount, AOI = AOI, "man/figures/ex_gif.gif")
 library(zonal)
 
 system.time({
-  county = zonal::execute_zonal(d, geom = AOI, ID = "fip_code")
+  county = execute_zonal(d, geom = AOI, ID = "fip_code")
 })
 #>    user  system elapsed 
-#>   0.332   0.013   0.347
+#>   0.312   0.012   0.326
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
+
+``` r
+animation(county, feild_pattern = "pr_", outfile = "man/figures/vect_gif.gif")
+```
+
+<img src="man/figures/vect_gif.gif" width="100%" /> \`\`\`
