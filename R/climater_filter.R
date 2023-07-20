@@ -58,8 +58,8 @@ climater_filter <- function(id = NULL,
       
       m <- distinct(select(catalog, variable, description, units))
       
-      stop("'", bad, "' not availiable parameter for '", catalog$id[1], "'. Try: \n\t",
-           paste(">", paste0(m$variable, " [", m$units, "] (", m$long_name, ")"),
+      stop("'", bad, "' not availiable varname for '", catalog$id[1], "'. Try: \n\t",
+           paste(">", paste0(m$variable, " [", m$units, "] (", m$description, ")"),
                  collapse = "\n\t"
            ),
            call. = FALSE
