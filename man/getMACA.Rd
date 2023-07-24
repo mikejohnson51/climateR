@@ -25,7 +25,7 @@ getMACA(
 
 \item{model}{GCM model name generating}
 
-\item{scenario}{A climate or modeling scenario used}
+\item{scenario}{A climate or modeling scenario}
 
 \item{startDate}{a start date given as "YYYY-MM-DD" to extract data for}
 

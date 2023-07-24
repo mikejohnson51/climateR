@@ -8,7 +8,7 @@
 #' @param varname variable name to extract (e.g. tmin)
 #' @param model GCM model name generating 
 #' @param ensemble The model ensemble member used to generate data
-#' @param scenario A climate or modeling scenario used
+#' @param scenario A climate or modeling scenario
 #' @return data.frame
 #' @family dap
 #' @export

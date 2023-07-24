@@ -18,7 +18,7 @@ getTerraClimNormals(
 
 \item{varname}{variable name to extract (e.g. tmin)}
 
-\item{scenario}{A climate or modeling scenario used}
+\item{scenario}{A climate or modeling scenario}
 
 \item{month}{numeric. and month or vector of months to access. Default is 1:12}
 

@@ -23,7 +23,7 @@ getBCCA(
 
 \item{model}{GCM model name generating}
 
-\item{scenario}{A climate or modeling scenario used}
+\item{scenario}{A climate or modeling scenario}
 
 \item{ensemble}{The model ensemble member used to generate data}
 
