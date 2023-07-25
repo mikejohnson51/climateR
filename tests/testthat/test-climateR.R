@@ -1,9 +1,16 @@
 library(AOI)
 library(terra)
 
-cities = readRDS(testthat::test_path("data", "cities.rds"))
+local_load_cities <- function() {
+  readRDS(testthat::test_path("data", "cities.rds"))
+}
 
-bb = AOI::aoi_buffer(cities[1,], 10)
+local_get_aoi <- function(cities) {
+  AOI::aoi_buffer(cities[1, ], 10)
+}
+
+cities = local_load_cities()
+bb     = local_get_aoi(cities)
 
 test_that("AOI input type", { 
   
