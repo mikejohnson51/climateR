@@ -1,8 +1,8 @@
 library(AOI)
 library(terra)
 
+cities = readRDS(list.files(pattern = "cities.rds", recursive = TRUE, full.names = TRUE))
 
-cities <- readRDS(here::here("tests/data/cities.rds"))
 bb = AOI::aoi_buffer(cities[1,], 10)
 
 test_that("AOI input type", { 
