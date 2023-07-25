@@ -159,15 +159,17 @@ try_att <- function(nc, variable, attribute) {
 }
 
 #' Extract grid metadata from NC Pointer
-#' @param nc "NetCDF" object which points to the NetCDF dataset. Found with RNetCDF::open.nc.
+#' @param URL location of data to process
 #' @param X_name Name of X diminsion. If NULL it is found
 #' @param Y_name Name of Y diminsion. If NULL it is found
 #' @param stopIfNotEqualSpaced stop if not equal space grid
 #' @return list 
 #' @family dap
 
-.resource_grid <- function(nc, X_name = NULL, Y_name = NULL, stopIfNotEqualSpaced = TRUE) {
+.resource_grid <- function(URL, X_name = NULL, Y_name = NULL, stopIfNotEqualSpaced = TRUE) {
 
+  nc = open.nc(URL)
+  
   if (is.null(X_name) | is.null(Y_name)) {
     atts <- dap_xyzv(nc)
     X_name <- omit.na(unique(atts$X_name))
@@ -202,7 +204,18 @@ try_att <- function(nc, variable, attribute) {
   ncols <- dim.inq.nc(nc, X_name)$len
   nrows <- dim.inq.nc(nc, Y_name)$len
   
-  xx <- try(var.get.nc(nc, X_name))
+  close.nc(nc)
+  
+  if(file.exists(URL)){
+    xnc = open.nc(URL)
+    xx <- try(var.get.nc(xnc, X_name)) 
+    
+  } else {
+    xurl = gsub("#fillmismatch", "", URL)
+    xurl = glue("{xurl}?{X_name}")
+    xnc = open.nc(xurl)
+    xx <- try(var.get.nc(xnc, X_name))
+  }
   
   if (inherits(xx, "try-error")) { xx <- seq_len(ncols) }
   
@@ -223,7 +236,21 @@ try_att <- function(nc, variable, attribute) {
   X1 <- xx[1]
   Xn <- xx[length(xx)]
   
-  yy <- try(var.get.nc(nc, Y_name))
+  close.nc(xnc)
+  
+  
+  if(file.exists(URL)){
+    ync = open.nc(URL)
+    yy <- try(var.get.nc(ync, Y_name)) 
+    
+  } else {
+    yurl = gsub("#fillmismatch", "", URL)
+    yurl = glue("{yurl}?{Y_name}")
+    ync = open.nc(yurl)
+    yy <- try(var.get.nc(ync, Y_name))
+  }
+  
+
   
   if (inherits(yy, "try-error")) { yy <- seq_len(nrows) }
   
@@ -265,25 +292,40 @@ try_att <- function(nc, variable, attribute) {
 }
 
 #' Extract time metadata from NC Pointer
-#' @param nc "NetCDF" object which points to the NetCDF dataset.
-#' @param T_name Name of T diminsion. If NULL it is found
+#' @param URL location of data to process
+#' @param T_name Name of T dimension. If NULL it is found
 #' @return list
 #' @family dap
 
-.resource_time <- function(nc, T_name = NULL) {
+.resource_time <- function(URL, T_name = NULL) {
   
   if (is.null(T_name)) {
+    nc = open.nc(URL)
     atts <- dap_xyzv(nc)
     T_name <- omit.na(unique(atts$T_name))
+    close.nc(nc)
   }
   
-  T_var_info <- var.inq.nc(nc, T_name)
-  
-  time_steps <- utcal.nc(
-    unitstring = att.get.nc(nc, T_var_info$name, "units"),
-    value = var.get.nc(nc, T_var_info$name, unpack = TRUE),
-    type = "c"
-  )
+
+  if(file.exists(URL)){
+    nc = open.nc(URL)
+    
+    time_steps <- utcal.nc(
+      unitstring = att.get.nc(nc, T_name, "units"),
+      value = var.get.nc(nc, T_name, unpack = TRUE),
+      type = "c"
+    )
+    
+  } else {
+    url = gsub("#fillmismatch", "", URL)
+    nc = open.nc(glue("{url}?{T_name}"))
+    
+    time_steps <- utcal.nc(
+      unitstring = att.get.nc(nc, T_name, "units"),
+      value = var.get.nc(nc, T_name, unpack = TRUE),
+      type = "c"
+    )
+  }
   
   dT <- diff(time_steps)
   
@@ -339,9 +381,9 @@ read_dap_file <- function(URL, varname = NULL, id, varmeta = TRUE) {
   raw$URL <- URL
   raw$id <- id
   
-  raw <- merge(raw, data.frame(.resource_time(nc, T_name = raw$T_name[1]), id = id), by = "id")
+  raw <- merge(raw, data.frame(.resource_time(URL, T_name = raw$T_name[1]), id = id), by = "id")
   
-  raw <- merge(raw, .resource_grid(nc, X_name = raw$X_name[1], Y_name = raw$Y_name[1]))
+  raw <- merge(raw, .resource_grid(URL, X_name = raw$X_name[1], Y_name = raw$Y_name[1]))
   
   raw
 }

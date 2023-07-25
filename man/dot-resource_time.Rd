@@ -4,12 +4,12 @@
 \alias{.resource_time}
 \title{Extract time metadata from NC Pointer}
 \usage{
-.resource_time(nc, T_name = NULL)
+.resource_time(URL, T_name = NULL)
 }
 \arguments{
-\item{nc}{"NetCDF" object which points to the NetCDF dataset.}
+\item{URL}{location of data to process}
 
-\item{T_name}{Name of T diminsion. If NULL it is found}
+\item{T_name}{Name of T dimension. If NULL it is found}
 }
 \value{
 list

@@ -117,4 +117,4 @@ animation(county, feild_pattern = "pr_", outfile = "man/figures/vect_gif.gif")
 ```{r, echo = FALSE}
 knitr::include_graphics("man/figures/vect_gif.gif")
 ```
-```
+

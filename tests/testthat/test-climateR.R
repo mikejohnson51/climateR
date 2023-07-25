@@ -1,7 +1,8 @@
 library(AOI)
 library(terra)
 
-cities = readRDS(system.file("tests/data", "cities.rds", package = "climateR"))
+
+cities <- readRDS(here::here("tests/data/cities.rds"))
 bb = AOI::aoi_buffer(cities[1,], 10)
 
 test_that("AOI input type", { 
@@ -373,12 +374,12 @@ test_that("PRISM", {
     AOI = bb,
     varname = c('tmax', 'tmin'),
     startDate = "2021-01-01",
-    endDate = "2021-01-10"
+    endDate = "2021-01-03"
   )
   
   expect_true(nrow(prism[[1]]) == 9)
   expect_true(ncol(prism[[1]]) == 12)
-  expect_true(nlyr(prism[[1]]) == 10)
+  expect_true(nlyr(prism[[1]]) == 3)
   expect_true(length(prism) == 2)
   expect_true(all(values(prism$tmax > prism$tmin)) == 1)
   
@@ -386,26 +387,26 @@ test_that("PRISM", {
     AOI = bb,
     varname = "tmin",
     startDate = "2015-01-10",
-    endDate = "2015-01-15"
+    endDate = "2015-01-11"
   )
   
   expect_true(class(daily) == "list")
   expect_true(class(daily[[1]]) == "SpatRaster")
   expect_true(names(daily)[1] == "tmin")
-  expect_true(nlyr(daily[[1]]) == 6)
+  expect_true(nlyr(daily[[1]]) == 2)
   
   monthly = getPRISM(
     AOI = bb,
     varname = "tmn",
     timeRes = "monthly",
     startDate = "2015-01-10",
-    endDate = "2015-06-15"
+    endDate = "2015-02-15"
   )
   
   expect_true(class(monthly) == "list")
   expect_true(class(monthly[[1]]) == "SpatRaster")
   expect_true(names(monthly)[1] == "tmn")
-  expect_true(nlyr(monthly[[1]]) == 6)
+  expect_true(nlyr(monthly[[1]]) == 2)
   
 })
 
@@ -527,6 +528,7 @@ test_that("piping AOI", {
 })
 
 test_that("dap_xyzv", {
+  
   f = system.file("nc/bcsd_obs_1999.nc", package = "climateR")
   o = dap_xyzv(f)
   expect_equal(nrow(o), 2)
@@ -535,16 +537,20 @@ test_that("dap_xyzv", {
   expect_equal(o$T_name[1], "time")
   expect_equal(o$dim_order[1], "TYX")
   
-  expect_error(.resource_grid(f))
   
-  expect_true(.resource_grid(RNetCDF::open.nc(f))$resX == .125)
+  expect_true(.resource_grid(f)$resX == .125)
   
   expect_error(dap_xyzv(f, varname = "BLAH"))
   
   URL = "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/hyrax/GPM_L3/GPM_3IMERGHH.06/2021/001/3B-HHR.MS.MRG.3IMERG.20210101-S000000-E002959.0000.V06B.HDF5"
   
   dap = dap_xyzv(URL)
+  times = .resource_time(URL, T_name = dap$T_name[1])
+  xy = .resource_grid(URL, X_name = dap$X_name[1], Y_name = dap$Y_name[1])
+  
   expect_true(nrow(dap) == 10)
+  expect_true(length(times) == 3)
+  expect_true(nrow(xy) == 1)
   
 })
 
@@ -558,10 +564,11 @@ test_that("utils", {
   expect_equal(o$T_name[1], "time")
   expect_equal(o$dim_order[1], "TYX")
   
-  expect_true(.resource_grid(RNetCDF::open.nc(f))$resX == .125)
-  expect_error(dap_xyzv(f, varname = "BLAH"))
+  expect_error(.resource_grid(RNetCDF::open.nc(f)))
   
-  expect_error(.resource_grid(f))
+  expect_true(.resource_grid(f)$resX == .125)
+  expect_error(dap_xyzv(f, varname = "BLAH"))
+
   
   cat = dap_crop(f)
   
@@ -589,6 +596,7 @@ test_that("pts", {
   ts = dap(URL = f,
            AOI = pt,
            verbose = FALSE)
+  
   expect_equal(ncol(ts), 3)
   expect_equal(names(ts), c("date", "pr", "tas"))
   expect_equal(length(ts[[1]]), 12)

@@ -28,6 +28,15 @@
     <loc>/index.html</loc>
   </url>
   <url>
+    <loc>/reference/animation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/animation_raster.html</loc>
+  </url>
+  <url>
+    <loc>/reference/animation_vector.html</loc>
+  </url>
+  <url>
     <loc>/reference/checkDodsrc.html</loc>
   </url>
   <url>

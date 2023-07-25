@@ -80,7 +80,7 @@ system.time({
                endDate  = "1991-11-06")
 })
 #>    user  system elapsed 
-#>   0.222   0.079   1.954
+#>   0.245   0.054   0.982
 ```
 
 <img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" />
@@ -102,7 +102,7 @@ system.time({
   county = execute_zonal(d, geom = AOI, ID = "fip_code")
 })
 #>    user  system elapsed 
-#>   0.312   0.012   0.326
+#>   0.328   0.018   0.366
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" />
@@ -111,4 +111,4 @@ system.time({
 animation(county, feild_pattern = "pr_", outfile = "man/figures/vect_gif.gif")
 ```
 
-<img src="man/figures/vect_gif.gif" width="100%" /> \`\`\`
+<img src="man/figures/vect_gif.gif" width="100%" />

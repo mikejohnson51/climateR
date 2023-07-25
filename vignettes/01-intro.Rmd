@@ -268,7 +268,7 @@ Extracting data for a set of points is an interesting challenge. It turns it is 
 1. Starting with a set of locations in Colorado:
 
 ```{r}
-f = system.file("co/co_cities.rds", package = "climateR")
+f = system.file("co/cities_colorado.rds", package = "climateR")
 cities = readRDS(f)
 ```
 
