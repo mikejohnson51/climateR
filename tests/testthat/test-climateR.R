@@ -1,7 +1,7 @@
 library(AOI)
 library(terra)
 
-cities = readRDS(system.file("testdata/cities.rds", package = "climateR"))
+cities = readRDS(testthat::test_path("data", "cities.rds"))
 
 bb = AOI::aoi_buffer(cities[1,], 10)
 
