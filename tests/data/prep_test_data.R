@@ -3,5 +3,5 @@ cities = data.frame(city = c("Fort Collins, CO", "Durham, NC", "Raleigh, NC"),
                lng = c(-105.110130, -78.898621, -78.6382)) %>% 
   st_as_sf(coords = c("lng", "lat"), crs = 4326)
 
-saveRDS(cities, "tests/data/cities.rds")
+saveRDS(cities, "inst/testdata/cities.rds")
 
