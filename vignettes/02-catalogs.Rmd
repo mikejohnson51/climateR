@@ -12,6 +12,10 @@ author:
     affiliation_url: https://lynker.com
   
 output: distill::distill_article
+vignette: >
+  %\VignetteIndexEntry{catalogs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Catalogs
