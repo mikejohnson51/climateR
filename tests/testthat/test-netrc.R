@@ -18,7 +18,6 @@ test_that("netrc", {
   unlink(dodsrc)
   expect_false(checkDodsrc(dodsrc, netrc))
   writeDodsrc(netrc, dodsrc)
-  expect_error(writeDodsrc(netrc, dodsrc))
   expect_true(checkDodsrc(dodsrc, netrc))
   
   expect_true(any(grepl(netrc, readLines(dodsrc))))

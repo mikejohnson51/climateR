@@ -83,7 +83,7 @@ ggplot() +
     palette = "muted",
     na.value = "white"
   ) + 
-  geom_sf(data = AOI::aoi_get(state  = c("CO", "NM", "AZ", "UT")), fill = NA) + 
+  geom_sf(data = aoi_get(state  = c("CO", "NM", "AZ", "UT")), fill = NA) + 
   theme_minimal()
 ```
 

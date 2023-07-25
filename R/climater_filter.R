@@ -42,10 +42,6 @@ climater_filter <- function(id = NULL,
   if (nrow(catalog) == 0) {
     stop("no data to filter.", call. = FALSE)
   }
-  
-  ppts = c("pr", "ppt", "prcp")
-  tmaxs = c('tmx', 'tmmx', 'tmax', "tasmax")
-  tmins = c("tmn", "tmmn", 'tmin', "tasmin")
 
   ### 1  ---- varname filter
   if(!is.null(varname)){

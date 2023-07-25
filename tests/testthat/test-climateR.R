@@ -1,14 +1,17 @@
 library(AOI)
 library(terra)
 
+cities = readRDS(system.file("tests/data", "cities.rds", package = "climateR"))
+bb = AOI::aoi_buffer(cities[1,], 10)
+
 test_that("AOI input type", { 
   
-  out = getTerraClimNormals(AOI = AOI::aoi_get(state = "CO"),
+  out = getTerraClimNormals(AOI = bb,
                             varname = "tmin",
                             month = 4)
   
   
-  out2 = getTerraClimNormals(AOI = vect(AOI::aoi_get(state = "CO")),
+  out2 = getTerraClimNormals(AOI = vect(bb),
                             varname = "tmin",
                             month = 4)
   
@@ -59,7 +62,7 @@ test_that("climater_filter", {
 test_that("TerraClim", {
 
   foco = getTerraClim(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "tmin",
     startDate = "2020-01-01"
   )
@@ -68,23 +71,19 @@ test_that("TerraClim", {
   expect_true(class(foco[[1]]) == "SpatRaster")
   expect_true(names(foco) == "tmin")
   expect_true(names(foco[[1]]) == "tmin_2020-01-01_total")
-  expect_true(nrow(foco[[1]]) == 5)
-  expect_true(ncol(foco[[1]]) == 5)
-  # expect_equal(nrow(getTerraClim(
-  #   AOI = aoi_get("Fort Collins"),
-  #   varname = "tmin",
-  #   dryrun = TRUE
-  # )), 1)
+  expect_true(nrow(foco[[1]]) == 9)
+  expect_true(ncol(foco[[1]]) == 11)
+
   
-  ex = extract_sites(foco, geocode("Fort Collins", pt = TRUE), "request")
+  ex = extract_sites(foco, filter(cities, city == "Fort Collins, CO"), "city")
   
-  expect_true(round(ex[[1]]$FortCollins,1) == -7.2)
+  expect_true(round(ex[[1]]$FortCollins,1) == -7)
   expect_true(ex[[1]]$date == as.POSIXct("2020-01-01", tz = "UTC"))
 })
 
 test_that("TerraClimNormals", {
   out = getTerraClimNormals(
-    AOI = AOI::aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "tmin",
     month = 4,
     dryrun = TRUE
@@ -92,7 +91,7 @@ test_that("TerraClimNormals", {
   
   expect_equal(nrow(out), 1)
   
-  out = getTerraClimNormals(AOI = AOI::aoi_get("Fort Collins"),
+  out = getTerraClimNormals(AOI =bb,
                             varname = "tmin",
                             month = 4)
   
@@ -100,14 +99,14 @@ test_that("TerraClimNormals", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_1961-04-01_19812010")
-  expect_true(nrow(out[[1]]) == 5)
-  expect_true(ncol(out[[1]]) == 5)
+  expect_true(nrow(out[[1]]) == 9)
+  expect_true(ncol(out[[1]]) == 11)
 })
 
 test_that("end and start dates", {
   # Monthly
   start = getTerraClim(
-    AOI        = aoi_get("Fort Collins"),
+    AOI        = bb,
     varname    = "aet",
     startDate  = strsplit(climater_filter(id = 'terraclim')$duration[1], "/")[[1]][1]
   )
@@ -115,7 +114,7 @@ test_that("end and start dates", {
   expect_equal(length(start), 1)
   
   end = getTerraClim(
-    AOI      = aoi_get("Fort Collins"),
+    AOI      = bb,
     varname    = "aet",
     startDate  =   strsplit(climater_filter(id = 'terraclim')$duration[1], "/")[[1]][2]
   )
@@ -124,7 +123,7 @@ test_that("end and start dates", {
   
   # Daily
   start = getGridMET(
-    AOI        = aoi_get("Fort Collins"),
+    AOI        = bb,
     varname    = "pr",
     startDate  =  strsplit(climater_filter(id = 'gridmet')$duration[1], "/")[[1]][1]
   )
@@ -132,7 +131,7 @@ test_that("end and start dates", {
   expect_equal(length(start), 1)
   
   end = getGridMET(
-    AOI         = aoi_get("Fort Collins"),
+    AOI         = bb,
     varname    = "pr",
     startDate  =   as.character(Sys.Date() - 2)
   )
@@ -142,7 +141,7 @@ test_that("end and start dates", {
 
 test_that("Daymet", {
   out = getDaymet(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "tmin",
     startDate = "2020-01-01"
   )
@@ -151,13 +150,13 @@ test_that("Daymet", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_2019-12-31 12:00:00_na_total")
-  expect_true(nrow(out[[1]]) == 20)
-  expect_true(ncol(out[[1]]) == 16)
+  expect_true(nrow(out[[1]]) == 38)
+  expect_true(ncol(out[[1]]) == 38)
 })
 
 test_that("gridmet", {
   out = getGridMET(
-    AOI = aoi_get("Fort Collins"),
+    AOI =bb,
     varname = "pr",
     startDate = "2020-01-01"
   )
@@ -166,11 +165,11 @@ test_that("gridmet", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "precipitation_amount")
   expect_true(names(out[[1]]) == "pr_2020-01-01")
-  expect_true(nrow(out[[1]]) == 5)
-  expect_true(ncol(out[[1]]) == 5)
+  expect_true(nrow(out[[1]]) == 9)
+  expect_true(ncol(out[[1]]) == 11)
   
   out = getGridMET(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "pdsi",
     startDate = "2020-01-01"
   )
@@ -179,7 +178,7 @@ test_that("gridmet", {
 
 test_that("loca", {
   out = getLOCA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "pr",
     startDate = "2020-01-01",
     dryrun = TRUE
@@ -188,7 +187,7 @@ test_that("loca", {
   expect_equal(nrow(out), 1)
   
   out = getLOCA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "pr",
     startDate = "2020-01-01"
   )
@@ -197,15 +196,15 @@ test_that("loca", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "pr_CCSM4_r6i1p1_rcp45")
   expect_true(names(out[[1]]) == "pr_2019-12-31 12:00:00_CCSM4_r6i1p1_rcp45")
-  expect_true(nrow(out[[1]]) == 4)
-  expect_true(ncol(out[[1]]) == 4)
+  expect_true(nrow(out[[1]]) == 6)
+  expect_true(ncol(out[[1]]) == 8)
 })
 
 
 test_that("MACA", {
   expect_error(
     getMACA(
-      AOI = aoi_get("Fort Collins"),
+      AOI =bb,
       varname = "pr",
       model = "CanESM2",
       timeRes = "daily",
@@ -214,7 +213,7 @@ test_that("MACA", {
   )
   # Future
   out = getMACA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "pr",
     model = "CanESM2",
     startDate = "2080-01-01"
@@ -224,11 +223,11 @@ test_that("MACA", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "precipitation")
   expect_true(names(out[[1]])[1] == "pr_2080-01-01_CanESM2_r1i1p1_rcp45")
-  expect_true(nrow(out[[1]]) == 5)
-  expect_true(ncol(out[[1]]) == 5)
+  expect_true(nrow(out[[1]]) == 9)
+  expect_true(ncol(out[[1]]) == 11)
   
   out = getMACA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "pr",
     startDate = "1970-01-01"
   )
@@ -237,29 +236,32 @@ test_that("MACA", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "precipitation")
   expect_true(names(out[[1]])[1] == "pr_1970-01-01_CCSM4_r6i1p1_historical")
-  expect_true(nrow(out[[1]]) == 5)
-  expect_true(ncol(out[[1]]) == 5)
+  expect_true(nrow(out[[1]]) == 9)
+  expect_true(ncol(out[[1]]) == 11)
   
   expect_error(getMACA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = filter(cities, city == "Fort Collins, CO"),
     varname = "pr",
     model = "RRR",
     startDate = "2080-01-01"
   ))
+  
   expect_error(getMACA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = filter(cities, city == "Fort Collins, CO"),
     varname = "RRR",
     model = "CanESM2",
     startDate = "2080-01-01"
   ))
+  
   expect_error(getMACA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = filter(cities, city == "Fort Collins, CO"),
     varname = "pr",
     model = "CanESM2",
     startDate = "3080-01-01"
   ))
+  
   expect_error(getMACA(
-    AOI = aoi_get("Fort Collins"),
+    AOI = filter(cities, city == "Fort Collins, CO"),
     varname = "pr",
     model = "CanESM2",
     startDate = "1080-01-01"
@@ -273,7 +275,7 @@ test_that("NLDAS", {
   skip_on_ci()
   
   out = getNLDAS(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "ugrd10m",
     startDate = "2020-01-01"
   )
@@ -292,7 +294,7 @@ test_that("GLDAS", {
   skip_on_ci()
   
   out = getGLDAS(
-    AOI = AOI::aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "snowt_tavg",
     startDate = "2020-01-01"
   )
@@ -329,7 +331,7 @@ test_that("MODIS", {
   skip_if(dead_url, "MODIS server is down! Skipping tests")
   
   out = getMODIS(
-    AOI       = aoi_get("Fort Collins"),
+    AOI       = bb,
     asset     = 'MOD16A2.006',
     varname   = "PET_500m",
     startDate = "2020-10-29"
@@ -358,7 +360,7 @@ test_that("MODIS", {
 test_that("PRISM", {
   
   daily = getPRISM(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "tmin",
     startDate = "2015-01-10",
     endDate = NULL,
@@ -368,18 +370,20 @@ test_that("PRISM", {
   expect_equal(nrow(daily), 1)
   
   prism <- getPRISM(
-    AOI = geocode("Fort Collins", pt = TRUE),
+    AOI = bb,
     varname = c('tmax', 'tmin'),
     startDate = "2021-01-01",
     endDate = "2021-01-10"
   )
   
-  expect_true(nrow(prism) == 10)
-  expect_true(ncol(prism) == 3)
-  expect_true(all(prism$tmax > prism$tmin))
+  expect_true(nrow(prism[[1]]) == 9)
+  expect_true(ncol(prism[[1]]) == 12)
+  expect_true(nlyr(prism[[1]]) == 10)
+  expect_true(length(prism) == 2)
+  expect_true(all(values(prism$tmax > prism$tmin)) == 1)
   
   daily = getPRISM(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "tmin",
     startDate = "2015-01-10",
     endDate = "2015-01-15"
@@ -391,7 +395,7 @@ test_that("PRISM", {
   expect_true(nlyr(daily[[1]]) == 6)
   
   monthly = getPRISM(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "tmn",
     timeRes = "monthly",
     startDate = "2015-01-10",
@@ -406,6 +410,7 @@ test_that("PRISM", {
 })
 
 test_that("local & extract pts", {
+  
   f = system.file("nc/bcsd_obs_1999.nc", package = "climateR")
   
   x =  dap(URL = f, verbose = FALSE)
@@ -425,7 +430,7 @@ test_that("local & extract pts", {
 
 test_that("Remote VRT", {
   cat = climater_filter(asset = '2019 Land Cover L48')
-  nlcd = dap(catalog = cat, AOI = aoi_get("Fort Collins"))
+  nlcd = dap(catalog = cat, AOI = bb)
   expect_true(class(nlcd[[1]]) == "SpatRaster")
   expect_true(nlyr(nlcd[[1]]) == 1)
   expect_true(res(nlcd[[1]])[1] == 30)
@@ -435,7 +440,7 @@ test_that("Remote VRT", {
 
 test_that("Livneh", {
   xx = getLivneh(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "wind",
     startDate = "2011-11-29",
     endDate = "2011-12-03"
@@ -446,7 +451,7 @@ test_that("Livneh", {
   expect_true(nlyr(xx[[1]]) == 5)
   
   xx = getLivneh(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     timeRes = "monthly",
     varname = "wind",
     startDate = "2011-11-29",
@@ -458,7 +463,7 @@ test_that("Livneh", {
   expect_true(nlyr(xx[[1]]) == 2)
   
   xx = getLivneh_fluxes(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "SWE",
     startDate = "2011-11-29",
     endDate = "2011-12-03"
@@ -474,14 +479,14 @@ test_that("Livneh", {
 test_that("CHIRPS", {
   
   expect_error(getCHIRPS(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     startDate = "2011-11-29",
     endDate = "2011-12-03",
     timeRes = "BLAH"
   ))
   
   xx = getCHIRPS(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     startDate = "2011-11-29",
     endDate = "2011-12-03"
   )
@@ -491,18 +496,19 @@ test_that("CHIRPS", {
   expect_true(nlyr(xx[[1]]) == 5)
   
   xx = getCHIRPS(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     timeRes = "monthly",
     startDate = "2011-11-29",
     endDate = "2011-12-03"
   )
+  
   expect_true(class(xx) == "list")
   expect_true(class(xx[[1]]) == "SpatRaster")
   expect_true(names(xx)[1] == "precip")
   expect_true(nlyr(xx[[1]]) == 1)
   
   expect_error(getCHIRPS(
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     period = "BLAH",
     startDate = "2011-11-29",
     endDate = "2011-12-03"
@@ -510,7 +516,7 @@ test_that("CHIRPS", {
 })
 
 test_that("piping AOI", {
-  xx = aoi_get("Fort Collins") %>%
+  xx = bb %>%
     getCHIRPS(startDate = "2011-11-29", endDate = "2011-12-03")
   
   expect_true(class(xx) == "list")
@@ -536,10 +542,9 @@ test_that("dap_xyzv", {
   expect_error(dap_xyzv(f, varname = "BLAH"))
   
   URL = "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/hyrax/GPM_L3/GPM_3IMERGHH.06/2021/001/3B-HHR.MS.MRG.3IMERG.20210101-S000000-E002959.0000.V06B.HDF5"
+  
   dap = dap_xyzv(URL)
   expect_true(nrow(dap) == 10)
-  
-  .resource_time(nc = RNetCDF::open.nc(URL))
   
 })
 
@@ -567,10 +572,10 @@ test_that("utils", {
 })
 
 test_that("BCCA", {
-  xx = aoi_get("Fort Collins") %>%
+  xx = bb %>%
     getBCCA(startDate = "2011-11-29", endDate = "2011-12-03")
   
-  expect_true(length(xx) == 6)
+  expect_true(length(xx) == 2)
   expect_true(class(xx[[1]]) == "SpatRaster")
   expect_true(nlyr(xx[[1]]) == 5)
   
@@ -579,7 +584,7 @@ test_that("BCCA", {
 
 test_that("pts", {
   f = system.file("nc/bcsd_obs_1999.nc", package = "climateR")
-  pt = geocode("Durham, NC", pt = TRUE)
+  pt = filter(cities, city == "Durham, NC")
   
   ts = dap(URL = f,
            AOI = pt,
@@ -593,15 +598,15 @@ test_that("pts", {
   expect_equal(names(full), c("pr", "tas"))
   expect_equal(nlyr(full[[1]]), 12)
   
-  ext = extract_sites(r = full, pt, id = "request")
+  ext = extract_sites(r = full, pt, id = "city")
   
   expect_true(all(round(ext$tas$`Durham,NC`, 5) == round(ts$tas, 5)))
   expect_equal(length(ext), 2)
   expect_equal(names(ext), c("pr", "tas"))
   expect_equal(nrow(ext[[1]]), 12)
   
-  pts = geocode(c("Durham, NC", "Raleigh, NC"), pt = TRUE)
-  ext2 = extract_sites(r = full, pts, id = "request")
+  pts = filter(cities, city != "Fort Collins, CO")
+  ext2 = extract_sites(r = full, pts, id = "city")
   expect_equal(nrow(ext2[[1]]), 12)
   expect_equal(ncol(ext2[[1]]), 3)
   
@@ -610,15 +615,15 @@ test_that("pts", {
 test_that("VRT", {
   tmp = filter(params,  id == "HBV")[1, ]
   
-  hbv = vrt_crop_get(catalog = tmp, AOI = aoi_get("Fort Collins"))
+  hbv = vrt_crop_get(catalog = tmp, AOI = bb)
   
   hbv1 = vrt_crop_get(catalog = tmp,
-                      AOI = aoi_get("Fort Collins"),
+                      AOI = bb,
                       start = 2)
   
   hbv1_2 = vrt_crop_get(
     catalog = tmp,
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     varname = "FC"
   )
   
@@ -627,7 +632,7 @@ test_that("VRT", {
   
   hbv_2 = vrt_crop_get(
     catalog = tmp,
-    AOI = aoi_get("Fort Collins"),
+    AOI = bb,
     start = 2,
     end = 3
   )
@@ -640,7 +645,7 @@ test_that("VRT", {
 test_that("FTP", {
   
   dr = getLOCA_hydro(
-    AOI = aoi_get(state = "FL"),
+    AOI = bb,
     varname = "baseflow",
     startDate = "1990-12-31",
     endDate = "1991-01-01",
@@ -651,7 +656,7 @@ test_that("FTP", {
   expect_true(ncol(dr) == 6)
   
   oo = getLOCA_hydro(
-    AOI = aoi_get(state = "FL"),
+    AOI = bb,
     varname = "baseflow",
     startDate = "1990-12-31",
     endDate = "1991-01-01"
