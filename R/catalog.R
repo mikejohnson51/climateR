@@ -13,5 +13,6 @@
 #' @importFrom gifski save_gif
 #' @importFrom methods formalArgs
 #' @importFrom stats complete.cases
+#' @importFrom grDevices blues9
 
 NULL

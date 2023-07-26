@@ -157,8 +157,7 @@ writeDodsrc = function(netrcFile = getNetrcPath(), dodsrcFile = ".dodsrc"){
 }
 
 #' @title Check dodsrc file
-#' @description Check that there is a netrc file with a valid
-#' entry for urs.earthdata.nasa.gov.
+#' @description Check that there is a netrc file with a valid entry for urs.earthdata.nasa.gov.
 #' @param dodsrcFile File path to dodsrc file to check.
 #' @param netrcFile  File path to netrc file to check.
 #' @return logical

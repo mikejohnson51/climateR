@@ -1,9 +1,9 @@
 library(AOI)
 library(terra)
+library(climateR)
 
-cities = readRDS(testthat::test_path("data", "cities.rds"))
-
-bb = AOI::aoi_buffer(cities[1,], 10)
+cities =  AOI::geocode(c("Fort Collins, CO", "Durham, NC", "Raleigh, NC"), pt = TRUE)
+bb     =  AOI::geocode("Fort Collins, CO", bb = TRUE)
 
 test_that("AOI input type", { 
   
@@ -72,13 +72,13 @@ test_that("TerraClim", {
   expect_true(class(foco[[1]]) == "SpatRaster")
   expect_true(names(foco) == "tmin")
   expect_true(names(foco[[1]]) == "tmin_2020-01-01_total")
-  expect_true(nrow(foco[[1]]) == 9)
-  expect_true(ncol(foco[[1]]) == 11)
+  expect_true(nrow(foco[[1]]) == 5)
+  expect_true(ncol(foco[[1]]) == 5)
 
   
-  ex = extract_sites(foco, filter(cities, city == "Fort Collins, CO"), "city")
+  ex = extract_sites(foco, filter(cities, request == "Fort Collins, CO"), "request")
   
-  expect_true(round(ex[[1]]$FortCollins,1) == -7)
+  expect_true(round(ex[[1]]$FortCollins,1) == -7.2)
   expect_true(ex[[1]]$date == as.POSIXct("2020-01-01", tz = "UTC"))
 })
 
@@ -100,8 +100,8 @@ test_that("TerraClimNormals", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_1961-04-01_19812010")
-  expect_true(nrow(out[[1]]) == 9)
-  expect_true(ncol(out[[1]]) == 11)
+  expect_true(nrow(out[[1]]) == 5)
+  expect_true(ncol(out[[1]]) == 5)
 })
 
 test_that("end and start dates", {
@@ -141,6 +141,7 @@ test_that("end and start dates", {
 })
 
 test_that("Daymet", {
+  
   out = getDaymet(
     AOI = bb,
     varname = "tmin",
@@ -151,8 +152,8 @@ test_that("Daymet", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "tmin")
   expect_true(names(out[[1]]) == "tmin_2019-12-31 12:00:00_na_total")
-  expect_true(nrow(out[[1]]) == 38)
-  expect_true(ncol(out[[1]]) == 38)
+  expect_true(nrow(out[[1]]) == 20)
+  expect_true(ncol(out[[1]]) == 16)
 })
 
 test_that("gridmet", {
@@ -166,8 +167,8 @@ test_that("gridmet", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "precipitation_amount")
   expect_true(names(out[[1]]) == "pr_2020-01-01")
-  expect_true(nrow(out[[1]]) == 9)
-  expect_true(ncol(out[[1]]) == 11)
+  expect_true(nrow(out[[1]]) == 5)
+  expect_true(ncol(out[[1]]) == 5)
   
   out = getGridMET(
     AOI = bb,
@@ -197,8 +198,8 @@ test_that("loca", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "pr_CCSM4_r6i1p1_rcp45")
   expect_true(names(out[[1]]) == "pr_2019-12-31 12:00:00_CCSM4_r6i1p1_rcp45")
-  expect_true(nrow(out[[1]]) == 6)
-  expect_true(ncol(out[[1]]) == 8)
+  expect_true(nrow(out[[1]]) == 4)
+  expect_true(ncol(out[[1]]) == 4)
 })
 
 
@@ -224,8 +225,8 @@ test_that("MACA", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "precipitation")
   expect_true(names(out[[1]])[1] == "pr_2080-01-01_CanESM2_r1i1p1_rcp45")
-  expect_true(nrow(out[[1]]) == 9)
-  expect_true(ncol(out[[1]]) == 11)
+  expect_true(nrow(out[[1]]) == 5)
+  expect_true(ncol(out[[1]]) == 5)
   
   out = getMACA(
     AOI = bb,
@@ -237,32 +238,32 @@ test_that("MACA", {
   expect_true(class(out[[1]]) == "SpatRaster")
   expect_true(names(out) == "precipitation")
   expect_true(names(out[[1]])[1] == "pr_1970-01-01_CCSM4_r6i1p1_historical")
-  expect_true(nrow(out[[1]]) == 9)
-  expect_true(ncol(out[[1]]) == 11)
+  expect_true(nrow(out[[1]]) == 5)
+  expect_true(ncol(out[[1]]) == 5)
   
   expect_error(getMACA(
-    AOI = filter(cities, city == "Fort Collins, CO"),
+    AOI = filter(cities, request == "Fort Collins, CO"),
     varname = "pr",
     model = "RRR",
     startDate = "2080-01-01"
   ))
   
   expect_error(getMACA(
-    AOI = filter(cities, city == "Fort Collins, CO"),
+    AOI = filter(cities, request == "Fort Collins, CO"),
     varname = "RRR",
     model = "CanESM2",
     startDate = "2080-01-01"
   ))
   
   expect_error(getMACA(
-    AOI = filter(cities, city == "Fort Collins, CO"),
+    AOI = filter(cities, request == "Fort Collins, CO"),
     varname = "pr",
     model = "CanESM2",
     startDate = "3080-01-01"
   ))
   
   expect_error(getMACA(
-    AOI = filter(cities, city == "Fort Collins, CO"),
+    AOI = filter(cities, request == "Fort Collins, CO"),
     varname = "pr",
     model = "CanESM2",
     startDate = "1080-01-01"
@@ -377,8 +378,8 @@ test_that("PRISM", {
     endDate = "2021-01-03"
   )
   
-  expect_true(nrow(prism[[1]]) == 9)
-  expect_true(ncol(prism[[1]]) == 12)
+  expect_true(nrow(prism[[1]]) == 5)
+  expect_true(ncol(prism[[1]]) == 5)
   expect_true(nlyr(prism[[1]]) == 3)
   expect_true(length(prism) == 2)
   expect_true(all(values(prism$tmax > prism$tmin)) == 1)
@@ -537,7 +538,6 @@ test_that("dap_xyzv", {
   expect_equal(o$T_name[1], "time")
   expect_equal(o$dim_order[1], "TYX")
   
-  
   expect_true(.resource_grid(f)$resX == .125)
   
   expect_error(dap_xyzv(f, varname = "BLAH"))
@@ -591,7 +591,7 @@ test_that("BCCA", {
 
 test_that("pts", {
   f = system.file("nc/bcsd_obs_1999.nc", package = "climateR")
-  pt = filter(cities, city == "Durham, NC")
+  pt = filter(cities, request == "Durham, NC")
   
   ts = dap(URL = f,
            AOI = pt,
@@ -606,15 +606,15 @@ test_that("pts", {
   expect_equal(names(full), c("pr", "tas"))
   expect_equal(nlyr(full[[1]]), 12)
   
-  ext = extract_sites(r = full, pt, id = "city")
+  ext = extract_sites(r = full, pt, id = "request")
   
   expect_true(all(round(ext$tas$`Durham,NC`, 5) == round(ts$tas, 5)))
   expect_equal(length(ext), 2)
   expect_equal(names(ext), c("pr", "tas"))
   expect_equal(nrow(ext[[1]]), 12)
   
-  pts = filter(cities, city != "Fort Collins, CO")
-  ext2 = extract_sites(r = full, pts, id = "city")
+  pts = filter(cities, request != "Fort Collins, CO")
+  ext2 = extract_sites(r = full, pts, id = "request")
   expect_equal(nrow(ext2[[1]]), 12)
   expect_equal(ncol(ext2[[1]]), 3)
   

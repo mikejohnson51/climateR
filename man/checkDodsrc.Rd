@@ -15,8 +15,7 @@ checkDodsrc(dodsrcFile = getDodsrcPath(), netrcFile = getNetrcPath())
 logical
 }
 \description{
-Check that there is a netrc file with a valid
-entry for urs.earthdata.nasa.gov.
+Check that there is a netrc file with a valid entry for urs.earthdata.nasa.gov.
 }
 \seealso{
 Other netrc: 

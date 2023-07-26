@@ -10,8 +10,12 @@ author:
     url: https://github.com/mikejohnson51
     affiliation: Lynker
     affiliation_url: https://lynker.com
-  
+    
 output: distill::distill_article
+vignette: >
+  %\VignetteIndexEntry{catalog}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 # Catalogs

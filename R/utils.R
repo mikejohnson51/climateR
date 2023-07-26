@@ -165,6 +165,7 @@ try_att <- function(nc, variable, attribute) {
 #' @param stopIfNotEqualSpaced stop if not equal space grid
 #' @return list 
 #' @family dap
+#' @export
 
 .resource_grid <- function(URL, X_name = NULL, Y_name = NULL, stopIfNotEqualSpaced = TRUE) {
 
@@ -296,6 +297,7 @@ try_att <- function(nc, variable, attribute) {
 #' @param T_name Name of T dimension. If NULL it is found
 #' @return list
 #' @family dap
+#' @export
 
 .resource_time <- function(URL, T_name = NULL) {
   

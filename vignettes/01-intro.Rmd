@@ -6,6 +6,10 @@ author:
     affiliation: Lynker
     affiliation_url: https://lynker.com
 output: distill::distill_article
+vignette: >
+  %\VignetteIndexEntry{intro}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
