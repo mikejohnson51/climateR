@@ -24,6 +24,7 @@ articles:
 - title: climatePy
   desc: Data acces in Python
   contents: 
+  - 03-intro-climatepy
   
 - title: Data Catalogs
   contents:
