@@ -16,6 +16,9 @@
     <loc>/articles/02-catalogs.html</loc>
   </url>
   <url>
+    <loc>/articles/03-intro-climatepy.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>/reference/animation_vector.html</loc>
+  </url>
+  <url>
+    <loc>/reference/catalog.html</loc>
   </url>
   <url>
     <loc>/reference/checkDodsrc.html</loc>
@@ -176,6 +182,9 @@
   </url>
   <url>
     <loc>/reference/read_ftp.html</loc>
+  </url>
+  <url>
+    <loc>/reference/read_live_catalog.html</loc>
   </url>
   <url>
     <loc>/reference/time_meta.html</loc>

@@ -34,9 +34,9 @@ library(climateR)
 1. A catalog of over 100,000k datasets from over 2,000 data providers/archives. See (`climateR::params`)
 
 ```{r}
-nrow(params)
-length(unique(params$id))
-length(unique(params$asset))
+nrow(catalog)
+length(unique(catalog$id))
+length(unique(catalog$asset))
 ```
 
 This catalog is an [evolving, federated collection of datasets](https://github.com/mikejohnson51/climateR-catalogs) that can be accessed by the data access utilities.

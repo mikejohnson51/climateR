@@ -1,8 +1,11 @@
 library(usethis); library(arrow)
 
-params = read_parquet(paste0(getwd(), "-catalogs/docs/catalog.parquet"))
+catalog = read_live_catalog()
 
-use_data(params,overwrite = TRUE)
+use_data(catalog, overwrite = TRUE)
 
 
+load("data/params.rda")
+catalog = params
 
+r2 = load("data/catalog.rda")

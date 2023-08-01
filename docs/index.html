@@ -67,14 +67,14 @@
 
 <p><code>climateR</code> simplifies the steps needed to get climate data into R. At its core it provides three main things:</p>
 <ol style="list-style-type: decimal">
-<li>A catalog of over 100,000k datasets from over 2,000 data providers/archives. See (<code><a href="reference/params.html">climateR::params</a></code>)</li>
+<li>A catalog of over 100,000k datasets from over 2,000 data providers/archives. See (<code>climateR::params</code>)</li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 107857</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 2075</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">asset</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">asset</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 4653</span></span></code></pre></div>
 <p>This catalog is an <a href="https://github.com/mikejohnson51/climateR-catalogs" class="external-link">evolving, federated collection of datasets</a> that can be accessed by the data access utilities.</p>
 <ol start="2" style="list-style-type: decimal">

@@ -1,8 +1,9 @@
 #' ClimateR Catalog
 #' @family catalog
 
-"params"
+"catalog"
 
+#' @importFrom arrow read_parquet
 #' @importFrom dplyr filter mutate select distinct `%>%` everything mutate_all bind_rows left_join rename group_by ungroup slice
 #' @importFrom glue glue
 #' @importFrom terra intersect project vect crs ext relate rast crop flip `ext<-` `crs<-` `units<-` `time<-` union sprc merge units nlyr as.polygons plot extract time align ymax ymin xmax xmin plot minmax setGDALconfig

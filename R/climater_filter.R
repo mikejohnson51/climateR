@@ -26,9 +26,9 @@ climater_filter <- function(id = NULL,
   variable <- description <- duration <- e <- s <- URL <- NULL
   
   if(is.null(id)){
-    catalog = climateR::params
+    catalog = climateR::catalog
   } else {
-    catalog = filter(climateR::params, id == !!id)
+    catalog = filter(climateR::catalog, id == !!id)
   }
   
   if (nrow(catalog) == 0) {
