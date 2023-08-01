@@ -5,6 +5,10 @@ author:
     url: https://github.com/anguswg-ucsb
     affiliation: Lynker
     affiliation_url: https://lynker.com
+  - name: "Mike Johnson"
+    url: https://github.com/mikejohnson51
+    affiliation: Lynker
+    affiliation_url: https://lynker.com
 output: distill::distill_article
 ---
 
