@@ -105,10 +105,10 @@ time_meta = function (raw){
     }
     ll <- list()
     for (i in 1:nrow(tmp)) {
-      nc <- open.nc(paste0(tmp$URL[i], "#fillmismatch"))
+ 
       ll[[i]] <-
         data.frame(
-          .resource_time(nc, T_name = tmp$T_name[i]),
+          .resource_time(tmp$URL[i], T_name = tmp$T_name[i]),
           scenario = tmp$scenario[i],
           id = tmp$id[i]
         )
@@ -121,7 +121,6 @@ time_meta = function (raw){
               "/",
               nrow(tmp),
               ")")
-      RNetCDF::close.nc(nc)
     }
     if (flag) {
       raw$duration <- ll[[1]]$duration
