@@ -160,10 +160,7 @@ grid_meta = function (raw){
     return(raw)
   }
   else {
-    url <- paste0(raw$URL[1], "#fillmismatch")
-    nc <- open.nc(url)
-    g <- .resource_grid(nc)
-    close.nc(nc)
+    g <- .resource_grid(raw$URL[1])
     return(cbind(raw, g))
   }
 }
