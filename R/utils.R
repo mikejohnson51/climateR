@@ -444,7 +444,7 @@ var_to_terra <- function(var, dap) {
   
   dates <- seq.POSIXt(as.POSIXct(dap$startDate),
                       as.POSIXct(dap$endDate),
-                      length.out  = dap$Tdim)
+                      by =  dap$interval)
   
   name <-  gsub("_NA", "",paste(dap$variable, 
                                 dates,
@@ -454,6 +454,7 @@ var_to_terra <- function(var, dap) {
                                 sep = "_"))
   
   vars = dap$variable
+  
   if(length(vars) == 0){ vars = dap$varname }
   
   names_ts = sub("_$", "", 
@@ -505,7 +506,7 @@ var_to_terra <- function(var, dap) {
   
   units(r) <- dap$units
   time(r) <- dates
-  names(r) = name
+  names(r) <- name
   
   r
 }

@@ -70,7 +70,7 @@ getTerraClimNormals = function(AOI, varname,
   
   tmp = as.Date(strsplit(raw$duration[1], "/")[[1]])
 
-  dates = seq.Date(tmp[1],tmp[2], by = "month")[month]
+  dates = seq.Date(tmp[1],tmp[2], by = "month", tz = "UTC")[month]
   
   if(dryrun) { 
     dap_crop(catalog = raw, AOI = AOI, startDate = head(dates, 1), endDate   = tail(dates, 1), verbose = TRUE)
@@ -514,4 +514,49 @@ getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
   return(dap(catalog = x, AOI = AOI))
   
 }
+
+
+
+#' @title Get MERRA2
+#' @description MERRA2
+#' @inheritParams climater_filter
+#' @param year Land cover product year 1985 - 2019 (default = 2019)
+#' @param type product type (primary landcover (default), secondary landcover, primary confidence, secondary confidence, cover change, change day, change magniture, model cquality, spectral stability, spectral lastchance)
+#' @inherit getTerraClim return
+#' @family shortcuts
+#' @export
+
+# getMERRA2 = function(AOI, 
+#                      varname, 
+#                      startDate, 
+#                      endDate = NULL){
+#   
+#   x = NULL
+#   
+#   cat = climater_filter(id = "MERRA2")
+#   cat = cat[grepl(year, tolower(cat$description)), ]
+#   if(!nrow(cat) > 0){ stop("No ", type, " data in AOI for ", year) }
+#   cat = cat[grepl(tolower(type), tolower(cat$description)), ]
+#   if(!nrow(cat) > 0){ stop("No ", type, " data in AOI.") }
+#   
+#   gid = sapply(1:nrow(cat), function(x) {
+#     suppressWarnings({
+#       tryCatch({
+#         nrow(intersect(make_vect(cat = cat[x, ]), project(vect(AOI), crs(cat$crs[x])))) > 0
+#       }, error = function(e) {
+#         FALSE
+#       })
+#       
+#     })
+#   })
+#   
+#   cat = cat[gid, ]
+#   
+#   if(nrow(cat) == 0){
+#     stop("No data found in provided AOI.", call. = FALSE)
+#   } 
+#   
+#   return(dap(catalog = x, AOI = AOI))
+#   
+# }
 

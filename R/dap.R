@@ -216,8 +216,8 @@ dap_crop <- function(URL = NULL,
       endDate <- paste(endDate, "23:00:00")
     }
     
-    startDate <- as.POSIXct(startDate, tz = "UTC")
-    endDate   <- as.POSIXct(endDate, tz = "UTC")
+    startDate <- as.POSIXct(as.character(startDate), tz = "UTC")
+    endDate   <-  as.POSIXct(as.character(endDate), tz = "UTC")
     
     out <- list()
     
@@ -241,16 +241,18 @@ dap_crop <- function(URL = NULL,
       } else if (startDate > max(time_steps) |  endDate  < min(time_steps)) {
         out[[i]] <- NULL
       } else {
-        T1 <- which.min(abs(time_steps - startDate)) - 1
-        Tn <- which.min(abs(time_steps - endDate)) - 1
+        tmp = abs(time_steps - startDate)
+        T1 <- max(which(tmp == min(tmp)))
+        tmp = abs(time_steps - endDate)
+        Tn <-  max(which(tmp == min(tmp)))
         
         out[[i]] <- cbind(
           catalog[i,],
           data.frame(
-            T = paste0("[", T1, ":1:", Tn, "]"),
+            T = paste0("[", T1 - 1, ":1:", Tn - 1, "]"),
             Tdim = (Tn - T1) + 1,
-            startDate = time_steps[T1 + 1],
-            endDate = time_steps[Tn + 1]
+            startDate = time_steps[T1],
+            endDate = time_steps[Tn]
           )
         )
       }
@@ -369,7 +371,7 @@ dap_crop <- function(URL = NULL,
 dap_get <- function(dap, varname = NULL) {
   
   if (!is.null(varname)) {
-    if (!varname %in% dap$varname | !varname %in% dap$variable) {
+    if (any(!varname %in% dap$varname | !varname %in% dap$variable)) {
       stop(
         "variable(s) in resource include:\n\t> ",
         paste(unique(dap$varname),
