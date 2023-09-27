@@ -18,3 +18,4 @@ img
 ^vignettes/articles$
 .dodsrc
 .urs_cookies
+stac_testing

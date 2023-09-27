@@ -442,9 +442,15 @@ make_vect = function (cat) { as.polygons(make_ext(cat), crs = cat$crs) }
 
 var_to_terra <- function(var, dap) {
   
-  dates <- seq.POSIXt(as.POSIXct(dap$startDate),
-                      as.POSIXct(dap$endDate),
-                      by =  dap$interval)
+  if(dap$startDate == dap$endDate){
+    dates = as.POSIXct(dap$startDate, tz = "UTC")
+  } else {
+    dates <- seq.POSIXt(as.POSIXct(dap$startDate, tz = "UTC"),
+                        as.POSIXct(dap$endDate, tz = "UTC"),
+                        by =  dap$interval)
+    
+  }
+
   
   name <-  gsub("_NA", "",paste(dap$variable, 
                                 dates,

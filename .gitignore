@@ -8,4 +8,4 @@ data_backup.DS_Store
 .lazytest
 .dodsrc
 .urs_cookies
-inst/doc
+stac_testing
