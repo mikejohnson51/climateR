@@ -130,6 +130,12 @@ dap_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
           units = try_att(obj, raw$varname[i], "units"),
           description = try_att(obj, raw$varname[i], "long_name")
         )
+        
+        if(is.na(ll[[i]]$description)){
+          ll[[i]]$description = try_att(obj, raw$varname[i], "LongName")
+        }
+        
+        ll[[i]]$description = gsub("\\s+"," ", ll[[i]]$description)
       }
     }
     

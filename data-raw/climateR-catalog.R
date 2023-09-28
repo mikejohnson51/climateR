@@ -1,4 +1,4 @@
-library(usethis); library(arrow)
+library(usethis); library(climateR)
 
 catalog = read_live_catalog()
 
