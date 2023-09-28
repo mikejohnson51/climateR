@@ -84,6 +84,8 @@ dap <- function(URL = NULL,
       AOI = AOI,
       startDate = startDate,
       endDate = endDate,
+      start = start,
+      end = end,
       varname = varname,
       verbose = verbose
     )
@@ -190,6 +192,8 @@ dap_crop <- function(URL = NULL,
                      AOI = NULL,
                      startDate = NULL,
                      endDate = NULL,
+                     start  = NULL,
+                     end = NULL,
                      varname = NULL,
                      verbose = TRUE) {
   
@@ -201,12 +205,37 @@ dap_crop <- function(URL = NULL,
   }
   
   ## TIME
+  
+  for(i in 1:nrow(catalog)){
+    if(grepl("..", catalog$duration[i])){
+      tmp = .resource_time(catalog$URL[i], T_name = catalog$T_name[i])
+      catalog$duration[i] = tmp$duration
+      catalog$interval[i] = tmp$interval
+      catalog$interval[i] = tmp$interval
+    }
+  }
+  
+  
   if (is.null(startDate) & is.null(endDate)) {
-    catalog$T <- paste0("[0:1:", catalog$nT - 1, "]")
-    catalog$Tdim <- catalog$nT
-    tmp <- do.call(rbind, strsplit(catalog$duration, "/"))
-    catalog <-
-      cbind(catalog, data.frame(startDate = tmp[, 1], endDate = tmp[, 2]))
+    
+    if(is.null(start) & is.null(end)){
+      catalog$T <- paste0("[0:1:", catalog$nT - 1, "]")
+      catalog$Tdim <- catalog$nT
+      tmp <- do.call(rbind, strsplit(catalog$duration, "/"))
+      catalog <- cbind(catalog, data.frame(startDate = tmp[, 1], endDate = tmp[, 2]))
+    } else {
+      if(is.null(end)){ end = start}
+      catalog$T <- paste0("[", start - 1,  ":1:", end - 1, "]")
+      catalog$Tdim <- max(end - start, 1)
+      
+      for(i in 1:nrow(catalog)){
+        tmp <- strsplit(catalog$duration[i], "/")[[1]]
+        d = seq.Date(as.Date(tmp[1]), as.Date(tmp[2]), by = catalog$interval[1])
+        catalog$startDate = d[start]
+        catalog$endDate = d[end]
+      }
+    }
+    
   } else {
     
     if (is.null(endDate)) { endDate <- startDate }
@@ -298,7 +327,7 @@ dap_crop <- function(URL = NULL,
       X_coords <-
         seq(catalog$X1[i], catalog$Xn[i], length.out = catalog$ncols[i])
       Y_coords <-
-        seq(catalog$Y1[i], catalog$Yn[i], length.out = catalog$nrow[i])
+        seq(catalog$Y1[i], catalog$Yn[i], length.out = catalog$nrows[i])
       
       ys <-
         c(which.min(abs(Y_coords - out[[i]]$ymin)), which.min(abs(Y_coords - out[[i]]$ymax))) - 1
@@ -454,6 +483,7 @@ dap_summary <- function(dap = NULL, url = NULL) {
       xmin, xmax, ymin, ymax
     ), 2), collapse = ", "),
     " (xmin, xmax, ymin, ymax)")
+    
     
     minDate <- min(as.POSIXct(dap$startDate))
     
