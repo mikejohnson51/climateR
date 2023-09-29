@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">climateR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -110,7 +110,7 @@ maximum and minimum temperature on October 29, 2018:</p>
 <span>              startDate <span class="op">=</span> <span class="st">"2018-10-29"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.878   0.126   2.245</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.845   0.193   8.782</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 <div class="section level2">
@@ -164,7 +164,7 @@ climate scenarios. One example is from the MACA dataset:</p>
 <span>            startDate <span class="op">=</span> <span class="st">"2080-06-29"</span>, endDate <span class="op">=</span> <span class="st">"2080-06-30"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.113   0.016   1.337</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.144   0.028   4.141</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-10-1.png" width="100%"></p>
 <p>Getting multiple models results is also quite simple:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -217,7 +217,7 @@ retrieved as a time series at locations.</p>
 <h2 id="point-based-ensemble">Point Based Ensemble<a class="anchor" aria-label="anchor" href="#point-based-ensemble"></a>
 </h2>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">future</span> <span class="op">=</span> <span class="fu"><a href="../reference/getMACA.html">getMACA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AOI/man/geoCode.html" class="external-link">geocode</a></span><span class="op">(</span><span class="st">"Fort Collins"</span>, pt <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, </span>
+<code class="sourceCode R"><span><span class="va">future</span> <span class="op">=</span> <span class="fu"><a href="../reference/getMACA.html">getMACA</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/AOI/man/geocode.html" class="external-link">geocode</a></span><span class="op">(</span><span class="st">"Fort Collins"</span>, pt <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, </span>
 <span>                 model <span class="op">=</span> <span class="fl">5</span>, varname <span class="op">=</span> <span class="st">"tasmax"</span>, </span>
 <span>                 startDate <span class="op">=</span> <span class="st">"2050-01-01"</span>, endDate <span class="op">=</span> <span class="st">"2050-01-31"</span><span class="op">)</span></span>
 <span></span>
@@ -265,12 +265,12 @@ from the site data with which to names the resulting columns.</li>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sites_wide</span> <span class="op">=</span> <span class="fu"><a href="../reference/extract_sites.html">extract_sites</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">sites_stack</span>, pts <span class="op">=</span> <span class="va">cities</span>, id <span class="op">=</span> <span class="st">"NAME"</span><span class="op">)</span></span>
 <span><span class="va">sites_wide</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt;                  date ADAMSCITY AGATE AGUILAR AKRON</span></span>
-<span><span class="co">#&gt; 1 2018-01-01 00:00:00       9.5   8.2    11.4   7.1</span></span>
-<span><span class="co">#&gt; 2 2018-01-31 10:00:00       8.1   7.1     9.9   5.8</span></span>
-<span><span class="co">#&gt; 3 2018-03-02 20:00:00      14.6  14.1    15.0  13.5</span></span>
-<span><span class="co">#&gt; 4 2018-04-02 06:00:00      17.5  16.6    17.6  16.2</span></span>
-<span><span class="co">#&gt; 5 2018-05-02 16:00:00      25.1  25.0    25.5  24.8</span></span></code></pre></div>
+<span><span class="co">#&gt;         date ADAMSCITY AGATE AGUILAR AKRON</span></span>
+<span><span class="co">#&gt; 1 2018-01-01       9.5   8.2    11.4   7.1</span></span>
+<span><span class="co">#&gt; 2 2018-02-01       8.1   7.1     9.9   5.8</span></span>
+<span><span class="co">#&gt; 3 2018-03-01      14.6  14.1    15.0  13.5</span></span>
+<span><span class="co">#&gt; 4 2018-04-01      17.5  16.6    17.6  16.2</span></span>
+<span><span class="co">#&gt; 5 2018-05-01      25.1  25.0    25.5  24.8</span></span></code></pre></div>
 <p>To make the data ‘tidy’ simply pivot on the <code>date</code>
 column:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">

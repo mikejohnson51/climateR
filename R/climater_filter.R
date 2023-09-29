@@ -127,7 +127,11 @@ climater_filter <- function(id = NULL,
   
   
   ### 3 ---- ensemble filter
-  
+  ### 
+  if(all(is.na(ensemble)) & !is.null(model)){
+    catalog = filter(catalog, model %in% !!model)
+  } else {
+    
   if(length(ensemble) != length(model)){
     catalog = catalog %>% 
       group_by(model, ensemble) %>% 
@@ -156,6 +160,7 @@ climater_filter <- function(id = NULL,
         )
       }
     }
+  }
   }
 
     

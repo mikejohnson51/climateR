@@ -31,21 +31,13 @@ library(climateR)
 
 `climateR` simplifies the steps needed to get climate data into R. At its core it provides three main things:
 
-1. A catalog of over 100,000k datasets from over 2,000 data providers/archives. See (`climateR::params`)
+1. A catalog of ` rnrow(catalog)` resources from over `r length(unique(catalog$id))` collections from `r length(unique(catalog$asset))` data providers/archives. See (`climateR::catalog`)
 
-```{r}
-nrow(catalog)
-length(unique(catalog$id))
-length(unique(catalog$asset))
-```
-
-This catalog is an [evolving, federated collection of datasets](https://github.com/mikejohnson51/climateR-catalogs) that can be accessed by the data access utilities.
+This catalog is an [evolving, federated collection of datasets](https://github.com/mikejohnson51/climateR-catalogs) that can be accessed by the data access utilities. This resource is rebuilt automatically on a monthly cycle to ensure the data provided, is accurate, live, and update while continuously growing the collection base on user requests.
 
 2. A general [toolkit for accessing remote and local gridded data](https://mikejohnson51.github.io/climateR/reference/index.html#data-access) files bounded by space, time, and variable constraints (`dap`, `dap_crop`, `read_dap_file`)
 
-
 3. A set of [shortcuts](https://mikejohnson51.github.io/climateR/reference/index.html#shortcuts) that implement these methods for a core set of selected catalog elements
-
 
 > :warning: **Python Users**: Data catalog access is available through the USGS [`gdptools`](https://gdptools.readthedocs.io/en/latest/) package. Directly analogous climateR functionality can be found in [`climatePy`](https://github.com/LynkerIntel/climatePy)
 
@@ -112,7 +104,6 @@ plot(county[grepl("pr_", names(county))])
 ```{r, eval = FALSE}
 animation(county, feild_pattern = "pr_", outfile = "man/figures/vect_gif.gif")
 ```
-
 
 ```{r, echo = FALSE}
 knitr::include_graphics("man/figures/vect_gif.gif")

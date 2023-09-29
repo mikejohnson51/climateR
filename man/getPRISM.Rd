@@ -55,6 +55,7 @@ Other shortcuts:
 \code{\link{getNLDAS}()},
 \code{\link{getTerraClimNormals}()},
 \code{\link{getTerraClim}()},
-\code{\link{getVIC}()}
+\code{\link{getVIC}()},
+\code{\link{getWorldClim}()}
 }
 \concept{shortcuts}

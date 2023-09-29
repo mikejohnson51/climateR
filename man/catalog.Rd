@@ -5,7 +5,7 @@
 \alias{catalog}
 \title{ClimateR Catalog}
 \format{
-An object of class \code{data.table} (inherits from \code{data.frame}) with 107857 rows and 28 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 37010 rows and 29 columns.
 }
 \usage{
 catalog

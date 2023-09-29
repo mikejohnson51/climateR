@@ -516,6 +516,26 @@ getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
 }
 
 
+#' @title Get WorlClim gridded weather and climate data for historical (near current) conditions.
+#' @description WorldClim is a database of high spatial resolution global weather and climate data. These data can be used for mapping and spatial modeling. 
+#' @param month numeric. and month or vector of months to access. Default is 1:12
+#' @inheritParams climater_filter
+#' @inheritParams climater_dap
+#' @inherit getTerraClim return
+#' @family shortcuts
+#' @export
+
+getWorldClim = function(AOI = NULL, varname = NULL, model = "wc2.1_5m",
+                        month = 1:12, verbose = TRUE){
+  
+  raw = climater_filter(id = "WorldClim2.1", AOI = AOI, varname = varname, model = model) |>
+    filter(grepl(paste(month.name[month], collapse = "|"), description))
+           
+  if(nrow(raw) > 0){
+    dap(catalog  = raw, AOI = AOI, verbose = verbose)
+  }
+}
+
 
 #' @title Get MERRA2
 #' @description MERRA2

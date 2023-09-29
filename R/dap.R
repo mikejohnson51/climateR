@@ -119,7 +119,11 @@ vrt_crop_get = function(URL = NULL,
   vrts = tryCatch({
     suppressWarnings({ rast(URL) })
   }, error = function(e){
-   NULL
+    tryCatch({
+      suppressWarnings({ rast(URL) })
+    }, error = function(e){
+      NULL
+    })
   })
   
   if(!is.null(vrts)){
@@ -166,9 +170,9 @@ vrt_crop_get = function(URL = NULL,
   }
   
   if (toptobottom) {
-    fin <- lapply(fin, flip)
+    fin <- lapply(fin, flip)[[1]]
   } else {
-    fin <-  list(fin)
+    fin <-  fin
   }
   
   names(fin) = if(!is.null(catalog)){
@@ -304,6 +308,10 @@ dap_crop <- function(URL = NULL,
   } else {
     
     out <- lapply(1:nrow(catalog), function(i) {
+      if(is.na(catalog$crs[i])){
+        warning("No assigned CRS. Trying WGS84")
+        catalog$crs[i] = "EPSG:4326"
+      }
       tryCatch({
         ext(intersect(project(spatAOI(AOI), catalog$crs[i]), make_ext(catalog[i,])))
       },

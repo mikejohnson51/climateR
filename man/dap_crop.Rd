@@ -10,6 +10,8 @@ dap_crop(
   AOI = NULL,
   startDate = NULL,
   endDate = NULL,
+  start = NULL,
+  end = NULL,
   varname = NULL,
   verbose = TRUE
 )
@@ -24,6 +26,10 @@ dap_crop(
 \item{startDate}{a start date given as "YYYY-MM-DD" to extract data for}
 
 \item{endDate}{an end date given as "YYYY-MM-DD" to extract data for}
+
+\item{start}{for non "dated" items, start can be called by index}
+
+\item{end}{for non "dated" items, end can be called by index}
 
 \item{varname}{variable name to extract (e.g. tmin)}
 
