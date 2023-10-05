@@ -321,7 +321,7 @@ getPRISM = function(AOI, varname = NULL,
     raw = climater_filter(id = "prism_daily",
                           startDate = startDate, endDate = endDate,
                           varname = varname)
-    
+
     if(is.null(endDate)){ endDate = startDate }
     
     d1 = seq.Date(as.Date(startDate), as.Date(endDate), by = 'day')
@@ -528,7 +528,7 @@ getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
 getWorldClim = function(AOI = NULL, varname = NULL, model = "wc2.1_5m",
                         month = 1:12, verbose = TRUE){
   
-  raw = climater_filter(id = "WorldClim2.1", AOI = AOI, varname = varname, model = model) |>
+  raw = climater_filter(id = "WorldClim2.1", AOI = AOI, varname = varname, model = model) %>%
     filter(grepl(paste(month.name[month], collapse = "|"), description))
            
   if(nrow(raw) > 0){
