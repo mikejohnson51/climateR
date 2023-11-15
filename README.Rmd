@@ -31,7 +31,7 @@ library(climateR)
 
 `climateR` simplifies the steps needed to get climate data into R. At its core it provides three main things:
 
-1. A catalog of ` rnrow(catalog)` resources from over `r length(unique(catalog$id))` collections from `r length(unique(catalog$asset))` data providers/archives. See (`climateR::catalog`)
+1. A catalog of ` r nrow(catalog)` resources from over `r length(unique(catalog$id))` collections from `r length(unique(catalog$asset))` data providers/archives. See (`climateR::catalog`)
 
 This catalog is an [evolving, federated collection of datasets](https://github.com/mikejohnson51/climateR-catalogs) that can be accessed by the data access utilities. This resource is rebuilt automatically on a monthly cycle to ensure the data provided, is accurate, live, and update while continuously growing the collection base on user requests.
 

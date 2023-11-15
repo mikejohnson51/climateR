@@ -7,7 +7,7 @@
 getNLDAS(
   AOI,
   varname = NULL,
-  model = NULL,
+  model = "FORA0125_H.002",
   startDate,
   endDate = NULL,
   verbose = FALSE,

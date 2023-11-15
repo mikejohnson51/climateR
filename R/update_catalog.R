@@ -9,5 +9,3 @@
 read_live_catalog = function(url = 'https://github.com/mikejohnson51/climateR-catalogs/releases/latest/download/catalog.parquet') {
   read_parquet(url)
 }
-
-

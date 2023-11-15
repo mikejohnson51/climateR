@@ -212,13 +212,12 @@ dap_crop <- function(URL = NULL,
   
   for(i in 1:nrow(catalog)){
     if(grepl("..", catalog$duration[i])){
-      tmp = .resource_time(catalog$URL[i], T_name = catalog$T_name[i])
+      tmp = .resource_time(URL = catalog$URL[i], T_name = catalog$T_name[i])
       catalog$duration[i] = tmp$duration
       catalog$interval[i] = tmp$interval
       catalog$interval[i] = tmp$interval
     }
   }
-  
   
   if (is.null(startDate) & is.null(endDate)) {
     
@@ -313,7 +312,8 @@ dap_crop <- function(URL = NULL,
         catalog$crs[i] = "EPSG:4326"
       }
       tryCatch({
-        ext(intersect(project(spatAOI(AOI), catalog$crs[i]), make_ext(catalog[i,])))
+        ext(intersect(terra::project(terra::ext(AOI), crs(AOI), catalog$crs[i]), make_ext(catalog[i,])))
+        #ext(intersect(project(spatAOI(AOI), catalog$crs[i]), make_ext(catalog[i,])))
       },
       error = function(e) {
         NULL

@@ -21,6 +21,7 @@ match.call.defaults <- function(...) {
 
 climater_dap = function(id, args, verbose, dryrun, print.arg = FALSE){
   args$id = id
+  if(print.arg){print(args)}
   args$catalog = do.call(climater_filter, args[names(args) %in% formalArgs(climater_filter)])
   args$verbose = verbose
   if(print.arg){print(args)}
@@ -49,8 +50,7 @@ getTerraClim = function(AOI, varname = NULL,
                         verbose = FALSE, dryrun = FALSE){
   climater_dap("terraclim",
                call_aoi(as.list(match.call.defaults()[-1]), AOI), 
-               verbose, dryrun,
-               print.arg = FALSE)
+               verbose, dryrun)
 }
 
 #' @title Get Terra Climate Normals for an Area of Interest
@@ -215,7 +215,7 @@ getCHIRPS = function(AOI, varname = NULL,
 #' @export
 
 getNLDAS = function(AOI, varname = NULL,
-                    model = NULL, 
+                    model = 'FORA0125_H.002', 
                     startDate, endDate = NULL,
                     verbose = FALSE, dryrun = FALSE){
   if(!checkNetrc()){
@@ -223,7 +223,7 @@ getNLDAS = function(AOI, varname = NULL,
   } else {
     x = writeDodsrc()
     data = climater_dap("NLDAS", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
-    unlink(x)
+
     return(data)
   }
 }

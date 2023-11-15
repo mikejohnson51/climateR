@@ -1,6 +1,6 @@
 spatAOI = function(AOI){
   if(inherits(AOI, c("sf", "sfc", "sfg"))){ 
-    terra::vect(AOI) 
+    terra::vect(AOI)
   } else { 
     AOI
   }
