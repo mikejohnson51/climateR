@@ -1,7 +1,7 @@
 ---
-title: "Examples of Usage"
+title: "Continental Stream Morphology Research empowered by open data"
 author:
-- name: "Arash Modaresi Rad"
+  - name: "Arash Modaresi Rad"
     url: https://github.com/arashmodrad
     affiliation: Lynker
     affiliation_url: https://lynker.com
@@ -11,31 +11,33 @@ author:
     affiliation_url: https://lynker.com
 output: distill::distill_article
 vignette: >
-  %\VignetteIndexEntry{intro}
+  %\VignetteIndexEntry{channel}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-- [Examples](#Examples)
-  * [Massive Spatial Aggregation](#Massive-Spatial-Aggregation-TerraClimate)
-  * [Comparison to GEE](#Comparison-to-GEE)
-  * [Massive Spatial and Temporal Aggregation](#Massive-Spatial-and-Temporal-Aggregation-GLDAS)
-  * [Custom Data](Custom-Data)
-  * [Extract at Points](Extract-at-Points)
-- [Conclusion](Conclusion)
-
-
+```{r, include = FALSE}
+options(width=100)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = 'man/figures/',
+  out.width = "100%",
+  #warning = FALSE,
+  message = TRUE
+)
+```
 # Examples
 
 We all can agree that access to tools to perform spatial operations has revolutionized the field of hydrological sciences by offering a powerful platform to access satellite imagery, reanalysis products, and diverse datasets crucial for spatial analysis and hydrological modeling. These tools facilitate the retrieval and processing of vast amounts of geospatial data, enabling researchers and practitioners to perform comprehensive analyses at various spatial and temporal scales, which in turn greatly benefits the field of hydrology.
 
-Our team at Lynker have developed [ClimateR](https://github.com/mikejohnson51/climateR.git) and [CliamtePy](https://github.com/anguswg-ucsb/climatePy).The key advantages of using platforms like ClimateR is the accessibility to a wealth of satellite imagery spanning multiple decades. With archives of satellite data readily available, hydrologists can track changes in land cover, monitor hydrological phenomena, and assess the impacts of climate change on water resources. The ability to access and analyze historical data allows for the identification of long-term trends, facilitating better understanding and prediction of hydrological processes. 
+Our team at Lynker have developed [climateR](https://github.com/mikejohnson51/climateR.git) and [climatePy](https://github.com/anguswg-ucsb/climatePy).The key advantages of using platforms like climateR is the accessibility to a wealth of satellite imagery spanning multiple decades. With archives of satellite data readily available, hydrologists can track changes in land cover, monitor hydrological phenomena, and assess the impacts of climate change on water resources. The ability to access and analyze historical data allows for the identification of long-term trends, facilitating better understanding and prediction of hydrological processes. 
 
-Furthermore, ClimateR foster collaboration and knowledge sharing within the hydrological community. It provide a platform for scientists and researchers across the globe to access standardized datasets, share methodologies, and collaborate on solving complex hydrological challenges. Also, puts forth an easy and accessible way to perform large spatiotemporal operations that support any NOAA effort. This collaborative environment encourages the development of innovative models and techniques for water resource management and decision-making.
+Furthermore, climateR foster collaboration and knowledge sharing within the hydrological community. It provide a platform for scientists and researchers across the globe to access standardized datasets, share methodologies, and collaborate on solving complex hydrological challenges. Also, puts forth an easy and accessible way to perform large spatiotemporal operations that support any NOAA effort. This collaborative environment encourages the development of innovative models and techniques for water resource management and decision-making.
 
-Here we demonstrate several examples of how to access these databases using CliamteR and perform massive spatial and temporal aggregations.  
+Here we demonstrate several examples of how to access these databases using climateR and perform massive spatial and temporal aggregations.  
 
-## Massive Spatial Aggregation TerraClimate 
+## Massive Spatial Aggregation with TerraClimate 
 
 The integration of reanalysis products and various datasets in this platform enables users to perform sophisticated spatial operations and analyses. Hydrologists can aggregate data over specific points or polygons, allowing for the extraction of critical information regarding water resources, such as precipitation patterns, evapotranspiration rates, and soil moisture content. This facilitates the characterization of watersheds, the assessment of water availability, and the prediction of potential flood or drought events.
 
@@ -43,13 +45,9 @@ Here I want to extract long term historical mean value of TerraClimate bands for
 
 One can access the hydrofabric in this case NextGen hydrofabric form 
 
-```{r}
-library(sf)
-library(aws.s3)
-
-# Set your AWS credentials (replace 'YOUR_ACCESS_KEY' and 'YOUR_SECRET_KEY' with your actual keys)
-Sys.setenv("AWS_ACCESS_KEY_ID" = "YOUR_ACCESS_KEY",
-           "AWS_SECRET_ACCESS_KEY" = "YOUR_SECRET_KEY")
+```r
+library(hydrofabric)
+library(lubridate)
 
 # Then specify the S3 bucket and file path
 bucket_name <- "lynker-spatial"
@@ -67,21 +65,7 @@ gpkg_sf <- st_read(temp_file)
 Now we can extract individual divide files for given VPU and extract data from TerraClimate
 
 
-```{r}
-library(hydrofabric)
-library(arrow)
-library(AOI)
-library(terra)
-library(climateR)
-library(sf)
-library(aws.s3)
-
-# Set your AWS credentials (replace 'YOUR_ACCESS_KEY' and 'YOUR_SECRET_KEY' with your actual keys)
-Sys.setenv("AWS_ACCESS_KEY_ID" = "YOUR_ACCESS_KEY",
-           "AWS_SECRET_ACCESS_KEY" = "YOUR_SECRET_KEY")
-
-# Then specify the S3 bucket
-bucket_name <- "lynker-spatial"
+```r
 
 # List of VPU's for CONUS
 vpu_list = list("01","02","03S","03W","03N","04","05","06","07","08","09","10U","10L","11",
@@ -106,7 +90,7 @@ system.time({
         # Just read the divides
         divides = read_sf(temp_file, "divides")
 
-        # Use CliamteR to extract the variables between 2000-21
+        # Use climateR to extract the variables between 2000-21
         out_raster <- getTerraClim(AOI = divides,
                             varname = c(new_column_names),
                             startDate = "2000-01-01",
@@ -116,11 +100,11 @@ system.time({
         output = execute_zonal(data = rast(lapply(out_raster, mean)), geom = div, fun = "mean", ID = "divide_id", join = FALSE)
 
         # Finally write the data frame to a parquet file
-        write_parquet(output, sprintf("/your_path/conus_terracliamte_vpu_%s.parquet", vpu))
+        write_parquet(output, sprintf("/your_path/conus_terraclimate_vpu_%s.parquet", vpu))
     }
 })
 ```
-We just calculated 20 year average of 9 different bands of TerraCliamte over 882,945 divides that cover CONUS and it took under an hour to complete (2472.777 seconds) on my normal laptop!! This is very impressive. 
+We just calculated 20 year average of 9 different bands of TerraClimate over 882,945 divides that cover CONUS and it took under an hour to complete (2472.777 seconds) on my normal laptop!! This is very impressive. 
 
 ## Comparison to GEE
 
@@ -153,7 +137,7 @@ function runExtract(data, num, first){
     batch = batch.toString();
 
 
-    // Load TerraCliamte
+    // Load TerraClimate
     var dataset = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE')
                     .filter(ee.Filter.date('2000-01-01', '2022-01-01'));
     // Performs a temporal mean 
@@ -197,41 +181,23 @@ function runExtract(data, num, first){
     data = updateStation(tmmn, data,'tmmn', 'tmmn', ee.Reducer.mean());
     data = updateStation(tmmx, data,'tmmx', 'tmmx', ee.Reducer.mean());
 
-    var exp_name = 'TerraCliamte_divide_b'+batch;
+    var exp_name = 'TerraClimate_divide_b'+batch;
   
     Export.table.toDrive(data, exp_name, 'TerraClimate_exports', exp_name, 'CSV');
 }
 ```
-**Breaking this into batches 200 each two batch takes about 1-3 hours to complete (see figure below) then it will takes weeks to extract all data for 882,945 divides using GEE!! whereas we have done it in less than a hour with CliamteR.**
+**Breaking this into batches 200 each two batch takes about 1-3 hours to complete (see figure below) then it will takes weeks to extract all data for 882,945 divides using GEE!! whereas we have done it in less than a hour with climateR.**
 
-![Alt text](/man/figures/ee_task.png)
+<div style="display: flex; justify-content: center;">
+  <img src="man/figures/ee_task.png" width="50%">
+</div>
 
-## GLDAS 
+## Massive Temporal and Spatial Aggregation with GLDAS 
 
 Now lets say we have even more computationally demanding task as we try to do a historical mean over a daily product form GLDAS. In this case we can break our period into chunks (e.g., 4 years) and extract data.
 
 
-```{r}
-library(hydrofabric)
-library(arrow)
-library(AOI)
-library(terra)
-library(climateR)
-library(sf)
-library(aws.s3)
-library(lubridate)
-
-# Set your AWS credentials (replace 'YOUR_ACCESS_KEY' and 'YOUR_SECRET_KEY' with your actual keys)
-Sys.setenv("AWS_ACCESS_KEY_ID" = "YOUR_ACCESS_KEY",
-           "AWS_SECRET_ACCESS_KEY" = "YOUR_SECRET_KEY")
-
-# Then specify the S3 bucket
-bucket_name <- "lynker-spatial"
-
-# List of VPU's for CONUS
-vpu_list = list("01","02","03S","03W","03N","04","05","06","07","08","09","10U","10L","11",
-                  "12","13","14","15","16","17","18")
-
+```r
 # Define start and end dates
 start_date <- ymd("2004-01-01")
 end_date <- ymd("2021-01-01")
@@ -266,7 +232,7 @@ system.time({
             current_end <- format(current_end, "%Y-%m-%d")
             print(paste("initiated batch > ", current_start))
 
-            # Use CliamteR to extract the variables between 2004-21
+            # Use climateR to extract the variables between 2004-21
             out_raster <- getGLDAS(AOI = div,
                                     varname = c(new_column_names),
                                     model = "CLSM025_DA1_D.2.2", 
@@ -286,22 +252,10 @@ system.time({
 
 We can also use custom datasets form our local drive or s3 bucket to perform different aggregations. Here as an example we can access POLARIS soil dataset and do just a spatial average of multiple virtual rasters over all our divide polygons.
 
-```{r}
-library(hydrofabric)
-library(arrow)
-library(AOI)
-library(terra)
-library(climateR)
-library(sf)
-library(aws.s3)
-library(lubridate)
-
+```r
 vars = c("alpha", "om", "ph")
 data = rast(glue::glue('/vsis3/lynker-spatial/gridded-resources/polaris300/{vars}_mean_0_5.tif'))
 
-# List of VPU's for CONUS
-vpu_list = list("01","02","03S","03W","03N","04","05","06","07","08","09","10U","10L","11",
-                  "12","13","14","15","16","17","18")
 system.time({
     for (vpu in vpu_list) {
         # Read the file
@@ -324,11 +278,9 @@ system.time({
 
 ## Extract at Points
 
-We can also extract using corrdaintes of point data e.g., locations of stations to extract values from POLARIS
+We can also extract using coordinates of point data e.g., locations of stations to extract values from POLARIS
 
-```{r}
-pacman::p_load(terra, dplyr, sf, arrow)
-
+```r
 r = rast(
   c(
     '/vsicurl/http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/vrt/theta_r_mean_0_5.vrt',
@@ -336,7 +288,7 @@ r = rast(
   )
 )
 
-# Read datafarme containg lat and long corrdiantes
+# Read datafarme contain lat and long coordinates
 pts = read_parquet('your_path/data.parquet') %>% 
   st_as_sf(coords = c('X', "Y"), crs = 4326, remove = FALSE) %>% 
   st_transform(st_crs(r))
@@ -347,4 +299,4 @@ write_parquet(t, "your_path/polaris_data.parquet")
 
 # Conclusion
 
-In summary, the utilization of CliamteR and ClimatePy significantly benefits hydrological sciences by providing unprecedented access to diverse datasets and satellite imagery. These tools empower researchers, policymakers, and water resource managers to conduct in-depth spatial analyses, ultimately enhancing our understanding of hydrological processes and improving water resource management strategies for a more sustainable future.
+In summary, the utilization of climateR and climatePy significantly benefits hydrological sciences by providing unprecedented access to diverse datasets and satellite imagery. These tools empower researchers, policymakers, and water resource managers to conduct in-depth spatial analyses, ultimately enhancing our understanding of hydrological processes and improving water resource management strategies for a more sustainable future.
