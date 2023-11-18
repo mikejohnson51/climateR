@@ -20,6 +20,7 @@ articles:
   desc: Data access in R
   contents: 
   - 01-intro
+  - examples
   
 - title: climatePy
   desc: Data acces in Python

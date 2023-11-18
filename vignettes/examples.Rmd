@@ -1,0 +1,302 @@
+---
+title: "Continental Stream Morphology Research empowered by open data"
+author:
+  - name: "Arash Modaresi Rad"
+    url: https://github.com/arashmodrad
+    affiliation: Lynker
+    affiliation_url: https://lynker.com
+  - name: "Mike Johnson"
+    url: https://github.com/mikejohnson51
+    affiliation: Lynker
+    affiliation_url: https://lynker.com
+output: distill::distill_article
+vignette: >
+  %\VignetteIndexEntry{channel}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+options(width=100)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = 'man/figures/',
+  out.width = "100%",
+  #warning = FALSE,
+  message = TRUE
+)
+```
+# Examples
+
+We all can agree that access to tools to perform spatial operations has revolutionized the field of hydrological sciences by offering a powerful platform to access satellite imagery, reanalysis products, and diverse datasets crucial for spatial analysis and hydrological modeling. These tools facilitate the retrieval and processing of vast amounts of geospatial data, enabling researchers and practitioners to perform comprehensive analyses at various spatial and temporal scales, which in turn greatly benefits the field of hydrology.
+
+Our team at Lynker have developed [climateR](https://github.com/mikejohnson51/climateR.git) and [climatePy](https://github.com/anguswg-ucsb/climatePy).The key advantages of using platforms like climateR is the accessibility to a wealth of satellite imagery spanning multiple decades. With archives of satellite data readily available, hydrologists can track changes in land cover, monitor hydrological phenomena, and assess the impacts of climate change on water resources. The ability to access and analyze historical data allows for the identification of long-term trends, facilitating better understanding and prediction of hydrological processes. 
+
+Furthermore, climateR foster collaboration and knowledge sharing within the hydrological community. It provide a platform for scientists and researchers across the globe to access standardized datasets, share methodologies, and collaborate on solving complex hydrological challenges. Also, puts forth an easy and accessible way to perform large spatiotemporal operations that support any NOAA effort. This collaborative environment encourages the development of innovative models and techniques for water resource management and decision-making.
+
+Here we demonstrate several examples of how to access these databases using climateR and perform massive spatial and temporal aggregations.  
+
+## Massive Spatial Aggregation with TerraClimate 
+
+The integration of reanalysis products and various datasets in this platform enables users to perform sophisticated spatial operations and analyses. Hydrologists can aggregate data over specific points or polygons, allowing for the extraction of critical information regarding water resources, such as precipitation patterns, evapotranspiration rates, and soil moisture content. This facilitates the characterization of watersheds, the assessment of water availability, and the prediction of potential flood or drought events.
+
+Here I want to extract long term historical mean value of TerraClimate bands for all NOAA Next Generation (NextGen) National Hydrologic Geospatial Fabric (hydrofabric) divides over the entire CONUS. As you no doubt surmised, this is a very expensive task to go over all monthly TerraClimate dataset for the past 20 years and and average all the byt with climateR this will be an easy and strait forward task.
+
+One can access the hydrofabric in this case NextGen hydrofabric form 
+
+```r
+library(hydrofabric)
+library(lubridate)
+
+# Then specify the S3 bucket and file path
+bucket_name <- "lynker-spatial"
+file_key <- "v20/gpkg/nextgen_12.gpkg"
+
+
+# Now download the GeoPackage file from S3 to a temporary file
+temp_file <- tempfile(fileext = ".gpkg")
+aws.s3::s3read_using(file = temp_file, FUN = get_object, object = file_key, bucket = bucket_name)
+
+# Finally read the GeoPackage file into an sf object
+gpkg_sf <- st_read(temp_file)
+```
+
+Now we can extract individual divide files for given VPU and extract data from TerraClimate
+
+
+```r
+
+# List of VPU's for CONUS
+vpu_list = list("01","02","03S","03W","03N","04","05","06","07","08","09","10U","10L","11",
+                  "12","13","14","15","16","17","18")
+
+# List of columns to be renamed
+columns_to_rename <- c("mean,PDSI", "mean,aet", "mean,soil", "mean,def", "mean,ppt", "mean,q", "mean,tmin", "mean,tmax", "mean,pet")
+
+# New names for the columns
+new_column_names <- c("PDSI","aet","soil","def","ppt","q","tmin","tmax","pet")
+
+# Loop through the VPU's and extract data and time the execution 
+system.time({
+    for (vpu in vpu_list) {
+        # Read the file
+        file_key <- paste0("v20/gpkg/nextgen_", vpu, ".gpkg")
+        
+        # Download the GeoPackage file from S3 to a temporary file
+        temp_file <- tempfile(fileext = ".gpkg")
+        aws.s3::s3read_using(file = temp_file, FUN = get_object, object = file_key, bucket = bucket_name)
+
+        # Just read the divides
+        divides = read_sf(temp_file, "divides")
+
+        # Use climateR to extract the variables between 2000-21
+        out_raster <- getTerraClim(AOI = divides,
+                            varname = c(new_column_names),
+                            startDate = "2000-01-01",
+                            endDate = "2021-01-01")
+
+        # Use rast to do a temporal mean aggregation and Zonal to do a spatial aggregation using divide_id
+        output = execute_zonal(data = rast(lapply(out_raster, mean)), geom = div, fun = "mean", ID = "divide_id", join = FALSE)
+
+        # Finally write the data frame to a parquet file
+        write_parquet(output, sprintf("/your_path/conus_terraclimate_vpu_%s.parquet", vpu))
+    }
+})
+```
+We just calculated 20 year average of 9 different bands of TerraClimate over 882,945 divides that cover CONUS and it took under an hour to complete (2472.777 seconds) on my normal laptop!! This is very impressive. 
+
+## Comparison to GEE
+
+Now lets compare this to the very well known and frequently used Google Earth Engine (GEE). But one can not process all 882,945 divides at the same time in GEE and my personal experience showed that batches of 200 divides is the ideal size not to get the infamous "Computation Timed Out Error". So we can write a script to perform batch operation such as below.
+
+```javascript
+// This requires uploading the divides into EE assets
+// A for loop to execute 100 batches of 200 divides as an example
+for (var i=1; i<100; i++){
+    runExtract(divides, i, 'last');
+}
+
+runExtract(divides, 100, 'first');
+
+function runExtract(data, num, first){
+    var list_feature = data.toList(data.size());
+    var batch = num;
+    
+    switch(first){
+        case 'first':
+        var data = ee.FeatureCollection(list_feature.slice(0, 2000-(batch-1)*200));
+        break;
+        case 'last':
+        var data = ee.FeatureCollection(list_feature.slice(2000-batch*200, 2000-(batch-1)*200));
+        break;
+        case 'custom':
+        var data = ee.FeatureCollection(list_feature);
+        break;
+    }
+    batch = batch.toString();
+
+
+    // Load TerraClimate
+    var dataset = ee.ImageCollection('IDAHO_EPSCOR/TERRACLIMATE')
+                    .filter(ee.Filter.date('2000-01-01', '2022-01-01'));
+    // Performs a temporal mean 
+    var aet = dataset.mean().select('aet');   
+    var soil = dataset.mean().select('soil');   
+    var pet = dataset.mean().select('pet');   
+    var def = dataset.mean().select('def');   
+    var pdsi = dataset.mean().select('pdsi');   
+    var ro = dataset.mean().select('ro');  
+    var tmmn = dataset.mean().select('tmmn'); 
+    var tmmx = dataset.mean().select('tmmx'); 
+
+    // _______Extract data_________________
+    function updateDivides(img_dataset, old_dataset, bandname, newname, reducer)
+    {
+        function dataExtract(feat)
+        {
+            
+        var stats = img_dataset.reduceRegion({
+            reducer: reducer,
+            geometry: feat.geometry(),
+            scale: 4638.3,  
+            bestEffort: true
+        });
+        
+        return ee.Algorithms.If(ee.Number(stats.size()).eq(0), 
+                                    feat.set(newname, ee.Number(999999999)),
+                                    feat.set(newname, stats.first().get(bandname)));
+        
+        }
+        var new_dataset = old_dataset.map(dataExtract);
+        return new_dataset;
+    }
+
+    data = updateStation(aet, data,'aet', 'aet', ee.Reducer.mean());
+    data = updateStation(soil, data,'soil', 'soil', ee.Reducer.mean());
+    data = updateStation(pet, data,'pet', 'pet', ee.Reducer.mean());
+    data = updateStation(def, data,'def', 'def', ee.Reducer.mean());
+    data = updateStation(pdsi, data,'pdsi', 'pdsi', ee.Reducer.mean());
+    data = updateStation(ro, data,'ro', 'ro', ee.Reducer.mean());
+    data = updateStation(tmmn, data,'tmmn', 'tmmn', ee.Reducer.mean());
+    data = updateStation(tmmx, data,'tmmx', 'tmmx', ee.Reducer.mean());
+
+    var exp_name = 'TerraClimate_divide_b'+batch;
+  
+    Export.table.toDrive(data, exp_name, 'TerraClimate_exports', exp_name, 'CSV');
+}
+```
+**Breaking this into batches 200 each two batch takes about 1-3 hours to complete (see figure below) then it will takes weeks to extract all data for 882,945 divides using GEE!! whereas we have done it in less than a hour with climateR.**
+
+<div style="display: flex; justify-content: center;">
+  <img src="man/figures/ee_task.png" width="50%">
+</div>
+
+## Massive Temporal and Spatial Aggregation with GLDAS 
+
+Now lets say we have even more computationally demanding task as we try to do a historical mean over a daily product form GLDAS. In this case we can break our period into chunks (e.g., 4 years) and extract data.
+
+
+```r
+# Define start and end dates
+start_date <- ymd("2004-01-01")
+end_date <- ymd("2021-01-01")
+
+# Create a sequence of dates with a step of 4 years
+date_seq <- seq(start_date, end_date, by = "4 years")
+
+# List of columns to be renamed
+columns_to_rename <- c("mean,qsb_tavg", "mean,qs_tavg", "mean,gws_tavg", "mean,esoil_tavg", "mean,ecanop_tavg", "mean,canopint_tavg", "mean,avgsurft_tavg")
+
+# New names for the columns
+new_column_names <- c("qsb_tavg", "qs_tavg", "gws_tavg", "esoil_tavg", "ecanop_tavg", "canopint_tavg", "avgsurft_tavg")
+
+# Loop through the VPU's and extract data and time the execution 
+system.time({
+    for (vpu in vpu_list) {
+        # Read the file
+        file_key <- paste0("v20/gpkg/nextgen_", vpu, ".gpkg")
+        
+        # Download the GeoPackage file from S3 to a temporary file
+        temp_file <- tempfile(fileext = ".gpkg")
+        aws.s3::s3read_using(file = temp_file, FUN = get_object, object = file_key, bucket = bucket_name)
+
+        # Just read the divides
+        divides = read_sf(temp_file, "divides")
+
+        for (i in seq_along(date_seq)) {
+            current_start <- date_seq[i]
+            current_end <- current_start + years(4) - days(1)
+
+            current_start <- format(current_start, "%Y-%m-%d")
+            current_end <- format(current_end, "%Y-%m-%d")
+            print(paste("initiated batch > ", current_start))
+
+            # Use climateR to extract the variables between 2004-21
+            out_raster <- getGLDAS(AOI = div,
+                                    varname = c(new_column_names),
+                                    model = "CLSM025_DA1_D.2.2", 
+                                    startDate = current_start,
+                                    endDate = current_end)
+
+            output = execute_zonal(data = rast(lapply(out_raster, mean)), geom = div, fun = "mean", ID = "divide_id", join = FALSE)
+            current_start_year <- as.character(year(current_start))
+            current_end_year <- as.character(year(current_end))
+            write_parquet(output, sprintf("/your_path/conus_gldas_vpu_%s_date_%s_%s.parquet", vpu, current_start_year, current_end_year))
+        }
+    }
+})
+```
+
+## Custom Data
+
+We can also use custom datasets form our local drive or s3 bucket to perform different aggregations. Here as an example we can access POLARIS soil dataset and do just a spatial average of multiple virtual rasters over all our divide polygons.
+
+```r
+vars = c("alpha", "om", "ph")
+data = rast(glue::glue('/vsis3/lynker-spatial/gridded-resources/polaris300/{vars}_mean_0_5.tif'))
+
+system.time({
+    for (vpu in vpu_list) {
+        # Read the file
+        file_key <- paste0("v20/gpkg/nextgen_", vpu, ".gpkg")
+        
+        # Download the GeoPackage file from S3 to a temporary file
+        temp_file <- tempfile(fileext = ".gpkg")
+        aws.s3::s3read_using(file = temp_file, FUN = get_object, object = file_key, bucket = bucket_name)
+
+        # Just read the divides
+        divides = read_sf(temp_file, "divides")
+
+        polaris = execute_zonal(data = data, geom = divides, fun = "mean", ID = "divide_id", join = FALSE)
+        
+        # Finally write the data frame to a parquet file
+        write_parquet(output, sprintf("/your_path/conus_polaris_vpu_%s.parquet", vpu))
+    }
+})
+```
+
+## Extract at Points
+
+We can also extract using coordinates of point data e.g., locations of stations to extract values from POLARIS
+
+```r
+r = rast(
+  c(
+    '/vsicurl/http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/vrt/theta_r_mean_0_5.vrt',
+    '/vsicurl/http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/vrt/theta_s_mean_0_5.vrt'
+  )
+)
+
+# Read datafarme contain lat and long coordinates
+pts = read_parquet('your_path/data.parquet') %>% 
+  st_as_sf(coords = c('X', "Y"), crs = 4326, remove = FALSE) %>% 
+  st_transform(st_crs(r))
+  
+system.time({ t = extract(r, pts) })
+write_parquet(t, "your_path/polaris_data.parquet")
+```
+
+# Conclusion
+
+In summary, the utilization of climateR and climatePy significantly benefits hydrological sciences by providing unprecedented access to diverse datasets and satellite imagery. These tools empower researchers, policymakers, and water resource managers to conduct in-depth spatial analyses, ultimately enhancing our understanding of hydrological processes and improving water resource management strategies for a more sustainable future.
