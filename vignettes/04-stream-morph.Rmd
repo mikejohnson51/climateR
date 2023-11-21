@@ -40,21 +40,18 @@ Here we demonstrate several examples of how to access these databases using clim
 
 The integration of reanalysis products and various datasets in this platform enables users to perform sophisticated spatial operations and analyses. Hydrologists can aggregate data over specific points or polygons, allowing for the extraction of critical information regarding water resources, such as precipitation patterns, evapotranspiration rates, and soil moisture content. This facilitates the characterization of watersheds, the assessment of water availability, and the prediction of potential flood or drought events.
 
-Here I want to extract long term historical mean value of TerraClimate bands for all NOAA Next Generation (NextGen) National Hydrologic Geospatial Fabric (hydrofabric) divides over the entire CONUS. As you no doubt surmised, this is a very expensive task to go over all monthly TerraClimate dataset for the past 20 years and average all the byt with climateR this will be an easy and strait forward task.
+Here I want to extract long term, 20 year historical mean value of TerraClimate variables for all NOAA Next Generation (NextGen) National Hydrologic Geospatial Fabric (hydrofabric) divides. As you no doubt surmised, this is a very expensive task but with climateR it will become a more straight forward task.
 
-One can access the hydrofabric in this case NextGen hydrofabric from the Lynker-spatial s2 account: 
+One can access the NextGen hydrofabric from the Lynker-spatial s3 account: 
 
 ```{r, eval = FALSE}
-library(hydrofabric)
-library(lubridate)
-
 # Then specify the S3 bucket and file path
 bucket_name <- "lynker-spatial"
 file_key    <- "v20/gpkg/nextgen_12.gpkg"
 
-
 # Now download the GeoPackage file from S3 to a temporary file
 temp_file <- tempfile(fileext = ".gpkg")
+
 s3read_using(file   = temp_file, 
              FUN    = get_object, 
              object = file_key, 
@@ -195,7 +192,7 @@ function runExtract(data, num, first){
 }
 ```
 
-**Breaking this into batches 200 each set of two batchs takes about 1-3 hours to complete (see figure below). Based on this, for the scale of our application, GEE would require weeks to finsih!! **
+**Breaking this into batches 200 each set of two batchs takes about 1-3 hours to complete (see figure below). Based on this, for the scale of our application, GEE would require weeks to finish!! **
 
 
 ```{r, echo = FALSE}
