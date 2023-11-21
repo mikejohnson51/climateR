@@ -171,7 +171,7 @@ climater_filter <- function(id = NULL,
     gid = sapply(1:nrow(catalog), function(x) {
       suppressWarnings({
         tryCatch({
-          length(terra::is.related(make_vect(catalog[x,]), 
+          sum(terra::is.related(make_vect(catalog[x,]), 
                      terra::project(terra::ext(AOI), crs(AOI), catalog$crs[x]),
                      "intersects")) > 0
         }, error = function(e) {
