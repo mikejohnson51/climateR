@@ -312,7 +312,9 @@ dap_crop <- function(URL = NULL,
         catalog$crs[i] = "EPSG:4326"
       }
       tryCatch({
-        ext(intersect(terra::project(terra::ext(AOI), crs(AOI), catalog$crs[i]), make_ext(catalog[i,])))
+        ext(terra::intersect(terra::project(terra::ext(AOI), crs(AOI), catalog$crs[i]), 
+                             make_vect(catalog[i,])))
+      
         #ext(intersect(project(spatAOI(AOI), catalog$crs[i]), make_ext(catalog[i,])))
       },
       error = function(e) {

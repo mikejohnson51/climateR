@@ -6,7 +6,7 @@ author:
     affiliation_url: https://lynker.com
 output: distill::distill_article
 vignette: >
-  %\VignetteIndexEntry{intro}
+  %\VignetteIndexEntry{mros}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -10,27 +10,27 @@ authors:
      html: "<img src='man/figures/noaa-logo.png' width=72 alt='ESIP'/>"
      href: "https://www.esipfed.org"
    footer:
-    roles: [cre,ctb]
+    roles: [cre, ctb]
    citation:
     roles: [cre]
    sidebar:
-    roles: [cre,ctb, fnd]
+    roles: [cre, ctb, fnd]
 articles:
-- title: climateR
-  desc: Data access in R
+- title: Quick Start
+  desc: Data access in R and Python
   contents: 
   - 01-intro
-  - examples
-  
-- title: climatePy
-  desc: Data acces in Python
-  contents: 
   - 03-intro-climatepy
   
 - title: Data Catalogs
   contents:
   - schema
   - 02-catalogs
+  
+- title: Use Cases
+  contents:
+  - 05-mros-climateR
+  - 04-stream-morph
 
 reference:
 - title: 
