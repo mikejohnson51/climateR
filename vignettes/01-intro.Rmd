@@ -74,7 +74,7 @@ ggplot() +
 ```{r}
 AOI = st_as_sfc(st_bbox(c(xmin = -112, xmax = -105, ymax = 39, ymin = 34), crs = 4326))
 
-g = getGridMET(AOI, 
+g = getGridMET(st_as_sf(AOI), 
                varname = "vs",
                startDate = "2018-09-01")
 ```
@@ -223,7 +223,7 @@ Finally, data gathering is not limited to areal extents and can be retrieved as 
 
 ```{r}
 ts = data.frame(lng  = -105.0668, lat = 40.55085) %>% 
-  sf::st_as_sf(coords = c('lng', 'lat'), crs = 4326) %>% 
+  st_as_sf(coords = c('lng', 'lat'), crs = 4326) %>% 
   getGridMET(varname =  c("pr", 'srad'), 
              startDate = "2021-01-01", 
              endDate = "2021-12-31")
@@ -248,11 +248,12 @@ ggplot(data = ts, aes(x = date, y = cumsum(pr))) +
 
 ```{r}
 future = getMACA(geocode("Fort Collins", pt = TRUE), 
-                 model = 5, varname = "tasmax", 
-                 startDate = "2050-01-01", endDate = "2050-01-31")
+                 model = 5, 
+                 varname = "tasmax", 
+                 startDate = "2050-01-01", 
+                 endDate = "2050-01-31")
 
 future_long = pivot_longer(future, -date) 
-
 
 ggplot(data = future_long, aes(x = date, y = value, col = name)) + 
   geom_line() + 
