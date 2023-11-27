@@ -105,7 +105,11 @@ system.time({
 })
 ```
 
-We just calculated 20 year average of 9 different variables over 882,945 divides that cover CONUS under an hour (2472.777 seconds = .68 hours) on my normal laptop!! This is very impressive. 
+We just calculated 20 year average of 9 different variables over 882,945 divides that cover CONUS under an hour (2472.777 seconds = .68 hours) on my normal laptop!! This is very impressive. Here is the result of the 20 year average Palmer drought severity index:
+
+```{r, echo = FALSE}
+knitr::include_graphics("../man/figures/data_PDSI.png")
+```
 
 ## Comparison to GEE
 
@@ -254,6 +258,11 @@ system.time({
     }
 })
 ```
+We can then plot the average ecanopy band:
+
+```{r, echo = FALSE}
+knitr::include_graphics("../man/figures/data_ecanopy.png")
+```
 
 ## Custom Data
 
@@ -290,7 +299,48 @@ system.time({
     }
 })
 ```
+Here is the plot of saturated hydraulic conductivity as an example:
 
+```{r, echo = FALSE}
+knitr::include_graphics("../man/figures/data_ksat.png")
+```
+
+## Local Data
+
+Another example is to use a local data on your device to perform spatio-temporal aggregation. Here we use MODIS derived leaf area index (LAI) and we do a spatio-temporal aggregation over nextgen divides at CONUS scale.
+
+```{r, eval = FALSE}
+raster_data <- brick("/local_path_here/LAI_mean_monthly_1981-2015.nc4")
+
+# Calculate the mean across time (assuming the time dimension is the third dimension)
+mean_across_time <- mean(raster_data, na.rm = TRUE)
+spat_raster <- as(mean_across_time, "SpatRaster")
+
+for (vpu in vpu_list) {
+    # Read the file
+    file_key <- paste0("v20/gpkg/nextgen_", vpu, ".gpkg")
+        
+    # Download the GeoPackage file from S3 to a temporary file
+    temp_file <- tempfile(fileext = ".gpkg")
+    
+    s3read_using(file = temp_file, 
+                    FUN = get_object, object = file_key, 
+                    bucket = bucket_name)
+
+    # Just read the divides
+    divides = read_sf(temp_file, "divides")
+
+    output = execute_zonal(data = spat_raster, geom = divides, fun = "mean", ID = "divide_id", join = FALSE)
+
+    # Finally write the data frame to a parquet file
+    write_parquet(output, sprintf("/your_path/conus_lai_vpu_%s.parquet", vpu))
+}
+```
+We can then plot the average LAI:
+
+```{r, echo = FALSE}
+knitr::include_graphics("../man/figures/data_LAI.png")
+```
 
 # Conclusion
 
