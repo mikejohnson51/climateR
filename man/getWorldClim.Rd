@@ -9,6 +9,7 @@ getWorldClim(
   varname = NULL,
   model = "wc2.1_5m",
   month = 1:12,
+  ID = NULL,
   verbose = TRUE
 )
 }
@@ -20,6 +21,8 @@ getWorldClim(
 \item{model}{GCM model name generating}
 
 \item{month}{numeric. and month or vector of months to access. Default is 1:12}
+
+\item{ID}{a column of unique identifiers}
 
 \item{verbose}{Should messages be emited?}
 }
@@ -37,6 +40,7 @@ Other shortcuts:
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},

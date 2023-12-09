@@ -30,32 +30,36 @@ climater_dap = function(id, args, verbose, dryrun, print.arg = FALSE){
     args$verbose = TRUE
     args$varname = NULL
     if(print.arg){print(args)}
-    do.call(dap_crop, args[names(args) %in% formalArgs(dap_crop)])
+    x = do.call(dap_crop, args[names(args) %in% formalArgs(dap_crop)])
   } else {
     args$varname = NULL
     if(print.arg){print(args)}
-    do.call(dap, args[names(args) %in% formalArgs(dap)])
+    x = do.call(dap, args[names(args) %in% formalArgs(dap)])
   }
+  
+  x 
 }
 
 #' @title Get Terra Climate Data for an Area of Interest
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @param ID a column of unique identifiers
 #' @return if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.
 #' @family shortcuts
 #' @export
 
 getTerraClim = function(AOI, varname = NULL, 
                         startDate = NULL, endDate = NULL, 
-                        verbose = FALSE, dryrun = FALSE){
+                        verbose = FALSE, ID = NULL, dryrun = FALSE){
   climater_dap("terraclim",
                call_aoi(as.list(match.call.defaults()[-1]), AOI), 
                verbose, dryrun)
 }
 
-#' @title Get Terra Climate Normals for an Area of Interest
+#' @title Get TerraClimate Normals for an Area of Interest
 #' @description These layers from TerraClimate were creating using climatically aided interpolation of monthly anomalies from the CRU Ts4.0 and Japanese 55-year Reanalysis (JRA-55) datasets with WorldClim v2.0 climatologies.
 #' @param month numeric. and month or vector of months to access. Default is 1:12
+#' @inheritParams getTerraClim
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
 #' @inherit getTerraClim return
@@ -64,7 +68,7 @@ getTerraClim = function(AOI, varname = NULL,
 
 getTerraClimNormals = function(AOI, varname, 
                                scenario = '19812010' , month = 1:12, 
-                               verbose = FALSE, dryrun = FALSE){
+                               verbose = FALSE, ID = NULL, dryrun = FALSE){
   
   raw = climater_filter(id = "terraclim_normals", AOI = AOI, varname = varname, scenario = scenario)
   
@@ -75,10 +79,9 @@ getTerraClimNormals = function(AOI, varname,
   if(dryrun) { 
     dap_crop(catalog = raw, AOI = AOI, startDate = head(dates, 1), endDate   = tail(dates, 1), verbose = TRUE)
   } else { 
-    dap(catalog  = raw, AOI = AOI, startDate = head(dates, 1), endDate   = tail(dates, 1), verbose = verbose)
+    dap(catalog  = raw, AOI = AOI, startDate = head(dates, 1), endDate   = tail(dates, 1), ID = ID, verbose = verbose)
   }
 }
-
 
 #' @title Get Daymet Climate Data for an Area of Interest
 #' @description This dataset provides Daymet Version 4 model output data as gridded estimates of daily weather parameters for North America.
@@ -88,13 +91,14 @@ getTerraClimNormals = function(AOI, varname,
 #' Conic projection for North America and are in a netCDF file format compliant with Climate and Forecast (CF) metadata conventions.
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
 getDaymet = function(AOI, varname = NULL, 
                      startDate = NULL, endDate = NULL, 
-                     verbose = FALSE, dryrun = FALSE){
+                     verbose = FALSE, ID = NULL, dryrun = FALSE){
   
   climater_dap("daymet4", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
@@ -105,6 +109,7 @@ getDaymet = function(AOI, varname = NULL,
 #' @param timeRes daily or monthly
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param timeRes daily or monthly
 #' @inherit getTerraClim return
 #' @family shortcuts
@@ -113,7 +118,7 @@ getDaymet = function(AOI, varname = NULL,
 getMACA = function(AOI, varname, timeRes = 'day',
                    model = 'CCSM4', scenario = 'rcp45', 
                    startDate, endDate = NULL,
-                   verbose = FALSE, dryrun = FALSE){
+                   verbose = FALSE, ID = NULL, dryrun = FALSE){
   if(!timeRes %in% c('day', 'month')){ stop("timeRes must be month or day") }
   climater_dap(paste0('maca_', timeRes), call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
@@ -123,13 +128,14 @@ getMACA = function(AOI, varname, timeRes = 'day',
 #' These data are updated daily.
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
 getGridMET = function(AOI, varname, 
                       startDate, endDate = NULL,
-                      verbose = FALSE, dryrun = FALSE){
+                      verbose = FALSE, ID = NULL, dryrun = FALSE){
   climater_dap("gridmet", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
@@ -141,6 +147,7 @@ getGridMET = function(AOI, varname,
 #' For more information visit: http://loca.ucsd.edu/.
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
@@ -148,7 +155,7 @@ getGridMET = function(AOI, varname,
 getLOCA = function(AOI, varname, 
                    model = 'CCSM4', scenario = 'rcp45', 
                    startDate, endDate = NULL, 
-                   verbose = FALSE, dryrun = FALSE){
+                   verbose = FALSE, ID = NULL, dryrun = FALSE){
   climater_dap('loca', 
                call_aoi(as.list(match.call.defaults()[-1]), AOI), 
                verbose, dryrun)
@@ -157,6 +164,7 @@ getLOCA = function(AOI, varname,
 #' @title Get VIC data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
@@ -164,13 +172,14 @@ getLOCA = function(AOI, varname,
 getVIC = function(AOI, varname, 
                   model = 'CCSM4', scenario = 'rcp45', 
                   startDate, endDate = NULL,
-                  verbose = FALSE, dryrun = FALSE){
+                  verbose = FALSE, ID = NULL, dryrun = FALSE){
   climater_dap('vic', call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get BCCA data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
@@ -178,13 +187,14 @@ getVIC = function(AOI, varname,
 getBCCA = function(AOI, varname, 
                    model = 'CCSM4', scenario = 'rcp45', ensemble = NULL, 
                    startDate, endDate = NULL,
-                   verbose = FALSE, dryrun = FALSE){
+                   verbose = FALSE, ID = NULL, dryrun = FALSE){
   climater_dap('bcca', call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get CHIRPS data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param timeRes "Pentad", "Annual", "Daily" (default), or "Monthly"
 #' @inherit getTerraClim return
 #' @family shortcuts
@@ -193,7 +203,7 @@ getBCCA = function(AOI, varname,
 getCHIRPS = function(AOI, varname = NULL, 
                      timeRes = "daily", 
                      startDate, endDate = NULL,
-                     verbose = FALSE, dryrun = FALSE){
+                     verbose = FALSE, ID = NULL, dryrun = FALSE){
   
   timeRes =  gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", tolower(timeRes), perl = TRUE)
   
@@ -210,6 +220,7 @@ getCHIRPS = function(AOI, varname = NULL,
 #' @title Get NLDAS data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
@@ -217,7 +228,7 @@ getCHIRPS = function(AOI, varname = NULL,
 getNLDAS = function(AOI, varname = NULL,
                     model = 'FORA0125_H.002', 
                     startDate, endDate = NULL,
-                    verbose = FALSE, dryrun = FALSE){
+                    verbose = FALSE, ID = NULL, dryrun = FALSE){
   if(!checkNetrc()){
     stop('netrc file not found. Please run writeNetrc() with earth data credentials.')
   } else {
@@ -231,13 +242,14 @@ getNLDAS = function(AOI, varname = NULL,
 #' @title Get GLDAS data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
 getGLDAS = function(AOI, varname = NULL, model = NULL, 
                     startDate, endDate = NULL,
-                    verbose = FALSE, dryrun = FALSE){
+                    verbose = FALSE, ID = NULL, dryrun = FALSE){
   if(!checkNetrc()){
     stop('netrc file not found. Please run writeNetrc() with earth data credentials.')
   } else {
@@ -252,6 +264,7 @@ getGLDAS = function(AOI, varname = NULL, model = NULL,
 #' @title Get MODIS data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param asset The MODIS sensor
 #' @inherit getTerraClim return
 #' @family shortcuts
@@ -259,7 +272,7 @@ getGLDAS = function(AOI, varname = NULL, model = NULL,
 
 getMODIS = function(AOI, asset = NULL, varname = NULL,
                     startDate, endDate = NULL,
-                    verbose = FALSE, dryrun = FALSE){
+                    verbose = FALSE, ID = NULL, dryrun = FALSE){
   if(!checkNetrc()){
     stop('netrc file not found. Please run writeNetrc() with earth data credentials.')
   } else {
@@ -274,6 +287,7 @@ getMODIS = function(AOI, asset = NULL, varname = NULL,
 #' @title Get Livneh data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param timeRes daily or monthly
 #' @inherit getTerraClim return
 #' @family shortcuts
@@ -281,7 +295,7 @@ getMODIS = function(AOI, asset = NULL, varname = NULL,
 
 getLivneh = function(AOI, varname = NULL, 
                      startDate, endDate = NULL,  timeRes = "daily",
-                     verbose = FALSE, dryrun = FALSE){
+                     verbose = FALSE, ID = NULL, dryrun = FALSE){
   if(timeRes == "daily"){
     climater_dap("Livneh_daily", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
   } else {
@@ -292,19 +306,21 @@ getLivneh = function(AOI, varname = NULL,
 #' @title Get Livneh Flux data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
 getLivneh_fluxes = function(AOI, varname = NULL, 
                             startDate, endDate = NULL,
-                            verbose = FALSE, dryrun = FALSE){
+                            verbose = FALSE, ID = NULL, dryrun = FALSE){
   climater_dap("Livneh_fluxes", call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
 }
 
 #' @title Get PRISM data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param timeRes daily or monthly
 #' @inherit getTerraClim return
 #' @family shortcuts
@@ -312,7 +328,7 @@ getLivneh_fluxes = function(AOI, varname = NULL,
 
 getPRISM = function(AOI, varname = NULL, 
                     startDate, endDate = NULL, timeRes = "daily",
-                    verbose = FALSE, dryrun = FALSE){
+                    verbose = FALSE, ID = NULL, dryrun = FALSE){
   
   x <- . <- NULL
   
@@ -330,40 +346,43 @@ getPRISM = function(AOI, varname = NULL,
     d$duration = paste0(d1, "/", d1)
     
     if(dryrun){
-      dap_crop(catalog = d,  AOI = AOI, verbose = TRUE)
+      
+      return(dap_crop(catalog = d,  AOI = AOI, verbose = TRUE))
+      
     } else {
+      
       o = lapply(1:nrow(d), function(x){
-        dap(catalog = d[x,],  AOI = AOI, verbose = FALSE)
+        dap(catalog = d[x,],  AOI = AOI, ID = ID, verbose = FALSE)
       }) 
     
       if(!inherits(o[[1]][[1]], "SpatRaster")){
         
-        o = bind_rows(o)
+        o = mutate(bind_rows(o), varname = d$varname)
         
-        out = list()
-        for(i in 1:length(varname)){
-          out[[varname[i]]] = select(o, date, varname[i]) %>% 
-            filter(complete.cases(.))
+        if(length(unique(o$varname)) > 1){
+          x = lapply(split(o, varname), function(x) { x["varname"] <- NULL; x })
+        } else {
+          x = select(o, -varname)
         }
         
-        Reduce(function(dtf1, dtf2)
-          merge(dtf1, dtf2, by = "date", all.x = TRUE),
-          out)
       } else {
         
-        merge_across_time(unlist(o))
+        x = merge_across_time(unlist(o))
         
       }
     }
     
+    return(x)
+    
   } else {
     climater_dap(id = "prism_monthly",  call_aoi(as.list(match.call.defaults()[-1]), AOI), verbose, dryrun)
-   }
+  }
 }
 
 #' @title Get LOCA Hydrology data
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return 
 #' @family shortcuts
 #' @export
@@ -371,7 +390,7 @@ getPRISM = function(AOI, varname = NULL,
 getLOCA_hydro = function(AOI, varname, 
                          model = 'CCSM4', scenario = 'rcp45', 
                          startDate, endDate = NULL, 
-                         verbose = FALSE, dryrun = FALSE){
+                         verbose = FALSE, ID = NULL, dryrun = FALSE){
   
   J <- year <- y <- URL <- layers <- nrows <- ncols <- n_values <- NULL
   
@@ -428,41 +447,46 @@ getLOCA_hydro = function(AOI, varname,
 
 #' @title Get USGS 3DEP DEMs
 #' @inheritParams climater_filter
+#' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param resolution DEM resolution (10m or 30m (default))
 #' @inherit getTerraClim return 
 #' @family shortcuts
 #' @export
 
-get3DEP = function(AOI, resolution = "30m"){
+get3DEP = function(AOI, resolution = "30m", ID = NULL){
   
   description = NULL
   
   x = climater_filter(id = "USGS 3DEP") %>% 
     filter(grepl(resolution, description))
   
-  return(dap(catalog = x, AOI = AOI))
+  return(dap(catalog = x, AOI = AOI, ID = ID))
   
 }
 
 #' @title Get NASA Global DEM
 #' @inheritParams climater_filter
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
-getNASADEM = function(AOI){
-  return(dap(catalog = climater_filter(id = "NASADEM"), AOI = AOI))
+getNASADEM = function(AOI, ID = NULL){
+  return(dap(catalog = climater_filter(id = "NASADEM"), AOI = AOI, ID = ID))
 }
 
 #' @title Get USGS National Land Cover Dataset 
 #' @inheritParams climater_filter
+#' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @param year Landcover product year (2001, 2011,2016,2019)
 #' @param type product type
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
-getNLCD = function(AOI, year = 2019, type = "land cover"){
+getNLCD = function(AOI, year = 2019, type = "land cover", ID = NULL){
   
   cat = climater_filter(id = "NLCD", AOI = AOI)
     if(!nrow(cat) > 0){ stop("No NLCD data in AOI.", call. = FALSE) }
@@ -471,20 +495,20 @@ getNLCD = function(AOI, year = 2019, type = "land cover"){
   cat = cat[grepl(year, tolower(cat$description)), ]
     if(!nrow(cat) > 0){ stop("No ", type, " data in AOI for ", year, call. = FALSE) }
     
-  return(dap(catalog = cat, AOI = AOI))
+  return(dap(catalog = cat, AOI = AOI, ID = ID))
   
 }
 
 #' @title Get USGS LCMAP
 #' @description Land Change Monitoring, Assessment, and Projection
-#' @inheritParams climater_filter
+#' @inheritParams getTerraClim
 #' @param year Land cover product year 1985 - 2019 (default = 2019)
 #' @param type product type (primary landcover (default), secondary landcover, primary confidence, secondary confidence, cover change, change day, change magniture, model cquality, spectral stability, spectral lastchance)
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
-getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
+getLCMAP = function(AOI, year = 2019, type = "primary landcover", ID = NULL){
   
   x = NULL
   
@@ -497,7 +521,9 @@ getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
   gid = sapply(1:nrow(cat), function(x) {
     suppressWarnings({
       tryCatch({
-        nrow(intersect(make_vect(cat = cat[x, ]), project(vect(AOI), crs(cat$crs[x])))) > 0
+        sum(terra::is.related(terra::project(terra::ext(AOI), crs(AOI), cat$crs[x]),
+                              make_vect(cat[x,]),
+                              "intersects")) > 0
       }, error = function(e) {
         FALSE
       })
@@ -511,7 +537,7 @@ getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
     stop("No data found in provided AOI.", call. = FALSE)
   } 
   
-  return(dap(catalog = x, AOI = AOI))
+  return(dap(catalog = cat, AOI = AOI, ID = ID))
   
 }
 
@@ -521,21 +547,40 @@ getLCMAP = function(AOI, year = 2019, type = "primary landcover"){
 #' @param month numeric. and month or vector of months to access. Default is 1:12
 #' @inheritParams climater_filter
 #' @inheritParams climater_dap
+#' @inheritParams getTerraClim
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
 
 getWorldClim = function(AOI = NULL, varname = NULL, model = "wc2.1_5m",
-                        month = 1:12, verbose = TRUE){
+                        month = 1:12, ID = NULL, verbose = TRUE){
   
+  description <- NULL
   raw = climater_filter(id = "WorldClim2.1", AOI = AOI, varname = varname, model = model) %>%
     filter(grepl(paste(month.name[month], collapse = "|"), description))
            
   if(nrow(raw) > 0){
-    dap(catalog  = raw, AOI = AOI, verbose = verbose)
+    dap(catalog  = raw, AOI = AOI, verbose = verbose, ID = NULL)
   }
 }
 
+#' @title Get World Soil Information gridded weather and climate data for historical (near current) conditions.
+#' @description World Soil Information (International Soil Reference and Information Centre) serves the international community with open access global soil data
+#' @inheritParams climater_filter
+#' @inheritParams climater_dap
+#' @inheritParams getTerraClim
+#' @inherit getTerraClim return
+#' @family shortcuts
+#' @export
+
+getISRIC_soils = function(AOI = NULL, varname = NULL, verbose = TRUE, ID = NULL){
+  
+  raw = climater_filter(id = "ISRIC Soil Grids", AOI = AOI, varname = varname) 
+  
+  if(nrow(raw) > 0){
+    dap(catalog  = raw, AOI = AOI, verbose = verbose, ID = NULL)
+  }
+}
 
 #' @title Get MERRA2
 #' @description MERRA2

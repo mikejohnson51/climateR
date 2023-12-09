@@ -44,6 +44,7 @@ parse_date <- function(duration, interval) {
 #' @param start for non "dated" items, start can be called by index
 #' @param end for non "dated" items, end can be called by index
 #' @param toptobottom should data be inverse?
+#' @param ID a column of unique identifiers
 #' @param verbose  Should dap_summary be printed?
 #' @details Wraps dap_get and dap_crop into one.
 #' If AOI is NULL no spatial crop is executed. If startDate AND endDate are NULL, no temporal crop is executed. If just endDate is NULL it defaults to the startDate.
@@ -61,15 +62,22 @@ dap <- function(URL = NULL,
                 start = NULL,
                 end = NULL,
                 toptobottom = FALSE,
+                ID = NULL,
                 verbose = TRUE) {
   
   urls = c(URL, catalog$URL)
   
+  if(inherits(AOI, "list")){
+    aoi = AOI[[1]]
+  } else {
+    aoi = AOI
+  }
+  
   if (any(getExtension(urls) %in% c('vrt', "tif")) |  all(grepl("vsi", urls))) {
-    vrt_crop_get(
+    x = vrt_crop_get(
       URL = URL,
       catalog = catalog,
-      AOI = AOI,
+      AOI = aoi,
       varname = varname,
       grid = grid,
       start = start,
@@ -81,7 +89,7 @@ dap <- function(URL = NULL,
     dap <- dap_crop(
       URL = URL,
       catalog = catalog,
-      AOI = AOI,
+      AOI = aoi,
       startDate = startDate,
       endDate = endDate,
       start = start,
@@ -90,10 +98,33 @@ dap <- function(URL = NULL,
       verbose = verbose
     )
     
-    dap_get(dap)
+    x = dap_get(dap)
     
   }
   
+  if(!is.null(ID)){
+    AOI = spatAOI(AOI)
+
+    if(is.points(AOI)){
+      x = extract_sites(x, AOI, ID)
+    } else {
+      type = toupper(geomtype(AOI))
+      message(glue("We do not support summary to {type} yet. \n> Please see `install_github('mikejohnson51/zonal')"))
+    }
+  }
+  
+  if(all(sapply(AOI, class) == "SpatRaster")){
+
+    l = unlist(list(AOI,x), recursive = TRUE)
+    
+    names(l) =  c(names(AOI), names(x))
+    
+    l
+  
+  } else {
+    x
+  }
+
 }
 
 #' VRT Crop
@@ -175,7 +206,7 @@ vrt_crop_get = function(URL = NULL,
     fin <-  fin
   }
   
-  names(fin) = if(!is.null(catalog)){
+  names(fin) = if(!is.null(catalog) & nlyr(fin) == 1){
     catalog$asset
   } else {
     as.vector(sapply(fin, names))
@@ -211,7 +242,7 @@ dap_crop <- function(URL = NULL,
   ## TIME
   
   for(i in 1:nrow(catalog)){
-    if(grepl("..", catalog$duration[i])){
+    if(grepl("[..]", catalog$duration[i])){
       tmp = .resource_time(URL = catalog$URL[i], T_name = catalog$T_name[i])
       catalog$duration[i] = tmp$duration
       catalog$interval[i] = tmp$interval
@@ -260,6 +291,10 @@ dap_crop <- function(URL = NULL,
       
       time_steps <- parse_date(duration = catalog$duration[i], interval = catalog$interval[i])
       
+      int_unit = strsplit(catalog$interval[i], " ")[[1]][2]
+      
+      time_steps = trunc(time_steps, int_unit)
+      
       if(catalog$nT[i] == 1 & !is.na(catalog$nT[i])){
         out[[i]] <- cbind(
           catalog[i,],
@@ -274,10 +309,17 @@ dap_crop <- function(URL = NULL,
         out[[i]] <- NULL
       } else {
         tmp = abs(time_steps - startDate)
+        # upper limit on tied lower threshold
         T1 <- max(which(tmp == min(tmp)))
-        tmp = abs(time_steps - endDate)
-        Tn <-  max(which(tmp == min(tmp)))
-        
+        # 
+        if(startDate == endDate){
+          Tn = T1
+        } else {
+          tmp = abs(time_steps - endDate)
+          # lower limit on tied upper threshold
+          Tn <-  min(which(tmp == min(tmp)))
+        }
+       
         out[[i]] <- cbind(
           catalog[i,],
           data.frame(
@@ -314,8 +356,6 @@ dap_crop <- function(URL = NULL,
       tryCatch({
         ext(terra::intersect(terra::project(terra::ext(AOI), crs(AOI), catalog$crs[i]), 
                              make_vect(catalog[i,])))
-      
-        #ext(intersect(project(spatAOI(AOI), catalog$crs[i]), make_ext(catalog[i,])))
       },
       error = function(e) {
         NULL
@@ -336,6 +376,7 @@ dap_crop <- function(URL = NULL,
     for (i in 1:nrow(catalog)) {
       X_coords <-
         seq(catalog$X1[i], catalog$Xn[i], length.out = catalog$ncols[i])
+      
       Y_coords <-
         seq(catalog$Y1[i], catalog$Yn[i], length.out = catalog$nrows[i])
       
@@ -354,7 +395,9 @@ dap_crop <- function(URL = NULL,
       catalog$Yn[i] <- max(Y_coords[ys + 1])
       catalog$ncols[i] <- abs(diff(xs)) + 1
       catalog$nrows[i] <- abs(diff(ys)) + 1
+      catalog
     }
+    
   }
   
   first  = substr(catalog$dim_order,  1, 1)

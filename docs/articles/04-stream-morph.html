@@ -8,8 +8,8 @@
 <meta name="description" content="climateR">
 <title>Continental Stream Morphology Research empowered by open data • climateR</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Continental Stream Morphology Research empowered by open data">
 <meta property="og:description" content="climateR">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">climateR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,26 +122,21 @@ water resources, such as precipitation patterns, evapotranspiration
 rates, and soil moisture content. This facilitates the characterization
 of watersheds, the assessment of water availability, and the prediction
 of potential flood or drought events.</p>
-<p>Here I want to extract long term historical mean value of
-TerraClimate bands for all NOAA Next Generation (NextGen) National
-Hydrologic Geospatial Fabric (hydrofabric) divides over the entire
-CONUS. As you no doubt surmised, this is a very expensive task to go
-over all monthly TerraClimate dataset for the past 20 years and average
-all the byt with climateR this will be an easy and strait forward
-task.</p>
-<p>One can access the hydrofabric in this case NextGen hydrofabric from
-the Lynker-spatial s2 account:</p>
+<p>Here I want to extract long term, 20 year historical mean value of
+TerraClimate variables for all NOAA Next Generation (NextGen) National
+Hydrologic Geospatial Fabric (hydrofabric) divides. As you no doubt
+surmised, this is a very expensive task but with climateR it will become
+a more straight forward task.</p>
+<p>One can access the NextGen hydrofabric from the Lynker-spatial s3
+account:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/NOAA-OWP/hydrofabric" class="external-link">hydrofabric</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Then specify the S3 bucket and file path</span></span>
+<code class="sourceCode R"><span><span class="co"># Then specify the S3 bucket and file path</span></span>
 <span><span class="va">bucket_name</span> <span class="op">&lt;-</span> <span class="st">"lynker-spatial"</span></span>
 <span><span class="va">file_key</span>    <span class="op">&lt;-</span> <span class="st">"v20/gpkg/nextgen_12.gpkg"</span></span>
 <span></span>
-<span></span>
 <span><span class="co"># Now download the GeoPackage file from S3 to a temporary file</span></span>
 <span><span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">s3read_using</span><span class="op">(</span>file   <span class="op">=</span> <span class="va">temp_file</span>, </span>
 <span>             FUN    <span class="op">=</span> <span class="va">get_object</span>, </span>
 <span>             object <span class="op">=</span> <span class="va">file_key</span>, </span>
@@ -193,7 +188,9 @@ data from TerraClimate:</p>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>We just calculated 20 year average of 9 different variables over
 882,945 divides that cover CONUS under an hour (2472.777 seconds = .68
-hours) on my normal laptop!! This is very impressive.</p>
+hours) on my normal laptop!! This is very impressive. Here is the result
+of the 20 year average Palmer drought severity index:</p>
+<p><img src="../reference/figures/data_PDSI.jpg" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="comparison-to-gee">Comparison to GEE<a class="anchor" aria-label="anchor" href="#comparison-to-gee"></a>
@@ -281,11 +278,9 @@ below.</p>
 <span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a>}</span></code></pre></div>
 <p><strong>Breaking this into batches 200 each set of two batchs takes
 about 1-3 hours to complete (see figure below). Based on this, for the
-scale of our application, GEE would require weeks to finsih!!
+scale of our application, GEE would require weeks to finish!!
 </strong></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html" class="external-link">include_graphics</a></span><span class="op">(</span><span class="st">"../man/figures/ee_task.png"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="../reference/figures/ee_task.png" width="100%"></p>
+<p><img src="../reference/figures/ee_task.jpg" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="massive-temporal-and-spatial-aggregation-with-gldas">Massive Temporal and Spatial Aggregation with GLDAS<a class="anchor" aria-label="anchor" href="#massive-temporal-and-spatial-aggregation-with-gldas"></a>
@@ -294,10 +289,10 @@ scale of our application, GEE would require weeks to finsih!!
 try to find a historical mean over a daily product from GLDAS. In this
 case we can break our period into chunks (e.g., 4 years) and extract
 data.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define start and end dates</span></span>
-<span><span class="va">start_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="st">"2004-01-01"</span><span class="op">)</span></span>
-<span><span class="va">end_date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html" class="external-link">ymd</a></span><span class="op">(</span><span class="st">"2021-01-01"</span><span class="op">)</span></span>
+<span><span class="va">start_date</span> <span class="op">&lt;-</span> <span class="fu">ymd</span><span class="op">(</span><span class="st">"2004-01-01"</span><span class="op">)</span></span>
+<span><span class="va">end_date</span> <span class="op">&lt;-</span> <span class="fu">ymd</span><span class="op">(</span><span class="st">"2021-01-01"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Create a sequence of dates with a step of 4 years</span></span>
 <span><span class="va">date_seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="va">start_date</span>, <span class="va">end_date</span>, by <span class="op">=</span> <span class="st">"4 years"</span><span class="op">)</span></span>
@@ -324,7 +319,7 @@ data.</p>
 <span></span>
 <span>        <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">date_seq</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>            <span class="va">current_start</span> <span class="op">&lt;-</span> <span class="va">date_seq</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
-<span>            <span class="va">current_end</span> <span class="op">&lt;-</span> <span class="va">current_start</span> <span class="op">+</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">years</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">days</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span>            <span class="va">current_end</span> <span class="op">&lt;-</span> <span class="va">current_start</span> <span class="op">+</span> <span class="fu">years</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span> <span class="op">-</span> <span class="fu">days</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span>            <span class="va">current_start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">current_start</span>, <span class="st">"%Y-%m-%d"</span><span class="op">)</span></span>
 <span>            <span class="va">current_end</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">current_end</span>, <span class="st">"%Y-%m-%d"</span><span class="op">)</span></span>
@@ -338,12 +333,14 @@ data.</p>
 <span>                                   endDate.  <span class="op">=</span> <span class="va">current_end</span><span class="op">)</span></span>
 <span></span>
 <span>            <span class="va">output</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zonal/man/execute_zonal.html" class="external-link">execute_zonal</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">out_raster</span>, <span class="va">mean</span><span class="op">)</span><span class="op">)</span>, geom <span class="op">=</span> <span class="va">div</span>, fun <span class="op">=</span> <span class="st">"mean"</span>, ID <span class="op">=</span> <span class="st">"divide_id"</span>, join <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span>            <span class="va">current_start_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">current_start</span><span class="op">)</span><span class="op">)</span></span>
-<span>            <span class="va">current_end_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/year.html" class="external-link">year</a></span><span class="op">(</span><span class="va">current_end</span><span class="op">)</span><span class="op">)</span></span>
+<span>            <span class="va">current_start_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu">year</span><span class="op">(</span><span class="va">current_start</span><span class="op">)</span><span class="op">)</span></span>
+<span>            <span class="va">current_end_year</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu">year</span><span class="op">(</span><span class="va">current_end</span><span class="op">)</span><span class="op">)</span></span>
 <span>            <span class="fu">write_parquet</span><span class="op">(</span><span class="va">output</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"/your_path/conus_gldas_vpu_%s_date_%s_%s.parquet"</span>, <span class="va">vpu</span>, <span class="va">current_start_year</span>, <span class="va">current_end_year</span><span class="op">)</span><span class="op">)</span></span>
 <span>        <span class="op">}</span></span>
 <span>    <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>We can then plot the average canopy band:</p>
+<p><img src="../reference/figures/data_ecanopy.jpg" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-data">Custom Data<a class="anchor" aria-label="anchor" href="#custom-data"></a>
@@ -354,7 +351,7 @@ soil dataset and do just a spatial average of multiple virtual rasters
 over all our divide polygons.</p>
 <p>This collection of POLARIS data has been resampled from its native
 30m resolution to a 300m COG.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">vars</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"alpha"</span>, <span class="st">"om"</span>, <span class="st">"ph"</span><span class="op">)</span></span>
 <span><span class="va">data</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu">glue</span><span class="op">(</span><span class="st">'/vsis3/lynker-spatial/gridded-resources/polaris300/{vars}_mean_0_5.tif'</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -382,6 +379,45 @@ over all our divide polygons.</p>
 <span>        <span class="fu">write_parquet</span><span class="op">(</span><span class="va">output</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"/your_path/conus_polaris_vpu_%s.parquet"</span>, <span class="va">vpu</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<p>Here is the plot of saturated hydraulic conductivity as an
+example:</p>
+<p><img src="../reference/figures/data_ksat.jpg" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="local-data">Local Data<a class="anchor" aria-label="anchor" href="#local-data"></a>
+</h3>
+<p>Another example is to use a local data on your device to perform
+spatio-temporal aggregation. Here we use MODIS derived leaf area index
+(LAI) and we do a spatio-temporal aggregation over nextgen divides at
+CONUS scale.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">raster_data</span> <span class="op">&lt;-</span> <span class="fu">brick</span><span class="op">(</span><span class="st">"/local_path_here/LAI_mean_monthly_1981-2015.nc4"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Calculate the mean across time (assuming the time dimension is the third dimension)</span></span>
+<span><span class="va">mean_across_time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">raster_data</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">spat_raster</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/methods/as.html" class="external-link">as</a></span><span class="op">(</span><span class="va">mean_across_time</span>, <span class="st">"SpatRaster"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">vpu</span> <span class="kw">in</span> <span class="va">vpu_list</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># Read the file</span></span>
+<span>    <span class="va">file_key</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"v20/gpkg/nextgen_"</span>, <span class="va">vpu</span>, <span class="st">".gpkg"</span><span class="op">)</span></span>
+<span>        </span>
+<span>    <span class="co"># Download the GeoPackage file from S3 to a temporary file</span></span>
+<span>    <span class="va">temp_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".gpkg"</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="fu">s3read_using</span><span class="op">(</span>file <span class="op">=</span> <span class="va">temp_file</span>, </span>
+<span>                    FUN <span class="op">=</span> <span class="va">get_object</span>, object <span class="op">=</span> <span class="va">file_key</span>, </span>
+<span>                    bucket <span class="op">=</span> <span class="va">bucket_name</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="co"># Just read the divides</span></span>
+<span>    <span class="va">divides</span> <span class="op">=</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">read_sf</a></span><span class="op">(</span><span class="va">temp_file</span>, <span class="st">"divides"</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="va">output</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zonal/man/execute_zonal.html" class="external-link">execute_zonal</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">spat_raster</span>, geom <span class="op">=</span> <span class="va">divides</span>, fun <span class="op">=</span> <span class="st">"mean"</span>, ID <span class="op">=</span> <span class="st">"divide_id"</span>, join <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span>    <span class="co"># Finally write the data frame to a parquet file</span></span>
+<span>    <span class="fu">write_parquet</span><span class="op">(</span><span class="va">output</span>, <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"/your_path/conus_lai_vpu_%s.parquet"</span>, <span class="va">vpu</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>We can then plot the average LAI:</p>
+<p><img src="../reference/figures/data_LAI.jpg" width="100%"></p>
 </div>
 </div>
 <div class="section level2">
@@ -402,7 +438,7 @@ management strategies for a more sustainable future.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Mike Johnson, Justin Singh, Angus Watters.</p>
+<p>Developed by Mike Johnson, Justin Singh.</p>
 </div>
 
 <div class="pkgdown-footer-right">

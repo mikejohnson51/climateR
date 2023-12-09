@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Find, subset and retrive climate and geospatial data by AOI.">
+<meta name="description" content="Find, subset, and retrive geospatial data by AOI.">
 <title>climateR • climateR</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="climateR">
-<meta property="og:description" content="Find, subset and retrive climate and geospatial data by AOI.">
+<meta property="og:description" content="Find, subset, and retrive geospatial data by AOI.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="index.html">climateR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,18 +65,11 @@
 </h1></div>
 <!-- badges: start -->
 
-<p><code>climateR</code> simplifies the steps needed to get climate data into R. At its core it provides three main things:</p>
+<p><code>climateR</code> simplifies the steps needed to get gridded geospatial data into R. At its core, it provides three main things:</p>
 <ol style="list-style-type: decimal">
-<li>A catalog of over 100,000k datasets from over 2,000 data providers/archives. See (<code>climateR::params</code>)</li>
+<li>A catalog of 108106 geospatial climate, land cover, and soils resources from 3477 collections. See (<code><a href="reference/catalog.html">climateR::catalog</a></code>)</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">params</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 107857</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">id</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 2075</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">params</span><span class="op">$</span><span class="va">asset</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 4653</span></span></code></pre></div>
-<p>This catalog is an <a href="https://github.com/mikejohnson51/climateR-catalogs" class="external-link">evolving, federated collection of datasets</a> that can be accessed by the data access utilities.</p>
+<p>This catalog is an <a href="https://github.com/mikejohnson51/climateR-catalogs" class="external-link">evolving, federated collection of datasets</a> that can be accessed by the data access utilities. This resource is rebuilt automatically on a monthly cycle to ensure the data provided is accurate, while continuously growing based on user requests.</p>
 <ol start="2" style="list-style-type: decimal">
 <li><p>A general <a href="https://mikejohnson51.github.io/climateR/reference/index.html#data-access" class="external-link">toolkit for accessing remote and local gridded data</a> files bounded by space, time, and variable constraints (<code>dap</code>, <code>dap_crop</code>, <code>read_dap_file</code>)</p></li>
 <li><p>A set of <a href="https://mikejohnson51.github.io/climateR/reference/index.html#shortcuts" class="external-link">shortcuts</a> that implement these methods for a core set of selected catalog elements</p></li>
@@ -88,55 +81,208 @@
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h1>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mikejohnson51/AOI"</span><span class="op">)</span> <span class="co"># suggested!</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"mikejohnson51/climateR"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level1">
 <h1 id="basic-usage">Basic Usage<a class="anchor" aria-label="anchor" href="#basic-usage"></a>
 </h1>
-<p>Finding rainfall in Colorado between October 29,1991 - November 6, 1991. The source dataset for this example uses the getGridMET shortcut.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mikejohnson51/AOI/" class="external-link">AOI</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mikejohnson51/climateR" class="external-link">climateR</a></span><span class="op">)</span></span>
+<p>The examples used here call upon the following shortcuts:</p>
+<ul>
+<li>
+<code>getGridMET</code> (OPeNDAP server, historic data)</li>
+<li>
+<code>getMODIS</code> (Authenticated OPeNDAP server)</li>
+<li>
+<code>getMACA</code> (OPeNDAP server, projection data)</li>
+<li>
+<code>getNLCD</code> (COG)</li>
+<li>
+<code>get3DEP</code> (VRT)</li>
+<li>
+<code>getCHIRPS</code> (erddap)</li>
+</ul>
+<p>With the aim of highlighting the convenience of a consistent access patterns for a variety of data stores.</p>
+<div class="section level3">
+<h3 id="defining-areaspoints-of-interest">Defining Areas/Points of Interest<a class="anchor" aria-label="anchor" href="#defining-areaspoints-of-interest"></a>
+</h3>
+<p><code>climateR</code> is designed with the same concepts as <code>AOI</code>. Namely, that all spatial data aggregation questions must start with an extent/area of interest.</p>
+<p>Before extracting any data, you must provide an. For the examples here, we will use the state of Colorado (polygons), and all of its cities (points).</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">colorado</span> <span class="op">=</span> <span class="fu">aoi_get</span><span class="op">(</span>state <span class="op">=</span> <span class="st">"CO"</span>, county <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">AOI</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/AOI/man/aoi_get.html" class="external-link">aoi_get</a></span><span class="op">(</span>state <span class="op">=</span> <span class="st">"CO"</span>, county <span class="op">=</span> <span class="st">"all"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%"></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
-<span>  <span class="va">d</span> <span class="op">=</span> <span class="fu"><a href="reference/getGridMET.html">getGridMET</a></span><span class="op">(</span><span class="va">AOI</span>,</span>
-<span>               varname <span class="op">=</span> <span class="st">"pr"</span>,</span>
-<span>               startDate <span class="op">=</span> <span class="st">"1991-10-29"</span>,</span>
-<span>               endDate  <span class="op">=</span> <span class="st">"1991-11-06"</span><span class="op">)</span></span>
+<span><span class="va">cities</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"co/cities_colorado.rds"</span>, package <span class="op">=</span> <span class="st">"climateR"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-4-1.jpeg" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="extent-extraction">Extent extraction<a class="anchor" aria-label="anchor" href="#extent-extraction"></a>
+</h2>
+<p>The default behavior of <code>climateR</code> is to request data for the extent of the AOI passed regardless of whether it is <code>POINT</code> or <code>POLYGON</code> data.</p>
+<p>The <em>exception</em> to the default behavior is if the the AOI is a single point. To illustrate:</p>
+<div class="section level4">
+<h4 id="polygons-act-as-a-single-extent">POLYGON(s) act as a single extent<a class="anchor" aria-label="anchor" href="#polygons-act-as-a-single-extent"></a>
+</h4>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Request Data for Colorado (POLYGON(s))</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">gridmet_pr</span> <span class="op">=</span> <span class="fu"><a href="reference/getGridMET.html">getGridMET</a></span><span class="op">(</span>AOI <span class="op">=</span> <span class="va">colorado</span>,</span>
+<span>                 varname <span class="op">=</span> <span class="st">"pr"</span>,</span>
+<span>                 startDate <span class="op">=</span> <span class="st">"1991-10-29"</span>,</span>
+<span>                 endDate  <span class="op">=</span> <span class="st">"1991-11-06"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.245   0.054   0.982</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<span><span class="co">#&gt;   0.221   0.038   1.416</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-6-1.jpeg" width="100%"></p>
 </div>
-<div class="section level1">
-<h1 id="basic-animation">Basic Animation<a class="anchor" aria-label="anchor" href="#basic-animation"></a>
-</h1>
+<div class="section level4">
+<h4 id="pointss-act-as-a-single-extent">POINTS(s) act as a single extent<a class="anchor" aria-label="anchor" href="#pointss-act-as-a-single-extent"></a>
+</h4>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Request data using cities (POINTs)</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/checkNetrc.html">checkNetrc</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span>
+<span><span class="fu"><a href="reference/writeDodsrc.html">writeDodsrc</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] ".dodsrc"</span></span>
+<span></span>
+<span><span class="va">modis_pet</span> <span class="op">=</span> <span class="fu"><a href="reference/getMODIS.html">getMODIS</a></span><span class="op">(</span></span>
+<span>    AOI       <span class="op">=</span> <span class="va">cities</span>,</span>
+<span>    asset    <span class="op">=</span> <span class="st">'MOD16A3GF.061'</span>,</span>
+<span>    varname   <span class="op">=</span> <span class="st">"PET_500m"</span>,</span>
+<span>    startDate <span class="op">=</span> <span class="st">"2020-10-29"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-8-1.jpeg" width="100%"></p>
+</div>
+<div class="section level4">
+<h4 id="single-points-act-as-an-extent">Single POINT(s) act as an extent<a class="anchor" aria-label="anchor" href="#single-points-act-as-an-extent"></a>
+</h4>
+<p>However since the extent of a POINT means <code>{xmax = xmin}</code> and <code>{ymax = ymin}</code>, climateR will return a time series of the intersecting cell, opposed to a one cell <code>SpatRaster</code>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/animation.html">animation</a></span><span class="op">(</span><span class="va">d</span><span class="op">$</span><span class="va">precipitation_amount</span>, AOI <span class="op">=</span> <span class="va">AOI</span>, outfile <span class="op">=</span> <span class="st">"man/figures/rast_gif.gif"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/rast_gif.gif" width="100%"></p>
+<code class="sourceCode R"><span><span class="co"># Request data for a single city</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">future_city</span> <span class="op">=</span> <span class="fu"><a href="reference/getMACA.html">getMACA</a></span><span class="op">(</span>AOI <span class="op">=</span> <span class="va">cities</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>,</span>
+<span>                        varname <span class="op">=</span> <span class="st">"tasmax"</span>,</span>
+<span>                        startDate <span class="op">=</span> <span class="st">"2050-10-29"</span>,</span>
+<span>                        endDate  <span class="op">=</span> <span class="st">"2050-11-06"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    user  system elapsed </span></span>
+<span><span class="co">#&gt;   0.130   0.012   1.229</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">future_city</span></span>
+<span><span class="co">#&gt;         date tasmax_CCSM4_r6i1p1_rcp45</span></span>
+<span><span class="co">#&gt; 1 2050-10-29                  295.7503</span></span>
+<span><span class="co">#&gt; 2 2050-10-30                  292.0839</span></span>
+<span><span class="co">#&gt; 3 2050-10-31                  289.6805</span></span>
+<span><span class="co">#&gt; 4 2050-11-01                  287.1293</span></span>
+<span><span class="co">#&gt; 5 2050-11-02                  290.7788</span></span>
+<span><span class="co">#&gt; 6 2050-11-03                  287.1146</span></span>
+<span><span class="co">#&gt; 7 2050-11-04                  290.1259</span></span>
+<span><span class="co">#&gt; 8 2050-11-05                  291.0247</span></span>
+<span><span class="co">#&gt; 9 2050-11-06                  291.6172</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="dynamic-aois-tidyverse-piping">Dynamic AOIs, tidyverse piping<a class="anchor" aria-label="anchor" href="#dynamic-aois-tidyverse-piping"></a>
+</h4>
+<p>All <code>climateR</code> functions treat the extent of the AOI and the default extraction area. This allows multiple climateR shortcuts to be chained together using either the base R or dplyr piping syntax.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pipes</span> <span class="op">=</span> <span class="fu">aoi_ext</span><span class="op">(</span><span class="st">"Fort Collins"</span>, wh <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>, units <span class="op">=</span> <span class="st">"km"</span>, bbox <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/getNLCD.html">getNLCD</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/get3DEP.html">get3DEP</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="reference/getTerraClimNormals.html">getTerraClimNormals</a></span><span class="op">(</span>varname <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"tmax"</span>, <span class="st">"ppt"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pipes</span>, <span class="va">dim</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $`2019 Land Cover L48`</span></span>
+<span><span class="co">#&gt; [1] 1401  786    1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $`30m CONUS DEM`</span></span>
+<span><span class="co">#&gt; [1] 1417 1179    1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tmax</span></span>
+<span><span class="co">#&gt; [1] 10  9 12</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $ppt</span></span>
+<span><span class="co">#&gt; [1] 10  9 12</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="extract-timeseries-from-exisitng-objects">Extract timeseries from exisitng objects:<a class="anchor" aria-label="anchor" href="#extract-timeseries-from-exisitng-objects"></a>
+</h3>
+<p>Using <code>extract_sites</code>, you can pass an existing data object. If no identified column is provided to name the extracted timeseries, the first, fully unique column in the data.frame is used:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gridmet_pts</span> <span class="op">=</span> <span class="fu"><a href="reference/extract_sites.html">extract_sites</a></span><span class="op">(</span><span class="va">gridmet_pr</span>, pts <span class="op">=</span> <span class="va">cities</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gridmet_pts</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "date" "177"  "283"  "527"  "117"</span></span>
+<span></span>
+<span><span class="va">gridmet_pts</span> <span class="op">=</span> <span class="fu"><a href="reference/extract_sites.html">extract_sites</a></span><span class="op">(</span><span class="va">gridmet_pr</span>, pts <span class="op">=</span> <span class="va">cities</span>, ID <span class="op">=</span> <span class="st">'NAME'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">gridmet_pts</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "date"      "ADAMSCITY" "AGATE"     "AGUILAR"   "AKRON"</span></span></code></pre></div>
+</div>
+</div>
 </div>
 <div class="section level1">
-<h1 id="integration-with-zonal">Integration with <code>zonal</code>
-<a class="anchor" aria-label="anchor" href="#integration-with-zonal"></a>
+<h1 id="unit-based-extraction">Unit Based Extraction<a class="anchor" aria-label="anchor" href="#unit-based-extraction"></a>
 </h1>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>While the default behavior is to extract data by <strong>extent</strong>, there are cases when the input AOI is a set of discrete units that you <em>want</em> to act as discrete units.</p>
+<ul>
+<li>A set of <code>POINT</code>s from which to extract time series</li>
+<li>A set of <code>POLYGON</code>s that data should be summarized to (mean, max, min, etc.) (<strong>WIP</strong>)</li>
+</ul>
+<p>In <code>climateR</code>, populating the <code>ID</code> parameter of any shortcut (or <code>dap</code>) function, triggers data to be extracted by unit.</p>
+<div class="section level3">
+<h3 id="extact-timeseries-for-points">Extact timeseries for POINTs<a class="anchor" aria-label="anchor" href="#extact-timeseries-for-points"></a>
+</h3>
+<p>In the <code>cities</code> object, the individual <code>POINT</code>s are uniquely identified by a <code>NAME</code> column. Tellings a climateR function, that <code>ID = "NAME"</code> triggers it to return the summary:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">chirps_pts</span> <span class="op">=</span> <span class="fu"><a href="reference/getCHIRPS.html">getCHIRPS</a></span><span class="op">(</span>AOI <span class="op">=</span> <span class="va">cities</span>,</span>
+<span>                       varname <span class="op">=</span> <span class="st">"precip"</span>,</span>
+<span>                       startDate <span class="op">=</span> <span class="st">"1991-10-29"</span>,</span>
+<span>                       endDate  <span class="op">=</span> <span class="st">"1991-11-06"</span>,</span>
+<span>                       ID <span class="op">=</span> <span class="st">"NAME"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">chirps_pts</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]   9 584</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">chirps_pts</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "date"      "ADAMSCITY" "AGATE"     "AGUILAR"   "AKRON"</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-14-1.jpeg" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="integration-with-zonal">Integration with <code>zonal</code>
+<a class="anchor" aria-label="anchor" href="#integration-with-zonal"></a>
+</h3>
+<p>While climateR does not yet provide areal summaries, our intention is to integrate the functionality from <code>zonal</code>. Until then, <code>climateR</code> outputs can be piped directly into <code>execute_zonal</code>. The zonal package also requires a uniquely identifying column name, and a function to summarize data with.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">zonal</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="op">{</span></span>
-<span>  <span class="va">county</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/zonal/man/execute_zonal.html" class="external-link">execute_zonal</a></span><span class="op">(</span><span class="va">d</span>, geom <span class="op">=</span> <span class="va">AOI</span>, ID <span class="op">=</span> <span class="st">"fip_code"</span><span class="op">)</span></span>
+<span>  <span class="va">chirps</span> <span class="op">=</span> <span class="fu"><a href="reference/getCHIRPS.html">getCHIRPS</a></span><span class="op">(</span>AOI <span class="op">=</span> <span class="va">colorado</span>,</span>
+<span>               varname <span class="op">=</span> <span class="st">"precip"</span>,</span>
+<span>               startDate <span class="op">=</span> <span class="st">"1991-10-29"</span>,</span>
+<span>               endDate  <span class="op">=</span> <span class="st">"1991-11-06"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
+<span>           <span class="fu"><a href="https://rdrr.io/pkg/zonal/man/execute_zonal.html" class="external-link">execute_zonal</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="va">colorado</span>, </span>
+<span>                         fun <span class="op">=</span> <span class="st">"max"</span>, </span>
+<span>                         ID <span class="op">=</span> <span class="st">"fip_code"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.328   0.018   0.366</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/animation.html">animation</a></span><span class="op">(</span><span class="va">county</span>, feild_pattern <span class="op">=</span> <span class="st">"pr_"</span>, outfile <span class="op">=</span> <span class="st">"man/figures/vect_gif.gif"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.216   0.021   1.546</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-16-1.jpeg" width="100%"></p>
+</div>
+<div class="section level2">
+<h2 id="basic-animation">Basic Animation<a class="anchor" aria-label="anchor" href="#basic-animation"></a>
+</h2>
+<div class="section level3">
+<h3 id="gridded">Gridded<a class="anchor" aria-label="anchor" href="#gridded"></a>
+</h3>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/animation.html">animation</a></span><span class="op">(</span><span class="va">gridmet_pr</span><span class="op">$</span><span class="va">precipitation_amount</span>, AOI <span class="op">=</span> <span class="va">AOI</span>, outfile <span class="op">=</span> <span class="st">"man/figures/rast_gif.gif"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/rast_gif.gif" width="100%"></p>
+</div>
+<div class="section level3">
+<h3 id="polygon">Polygon<a class="anchor" aria-label="anchor" href="#polygon"></a>
+</h3>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/animation.html">animation</a></span><span class="op">(</span><span class="va">max</span>, feild_pattern <span class="op">=</span> <span class="st">"precip_"</span>, outfile <span class="op">=</span> <span class="st">"man/figures/vect_gif.gif"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/vect_gif.gif" width="100%"></p>
+</div>
+</div>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
@@ -169,7 +315,6 @@
 <ul class="list-unstyled">
 <li>Mike Johnson <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Justin Singh <br><small class="roles"> Contributor </small>  </li>
-<li>Angus Watters <br><small class="roles"> Contributor </small>  </li>
 <li>
 <a href="https://www.esipfed.org" class="external-link"><img src="reference/figures/esip-logo.png" width="72'" alt="ESIP"></a> <br><small class="roles"> Funder </small>  </li>
 <li>
@@ -195,7 +340,7 @@
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Mike Johnson, Justin Singh, Angus Watters.</p>
+<p>Developed by Mike Johnson, Justin Singh.</p>
 </div>
 
 <div class="pkgdown-footer-right">

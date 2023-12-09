@@ -30,7 +30,7 @@ The following section describes the design of the catalog and its data pipeline.
 ## Design
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../man/figures/catalogs-overview.png")
+knitr::include_graphics("../man/figures/catalogs-overview.jpg")
 ```
 
 The catalog data pipeline uses the [targets](https://docs.ropensci.org/targets/) package to establish

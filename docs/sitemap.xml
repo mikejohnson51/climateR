@@ -112,6 +112,9 @@
     <loc>/reference/getGridMET.html</loc>
   </url>
   <url>
+    <loc>/reference/getISRIC_soils.html</loc>
+  </url>
+  <url>
     <loc>/reference/getLCMAP.html</loc>
   </url>
   <url>
@@ -194,6 +197,9 @@
   </url>
   <url>
     <loc>/reference/read_live_catalog.html</loc>
+  </url>
+  <url>
+    <loc>/reference/reexports.html</loc>
   </url>
   <url>
     <loc>/reference/time_meta.html</loc>

@@ -11,6 +11,7 @@ getGLDAS(
   startDate,
   endDate = NULL,
   verbose = FALSE,
+  ID = NULL,
   dryrun = FALSE
 )
 }
@@ -27,6 +28,8 @@ getGLDAS(
 
 \item{verbose}{Should messages be emited?}
 
+\item{ID}{a column of unique identifiers}
+
 \item{dryrun}{Return summary of data prior to retrieving it}
 }
 \value{
@@ -42,6 +45,7 @@ Other shortcuts:
 \code{\link{getCHIRPS}()},
 \code{\link{getDaymet}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},

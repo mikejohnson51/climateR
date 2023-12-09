@@ -479,38 +479,59 @@ var_to_terra <- function(var, dap) {
                    sep = "_")))
   )
   
-  if (dap$ncols == 1 & dap$nrows == 1) {
+  if (dap$X1 == dap$Xn & dap$Y1 == dap$Yn) {
     df = data.frame(date = dates, var)
     names(df) = c("date", names_ts)
     return(df)
   }
   
-  resx <- (dap$Xn - dap$X1) / (dap$ncols - 1)
-  resy <- (dap$Yn - dap$Y1) / (dap$nrows - 1)
-  
+  resx <- dap$resX#(dap$Xn - dap$X1) / (dap$ncols - 1)
+  resy <- dap$resY#(dap$Yn - dap$Y1) / (dap$nrows - 1)
+
   xmin <- dap$X1 - 0.5 * resx
   xmax <- dap$Xn + 0.5 * resx
   ymin <- dap$Y1 - 0.5 * resy
   ymax <- dap$Yn + 0.5 * resy
-  
+  # 
+  # dim(var) = c()
+  # 
   if (length(dim(var)) == 2) {
     dim(var) <- c(dim(var), 1)
   }
+  # 
+  # if (dim(var)[1] != dap$nrows) {
+  #   var <- aperm(var, c(2, 1, 3))
+  # }
+  # 
+  # 
+  # var = array(as.vector(var), c(dap$nrows, dap$ncols, dap$Tdim) )
+  # 
+  # 
+  # dim(as.vector(var)) = c(dap$nrows, dap$ncols, dap$Tdim) 
   
-  if (dim(var)[1] != dap$nrows) {
-    var <- aperm(var, c(2, 1, 3))
-  }
+  r = rast(nrows = dap$nrows, ncols = dap$ncols,
+      crs = dap$crs,
+       nlyrs = dap$Tdim,
+       extent = c(
+         xmin = min(xmin, xmax),
+         xmax = max(xmax, xmax),
+         ymin = min(ymin, ymax),
+         ymax = max(ymin, ymax)
+       ))
   
-  r = rast(
-    var,
-    crs = dap$crs,
-    extent = c(
-      xmin = min(xmin, xmax),
-      xmax = max(xmax, xmax),
-      ymin = min(ymin, ymax),
-      ymax = max(ymin, ymax)
-    )
-  )
+  r[] = var
+  
+# r = rast(
+  #   var,
+  #   crs = dap$crs,
+  #   extent = c(
+  #     xmin = min(xmin, xmax),
+  #     xmax = max(xmax, xmax),
+  #     ymin = min(ymin, ymax),
+  #     ymax = max(ymin, ymax)
+  #   )
+  # )
+  
   
   if (dap$toptobottom) {
     r <- flip(r)

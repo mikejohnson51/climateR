@@ -5,8 +5,8 @@
 \title{Read Live Catalog from Github release}
 \usage{
 read_live_catalog(
-  url =
-    "https://github.com/mikejohnson51/climateR-catalogs/releases/latest/download/catalog.parquet"
+  url = paste0("https://github.com/mikejohnson51/climateR-catalogs",
+    "/releases/latest/download/", "catalog.parquet")
 )
 }
 \arguments{
@@ -16,7 +16,8 @@ read_live_catalog(
 data.frame
 }
 \description{
-Every month, our data catalog is refreshed. This function reads the most current catalog from the Github release.
+Every month, our data catalog is refreshed. This function reads 
+the most current catalog from the Github release.
 }
 \seealso{
 Other catalog: 

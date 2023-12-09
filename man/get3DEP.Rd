@@ -4,12 +4,14 @@
 \alias{get3DEP}
 \title{Get USGS 3DEP DEMs}
 \usage{
-get3DEP(AOI, resolution = "30m")
+get3DEP(AOI, resolution = "30m", ID = NULL)
 }
 \arguments{
 \item{AOI}{an sf of SpatVect point or polygon to extract data for}
 
 \item{resolution}{DEM resolution (10m or 30m (default))}
+
+\item{ID}{a column of unique identifiers}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.
@@ -24,6 +26,7 @@ Other shortcuts:
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},

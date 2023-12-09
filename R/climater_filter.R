@@ -42,6 +42,12 @@ climater_filter <- function(id = NULL,
   if (nrow(catalog) == 0) {
     stop("no data to filter.", call. = FALSE)
   }
+  
+
+  
+  if(inherits(AOI, "list")){
+    AOI = AOI[[1]]
+  }
 
   ### 1  ---- varname filter
   if(!is.null(varname)){
@@ -62,6 +68,17 @@ climater_filter <- function(id = NULL,
       )
     }
   }
+  
+  if(!is.null(scenario)){
+    if ("historical" %in% catalog$scenario) {
+      scenario <- c("historical", scenario)
+    }
+    
+    if(!is.null(scenario)){
+      catalog <- filter(catalog, scenario %in% !!scenario)
+    }
+  }
+  
  
   ### 2 ---- model filter
   if (!is.null(model)) {
@@ -90,9 +107,34 @@ climater_filter <- function(id = NULL,
       )
     }
   }
+  
 
+  ### ---- AOI filter
+  if(!is.null(AOI)){
+  
+    gid = sapply(1:nrow(catalog), function(x) {
+      suppressWarnings({
+        tryCatch({
+          sum(terra::is.related(terra::project(terra::ext(AOI), crs(AOI), catalog$crs[x]),
+                                make_vect(catalog[x,]),
+                                "intersects")) > 0
+        }, error = function(e) {
+          FALSE
+        })
+        
+      })
+    })
+    
+    catalog = catalog[gid, ]
+    
+    if(nrow(catalog) == 0){
+      stop("No data found in provided AOI.", call. = FALSE)
+    } 
+    
+  }
+  
   ### 3 ---- date & scenario filter
-
+  
   if(!is.null(startDate)){
     
     endDate = ifelse(is.null(endDate), as.character(startDate), as.character(endDate))
@@ -115,79 +157,55 @@ climater_filter <- function(id = NULL,
     }
   } 
   
-  if(!is.null(scenario)){
-    if ("historical" %in% catalog$scenario) {
-      scenario <- c("historical", scenario)
-    }
-    
-    if(!is.null(scenario)){
-      catalog <- filter(catalog, scenario %in% !!scenario)
-    }
-  }
   
+  ### 2 ---- ensemble filter
+  # If ensemble is NULL set to 1
+  if(is.null(ensemble)){ ensemble = 1 }
+  # If data has ensembles set to TRUE
+  eflag = any(!is.na(catalog$ensemble))
   
-  ### 3 ---- ensemble filter
-  ### 
-  if(all(is.na(ensemble)) & !is.null(model)){
-    catalog = filter(catalog, model %in% !!model)
-  } else {
-    
-  if(length(ensemble) != length(model)){
-    catalog = catalog %>% 
-      group_by(model, ensemble) %>% 
-      slice(1) %>% 
-      ungroup()
-  } else {
-  
-    u <- unique(catalog$ensemble)
-    
-    if (length(u) > 1 & is.null(ensemble)) {
-        warning("There are ", length(u), " ensembles available. Since ensemble was left NULL, we default to ", u[1] , call. = FALSE)
-        catalog <- filter(catalog, ensemble %in% u[1])
-    } else if(is.null(ensemble)){
-      catalog = catalog 
-    } else {
-      if (all(ensemble %in% catalog$ensemble)) {
-        catalog <- filter(catalog, ensemble %in% !!ensemble)
-      } else {
-        bad <- ensemble[!ensemble %in% u]
-        
-        m <- distinct(select(catalog, model, ensemble))
-        
-        stop("'", bad, "' not availiable ensemble for '", catalog$id[1], "'. Try: \n\t",
-             paste(">",  m$ensemble, collapse = "\n\t"),
-             call. = FALSE
+  if(eflag) {
+    if (all(ensemble %in% catalog$ensemble) | !is.numeric(ensemble)) {
+      catalog <- filter(catalog, ensemble %in% !!ensemble)
+    } else if (is.numeric(ensemble)) {
+      
+      cond = any(table(catalog$model, catalog$ensemble) > ensemble)
+      
+      catalog =  slice_sample(catalog,
+                              by = c('id', 'variable', 'model', "scenario"),
+                              n = ensemble)
+      
+      if (ensemble == 1 & cond) {
+        message(
+          "Multiple ensembles available per model. Since `ensemble = NULL`, we default to:\n\t> ",
+          paste0(catalog$model, " [", catalog$scenario, "] [", catalog$ensemble, "]",
+                 collapse = "\n\t> ")
         )
+        
       }
+    } else {
+      bad <- ensemble[!ensemble %in% catalog$ensemble]
+      
+      m <- distinct(select(catalog, model, ensemble))
+      
+      stop(
+        "'",
+        bad,
+        "' not availiable ensemble for '",
+        catalog$id[1],
+        "'. Try: \n\t",
+        paste(">",  m$ensemble, collapse = "\n\t"),
+        call. = FALSE
+      )
+    }
+    
+    if(nrow(catalog) == 0 ){
+      stop("Configuration not found.")
     }
   }
-  }
+  
 
-    
   
-  ### ---- AOI filter
-  if(!is.null(AOI)){
-  
-    gid = sapply(1:nrow(catalog), function(x) {
-      suppressWarnings({
-        tryCatch({
-          sum(terra::is.related(make_vect(catalog[x,]), 
-                     terra::project(terra::ext(AOI), crs(AOI), catalog$crs[x]),
-                     "intersects")) > 0
-        }, error = function(e) {
-          FALSE
-        })
-        
-      })
-    })
-    
-    catalog = catalog[gid, ]
-    
-    if(nrow(catalog) == 0){
-      stop("No data found in provided AOI.", call. = FALSE)
-    } 
-    
-  }
 
   catalog[!duplicated(select(catalog, -URL)), ]
 }

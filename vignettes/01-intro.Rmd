@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   out.width = "100%",
+  dev = "jpeg",
   warning = FALSE,
   message = FALSE
 )
@@ -26,10 +27,10 @@ knitr::opts_chunk$set(
 
 ```{r}
 library(AOI)
+library(terra)
 library(climateR)
 library(tidyterra)
 library(ggplot2)
-library(terra)
 library(tidyr)
 library(sf)
 ```
@@ -146,16 +147,16 @@ temp =  getMACA(AOI = aoi_get(state = "CO"),
                 model = models, 
                 startDate = "2080-11-29")
 
-temp[[1]]$mean =  app(temp[[1]], mean)
+temp =  c(temp[[1]], mean(temp[[1]]))
 
-names(temp[[1]]) = c(models, "Ensemble Mean")
+names(temp) = c(models, "Ensemble Mean")
 
 ```
 
 ```{r, echo = FALSE, fig.width = 15}
 # Plot
 ggplot() +
-  geom_spatraster(data = temp$air_temperature) +
+  geom_spatraster(data = temp) +
   facet_wrap(~lyr) +
   scale_fill_whitebox_c(
     palette = "muted",
@@ -296,14 +297,14 @@ sites_stack = getTerraClim(AOI   = cities,
 3. Use `extract_sites` to extract the times series from these locations. The `id` parameter is the unique identifier from the site data with which to names the resulting columns.
 
 ```{r}
-sites_wide = extract_sites(r = sites_stack, pts = cities, id = "NAME")
-sites_wide[[1]][1:5, 1:5]
+sites_wide = extract_sites(r = sites_stack, pts = cities, ID = "NAME")
+sites_wide[1:5, 1:5]
 ```
 
 To make the data 'tidy' simply pivot on the `date` column:
 
 ```{r}
-tmax = tidyr::pivot_longer(sites_wide[[1]], -date)
+tmax = tidyr::pivot_longer(sites_wide, -date)
 head(tmax)
 ```
 
@@ -313,7 +314,6 @@ ggplot(data = tmax, aes(x = date, y = value, color = name, group = name)) +
   geom_line() + 
   theme_linedraw() + 
   theme(legend.position = "none") 
-
 ```
 
 

@@ -8,8 +8,8 @@
 <meta name="description" content="climateR">
 <title>Welcome to climateR • climateR</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Welcome to climateR">
 <meta property="og:description" content="climateR">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">climateR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,10 +81,10 @@ Johnson</h4>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mikejohnson51/AOI/" class="external-link">AOI</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mikejohnson51/climateR" class="external-link">climateR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dieghernan.github.io/tidyterra/" class="external-link">tidyterra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -96,7 +96,7 @@ established in the <code>AOI</code> R package.</p>
 <p>To get a climate product, an area of interest must be defined:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">AOI</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/AOI/man/aoi_get.html" class="external-link">aoi_get</a></span><span class="op">(</span>state <span class="op">=</span> <span class="st">"NC"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">AOI</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">AOI</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-3-1.png" width="100%"></p>
 <p>Here we are loading a polygon for the state of North Carolina More
 examples of constructing AOI calls can be found <a href="https://mikejohnson51.github.io/AOI/" class="external-link">here</a>.</p>
@@ -110,7 +110,7 @@ maximum and minimum temperature on October 29, 2018:</p>
 <span>              startDate <span class="op">=</span> <span class="st">"2018-10-29"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.442   0.058   2.508</span></span></code></pre></div>
+<span><span class="co">#&gt;   1.043   0.149   3.232</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-5-1.png" width="100%"></p>
 </div>
 <div class="section level2">
@@ -164,7 +164,7 @@ climate scenarios. One example is from the MACA dataset:</p>
 <span>            startDate <span class="op">=</span> <span class="st">"2080-06-29"</span>, endDate <span class="op">=</span> <span class="st">"2080-06-30"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.205   0.036   2.479</span></span></code></pre></div>
+<span><span class="co">#&gt;   0.261   0.034   2.409</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-10-1.png" width="100%"></p>
 <p>Getting multiple models results is also quite simple:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -175,9 +175,9 @@ climate scenarios. One example is from the MACA dataset:</p>
 <span>                model <span class="op">=</span> <span class="va">models</span>, </span>
 <span>                startDate <span class="op">=</span> <span class="st">"2080-11-29"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">temp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">mean</span> <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/app.html" class="external-link">app</a></span><span class="op">(</span><span class="va">temp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">mean</span><span class="op">)</span></span>
+<span><span class="va">temp</span> <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">temp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/pkg/terra/man/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">temp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">temp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">models</span>, <span class="st">"Ensemble Mean"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">temp</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">models</span>, <span class="st">"Ensemble Mean"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-12-1.png" width="100%">
 If you don’t know your models, you can always grab a random set by
 specifying a number:</p>
@@ -264,8 +264,8 @@ these locations. The <code>id</code> parameter is the unique identifier
 from the site data with which to names the resulting columns.</li>
 </ol>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sites_wide</span> <span class="op">=</span> <span class="fu"><a href="../reference/extract_sites.html">extract_sites</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">sites_stack</span>, pts <span class="op">=</span> <span class="va">cities</span>, id <span class="op">=</span> <span class="st">"NAME"</span><span class="op">)</span></span>
-<span><span class="va">sites_wide</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">sites_wide</span> <span class="op">=</span> <span class="fu"><a href="../reference/extract_sites.html">extract_sites</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">sites_stack</span>, pts <span class="op">=</span> <span class="va">cities</span>, ID <span class="op">=</span> <span class="st">"NAME"</span><span class="op">)</span></span>
+<span><span class="va">sites_wide</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt;         date ADAMSCITY AGATE AGUILAR AKRON</span></span>
 <span><span class="co">#&gt; 1 2018-01-01       9.5   8.2    11.4   7.1</span></span>
 <span><span class="co">#&gt; 2 2018-02-01       8.1   7.1     9.9   5.8</span></span>
@@ -275,7 +275,7 @@ from the site data with which to names the resulting columns.</li>
 <p>To make the data ‘tidy’ simply pivot on the <code>date</code>
 column:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tmax</span> <span class="op">=</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">sites_wide</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="op">-</span><span class="va">date</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tmax</span> <span class="op">=</span> <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span><span class="va">sites_wide</span>, <span class="op">-</span><span class="va">date</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">tmax</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
 <span><span class="co">#&gt;   date                name       value</span></span>
@@ -296,7 +296,7 @@ column:</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Mike Johnson, Justin Singh, Angus Watters.</p>
+<p>Developed by Mike Johnson, Justin Singh.</p>
 </div>
 
 <div class="pkgdown-footer-right">

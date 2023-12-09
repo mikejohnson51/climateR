@@ -8,8 +8,8 @@
 <meta name="description" content="climateR">
 <title>Welcome to climatePy • climateR</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Welcome to climatePy">
 <meta property="og:description" content="climateR">
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">climateR</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.1.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +122,7 @@ allows for an easy to use interface for many geocoding APIs.</p>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  }, </span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  crs <span class="op">=</span> <span class="st">"EPSG:4326"</span></span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/nc_shape.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/nc_shape.jpg" width="100%" style="display: block; margin: auto;"></p>
 <p>Here we are loading a polygon for the state of North Carolina More
 examples of constructing AOI calls can be found <a href="https://geopy.readthedocs.io/en/stable/#module-geopy.geocoders" class="external-link">here</a></p>
 <p>With an AOI, we can construct a call to a dataset for a parameter(s)
@@ -135,7 +135,7 @@ maximum and minimum temperature on October 29, 2018:</p>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>   timeRes   <span class="op">=</span> <span class="st">"daily"</span>,</span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>   dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>   )</span></code></pre></div>
-<p><img src="../reference/figures/nc_prism_data.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/nc_prism_data.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="data-from-known-bounding-coordinates">Data from known bounding coordinates<a class="anchor" aria-label="anchor" href="#data-from-known-bounding-coordinates"></a>
@@ -160,7 +160,7 @@ data for the four corners region of the USA by bounding coordinates.</p>
 <span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>       startDate <span class="op">=</span> <span class="st">"2018-09-01"</span>,</span>
 <span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>       dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>       )</span></code></pre></div>
-<p><img src="../reference/figures/nc_tmin_tmax_gridmet.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/nc_tmin_tmax_gridmet.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="data-through-time">Data through time …<a class="anchor" aria-label="anchor" href="#data-through-time"></a>
@@ -182,7 +182,7 @@ Hurricane Harvey:</p>
 <span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  endDate   <span class="op">=</span> <span class="st">"2017-08-31"</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/harvey_pr_gridmet.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/harvey_pr_gridmet.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="climate-projections">Climate Projections<a class="anchor" aria-label="anchor" href="#climate-projections"></a>
@@ -203,7 +203,7 @@ climate scenarios. One example is from the MACA dataset:</p>
 <span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>  endDate   <span class="op">=</span> <span class="st">"2080-06-30"</span>,</span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/florida_multi_model_maca.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/florida_multi_model_maca.jpg" width="100%" style="display: block; margin: auto;"></p>
 <p>Getting multiple models results is also quite simple:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>AOI     <span class="op">=</span> gpd.GeoDataFrame({<span class="st">"geometry"</span> : </span>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>                [shapely.wkt.loads(nom.geocode(<span class="st">"Colorado"</span>, geometry<span class="op">=</span><span class="st">'wkt'</span>).raw[<span class="st">'geotext'</span>])]},</span>
@@ -224,7 +224,7 @@ climate scenarios. One example is from the MACA dataset:</p>
 <span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a></span>
 <span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co"># Concatonate original data arrays with average data array</span></span>
 <span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>temp[<span class="st">'tasmin'</span>] <span class="op">=</span> xr.concat([temp[<span class="st">'tasmin'</span>], avg], dim<span class="op">=</span><span class="st">"time"</span>)</span></code></pre></div>
-<p><img src="../reference/figures/colorado_model_avg_maca.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/colorado_model_avg_maca.jpg" width="100%" style="display: block; margin: auto;"></p>
 <p>If you don’t know your models, you can always grab a random set by
 specifying a number:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># AOI (Michigan, USA)</span></span>
@@ -242,7 +242,7 @@ specifying a number:</p>
 <span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>  startDate <span class="op">=</span> <span class="st">"2050-10-29"</span>,</span>
 <span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>  dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/michigan_random_maca.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/michigan_random_maca.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="global-datasets">Global Datasets<a class="anchor" aria-label="anchor" href="#global-datasets"></a>
@@ -270,7 +270,7 @@ provides daily rainfall data:</p>
 <span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  endDate   <span class="op">=</span> <span class="st">"2018-01-01"</span>,</span>
 <span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>  dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/kenya_tc_chirps.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/kenya_tc_chirps.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="point-based-data">Point Based Data<a class="anchor" aria-label="anchor" href="#point-based-data"></a>
@@ -288,7 +288,7 @@ retrieved as a time series at locations.</p>
 <span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>  endDate   <span class="op">=</span> <span class="st">"2021-12-31"</span>,</span>
 <span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>  dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/point_timeseries_gridmet.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/point_timeseries_gridmet.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="point-based-ensemble">Point Based Ensemble<a class="anchor" aria-label="anchor" href="#point-based-ensemble"></a>
@@ -302,7 +302,7 @@ retrieved as a time series at locations.</p>
 <span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>    endDate   <span class="op">=</span> <span class="st">"2050-01-31"</span>,</span>
 <span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>    dopar     <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>    )</span></code></pre></div>
-<p><img src="../reference/figures/future_points_maca.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/future_points_maca.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="multi-site-extraction">Multi Site extraction<a class="anchor" aria-label="anchor" href="#multi-site-extraction"></a>
@@ -340,7 +340,7 @@ bounding area of the points</li>
 <span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  startDate <span class="op">=</span> <span class="st">"2018-01-01"</span>, </span>
 <span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  endDate   <span class="op">=</span> <span class="st">"2018-12-31"</span></span>
 <span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="../reference/figures/terraclim_points_tmax.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/terraclim_points_tmax_1200x840.jpg" width="100%" style="display: block; margin: auto;"></p>
 <ol start="3" style="list-style-type: decimal">
 <li>Use <code>extract_sites</code> to extract the times series from
 these locations. The <code>id</code> parameter is the unique identifier
@@ -351,7 +351,7 @@ our <code>points_df</code> will extract the raster values for each point
 across time.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># extract wide sites data</span></span>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>sites_wide <span class="op">=</span> climatePy.extract_sites(r <span class="op">=</span> sites_stack[<span class="st">"tmax"</span>], pts <span class="op">=</span> points_df, <span class="bu">id</span> <span class="op">=</span> <span class="st">"uid"</span>)</span></code></pre></div>
-<p><img src="../reference/figures/terraclim_points_timeseries.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="../reference/figures/terraclim_points_timeseries.jpg" width="100%" style="display: block; margin: auto;"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
@@ -361,7 +361,7 @@ across time.</p>
 
     <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Mike Johnson, Justin Singh, Angus Watters.</p>
+<p>Developed by Mike Johnson, Justin Singh.</p>
 </div>
 
 <div class="pkgdown-footer-right">

@@ -15,6 +15,7 @@ dap(
   start = NULL,
   end = NULL,
   toptobottom = FALSE,
+  ID = NULL,
   verbose = TRUE
 )
 }
@@ -38,6 +39,8 @@ dap(
 \item{end}{for non "dated" items, end can be called by index}
 
 \item{toptobottom}{should data be inverse?}
+
+\item{ID}{a column of unique identifiers}
 
 \item{verbose}{Should dap_summary be printed?}
 }

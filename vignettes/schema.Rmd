@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   out.width = "100%",
+  dev = "jpeg",
   warning = FALSE,
   message = FALSE
 )
@@ -73,7 +74,7 @@ df = df %>%
 ```
 
 ```{r, echo = FALSE, out.width="25%" }
-knitr::include_graphics("../man/figures/space-time-variable-vendiagram.png")
+knitr::include_graphics("../man/figures/space-time-variable-vendiagram.jpg")
 ```
 
 ```{r, echo = FALSE}
@@ -90,6 +91,6 @@ img
 
 
 ```{r, echo = FALSE, out.width="49%",  out.height="90%",fig.cap="caption",fig.show='hold',fig.align='center'}
-#knitr::include_graphics(c(img, "../man/figures/space-time-variable-vendiagram.png"))
+#knitr::include_graphics(c(img, "../man/figures/space-time-variable-vendiagram.jpg"))
 ``` 
 

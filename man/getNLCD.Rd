@@ -4,7 +4,7 @@
 \alias{getNLCD}
 \title{Get USGS National Land Cover Dataset}
 \usage{
-getNLCD(AOI, year = 2019, type = "land cover")
+getNLCD(AOI, year = 2019, type = "land cover", ID = NULL)
 }
 \arguments{
 \item{AOI}{an sf of SpatVect point or polygon to extract data for}
@@ -12,6 +12,8 @@ getNLCD(AOI, year = 2019, type = "land cover")
 \item{year}{Landcover product year (2001, 2011,2016,2019)}
 
 \item{type}{product type}
+
+\item{ID}{a column of unique identifiers}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.
@@ -27,6 +29,7 @@ Other shortcuts:
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},

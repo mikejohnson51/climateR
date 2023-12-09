@@ -4,7 +4,7 @@
 \alias{getLCMAP}
 \title{Get USGS LCMAP}
 \usage{
-getLCMAP(AOI, year = 2019, type = "primary landcover")
+getLCMAP(AOI, year = 2019, type = "primary landcover", ID = NULL)
 }
 \arguments{
 \item{AOI}{an sf of SpatVect point or polygon to extract data for}
@@ -12,6 +12,8 @@ getLCMAP(AOI, year = 2019, type = "primary landcover")
 \item{year}{Land cover product year 1985 - 2019 (default = 2019)}
 
 \item{type}{product type (primary landcover (default), secondary landcover, primary confidence, secondary confidence, cover change, change day, change magniture, model cquality, spectral stability, spectral lastchance)}
+
+\item{ID}{a column of unique identifiers}
 }
 \value{
 if AOI is polygon a list of SpatRasters, if AOI is a point then a data.frame of modeled records.
@@ -27,6 +29,7 @@ Other shortcuts:
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},
 \code{\link{getLivneh_fluxes}()},

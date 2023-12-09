@@ -136,13 +136,13 @@ AOI = gpd.GeoDataFrame(
 # plot aoi
 ax = AOI.plot(facecolor = "none", edgecolor = "black")
 ax.set_axis_off()
-plt.savefig("/man/figures/nc_shape.png")
+plt.savefig("/man/figures/nc_shape.jpg")
 plt.show()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/nc_shape.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/nc_shape.jpg")
 ```
 
 ```{r, eval = F, echo = FALSE}
@@ -189,7 +189,7 @@ plt.ylabel('y', fontsize=12)
 plt.xlabel('x', fontsize=12)
 
 # plt.tight_layout()
-plt.savefig("/man/figures/nc_prism_data.png")
+plt.savefig("/man/figures/nc_prism_data.jpg")
 plt.show()
 #################
 # # Get the maximum and minimum values for both datasets
@@ -205,7 +205,7 @@ plt.show()
 # ax2.legend()
 # # plt.tick_params(axis='x', labelsize=8)
 # # plt.tick_params(axis='y', labelsize=8)
-# # fig.savefig("north_carolina_tmin_tmax.png")
+# # fig.savefig("north_carolina_tmin_tmax.jpg")
 # plt.tight_layout()
 # plt.show()
 ```
@@ -215,8 +215,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/nc_prism_data.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/nc_prism_data.jpg")
 ```
 
 # Data from known bounding coordinates
@@ -253,8 +253,8 @@ plt.gca().set_ylabel('')
 plt.title(str(g["vs"].isel(time = 0).time.values)[0:13])
 # plt.tick_params(axis='x', labelsize=8)
 # plt.tick_params(axis='y', labelsize=8)
-# fig.savefig("north_carolina_tmin_tmax.png")
-plt.savefig("/man/figures/nc_tmin_tmax_gridmet.png")
+# fig.savefig("north_carolina_tmin_tmax.jpg")
+plt.savefig("/man/figures/nc_tmin_tmax_gridmet.jpg")
 plt.show()
 ```
 
@@ -263,8 +263,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/nc_tmin_tmax_gridmet.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/nc_tmin_tmax_gridmet.jpg")
 ```
 
 # Data through time ...
@@ -338,15 +338,15 @@ hplot = harvey['pr'].isel(time=slice(0, 12)).plot(
     },
     )
 hplot.set_titles("")
-plt.savefig("/man/figures/harvey_pr_gridmet.png")
-# plt.savefig(f'img/ca_heatwave.png')
+plt.savefig("/man/figures/harvey_pr_gridmet.jpg")
+# plt.savefig(f'img/ca_heatwave.jpg')
 plt.show()
 # fig.set_size_inches(24, 14)
 # plt.tick_params(left = False, right = False , labelleft = False ,
 #                 labelbottom = False, bottom = False)
 # hplot = harvey['pr'].isel(time=slice(0, 12)).plot(x="x", y="y", col="time", col_wrap=4)
 # hplot.set_titles("")
-# # plt.savefig(f'img/ca_heatwave.png')
+# # plt.savefig(f'img/ca_heatwave.jpg')
 ```
 
 ```{python, eval = F, echo = F}
@@ -354,8 +354,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/harvey_pr_gridmet.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/harvey_pr_gridmet.jpg")
 ```
 
 # Climate Projections 
@@ -420,8 +420,8 @@ maca_plot = m['pr'].isel(time=slice(0, 12)).plot(
     },
     )
 # maca_plot.set_titles("")
-# plt.savefig(f'img/ca_heatwave.png')
-plt.savefig("/man/figures/florida_multi_model_maca.png")
+# plt.savefig(f'img/ca_heatwave.jpg')
+plt.savefig("/man/figures/florida_multi_model_maca.jpg")
 plt.show()
 ```
 
@@ -430,8 +430,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/florida_multi_model_maca.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/florida_multi_model_maca.jpg")
 ```
 
 Getting multiple models results is also quite simple:
@@ -505,8 +505,8 @@ model_plot = temp['tasmin'].isel(time=slice(0, 4)).plot(
     # "label": "Precipitation",
     },
     )
-plt.savefig("/man/figures/colorado_model_avg_maca.png")
-# plt.savefig(f'img/ca_heatwave.png')
+plt.savefig("/man/figures/colorado_model_avg_maca.jpg")
+# plt.savefig(f'img/ca_heatwave.jpg')
 plt.show()
 ```
 
@@ -515,8 +515,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/colorado_model_avg_maca.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/colorado_model_avg_maca.jpg")
 ```
 
 If you don’t know your models, you can always grab a random set by specifying a number:
@@ -571,8 +571,8 @@ random_models['tasmin'].isel(time=slice(0, 3)).plot(
     # "label": "Precipitation",
     },
     )
-# plt.savefig(f'img/ca_heatwave.png')
-plt.savefig("/man/figures/michigan_random_maca.png")
+# plt.savefig(f'img/ca_heatwave.jpg')
+plt.savefig("/man/figures/michigan_random_maca.jpg")
 
 plt.show()
 # plt.close()
@@ -583,8 +583,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/michigan_random_maca.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/michigan_random_maca.jpg")
 ```
 
 # Global Datasets
@@ -649,7 +649,7 @@ ax2.set_title('CHIRPS Precip')
 
 # Adjust the spacing between subplots
 plt.tight_layout()
-plt.savefig("/man/figures/kenya_tc_chirps.png")
+plt.savefig("/man/figures/kenya_tc_chirps.jpg")
 # Display the plots
 plt.show()
 # plt.close()
@@ -660,8 +660,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/kenya_tc_chirps.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/kenya_tc_chirps.jpg")
 ```
 
 # Point Based Data
@@ -718,7 +718,7 @@ plt.xlabel('Date', fontsize=16)
 # plt.rc('xtick',labelsize=10)
 # plt.rc('ytick',labelsize=10)
 plt.tight_layout()
-plt.savefig("/man/figures/point_timeseries_gridmet.png")
+plt.savefig("/man/figures/point_timeseries_gridmet.jpg")
 # show plot
 plt.show()
 
@@ -737,8 +737,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/point_timeseries_gridmet.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/point_timeseries_gridmet.jpg")
 ```
 
 # Point Based Ensemble
@@ -784,7 +784,7 @@ plt.tick_params(axis='both', which='major', labelsize=6)
 # # Set the title and legend title font sizes
 # plt.title('Your Title', fontsize=24)
 # plt.legend(title='Legend Title', fontsize=18)
-plt.savefig("/man/figures/future_points_maca.png", dpi = 600)
+plt.savefig("/man/figures/future_points_maca.jpg", dpi = 600)
 
 # show plot
 plt.show()
@@ -814,8 +814,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/future_points_maca.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/future_points_maca.jpg")
 ```
 
 # Multi Site extraction 
@@ -876,7 +876,7 @@ fig, ax = plt.subplots(figsize=(20, 14))
 da.isel(time = 0).plot()
 da.isel(time=0).time.values.tolist()
 plt.title(f"{da.isel(time=0).time.values.tolist()}",  fontsize=14) 
-plt.savefig("../man/figures/terraclim_points_tmax.png",dpi = 600)
+plt.savefig("../man/figures/terraclim_points_tmax.jpg",dpi = 600)
 plt.show()
 ```
 
@@ -885,8 +885,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/terraclim_points_tmax.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/terraclim_points_tmax_1200x840.jpg")
 ```
 
 3. Use `extract_sites` to extract the times series from these locations. The `id` parameter is the unique identifier from the site data with which to names the resulting columns.
@@ -910,7 +910,7 @@ plt.xlabel('Date')
 plt.tick_params(axis='x', labelsize=8)
 plt.tick_params(axis='y', labelsize=8)
 # plt.ylabel('Degree K')
-plt.savefig("/man/figures/terraclim_points_timeseries.png", dpi = 600)
+plt.savefig("/man/figures/terraclim_points_timeseries.jpg", dpi = 600)
 plt.show()
 # plt.close()
 ```
@@ -920,8 +920,8 @@ plt.close()
 ```
 
 ```{r echo=FALSE, out.width="100%", fig.align='center'}
-# knitr::include_graphics("img/raster_data_model.png")
-knitr::include_graphics("../man/figures/terraclim_points_timeseries.png")
+# knitr::include_graphics("img/raster_data_model.jpg")
+knitr::include_graphics("../man/figures/terraclim_points_timeseries.jpg")
 ```
 
 ```{python, eval = F, echo = F}

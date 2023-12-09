@@ -1,16 +1,15 @@
 Package: climateR
 Type: Package
 Title: climateR
-Description: Find, subset and retrive climate and geospatial data by AOI.
-Version: 0.3.1.4
+Description: Find, subset, and retrive geospatial data by AOI.
+Version: 0.3.2
 Authors@R: c(person("Mike", "Johnson", 
              role = c("aut", "cre"), 
-             email = "mikecp11@gmail.com"),
+             email = "jjohnson@lynker.com"),
              person("Justin", "Singh",  role = "ctb"),
-             person("Angus", "Watters",  role = "ctb"), 
              person("ESIP", role = "fnd"),
              person("NOAA OWP", role = "fnd"))
-Maintainer: Mike Johnson <mikecp11@gmail.com>
+Maintainer: Mike Johnson <jjohnson@lynker.com>
 BugReports: https://github.com/mikejohnson51/climateR/issues
 URL: https://github.com/mikejohnson51/climateR
 Depends: 

@@ -108,7 +108,7 @@ system.time({
 We just calculated 20 year average of 9 different variables over 882,945 divides that cover CONUS under an hour (2472.777 seconds = .68 hours) on my normal laptop!! This is very impressive. Here is the result of the 20 year average Palmer drought severity index:
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../man/figures/data_PDSI.png")
+knitr::include_graphics("../man/figures/data_PDSI.jpg")
 ```
 
 ## Comparison to GEE
@@ -119,7 +119,7 @@ To start, we cannot process all 882,945 divides at the same time in GEE and my p
 
 So we can write a script to perform batch operation such as below.
 
-```{javascript}
+```{javascript, eval = F}
 // This requires uploading the divides into EE assets
 // A for loop to execute 100 batches of 200 divides as an example
 for (var i=1; i<100; i++){
@@ -200,7 +200,7 @@ function runExtract(data, num, first){
 
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../man/figures/ee_task.png")
+knitr::include_graphics("../man/figures/ee_task.jpg")
 ```
 
 ## Massive Temporal and Spatial Aggregation with GLDAS 
@@ -258,10 +258,11 @@ system.time({
     }
 })
 ```
-We can then plot the average ecanopy band:
+
+We can then plot the average canopy band:
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../man/figures/data_ecanopy.png")
+knitr::include_graphics("../man/figures/data_ecanopy.jpg")
 ```
 
 ## Custom Data
@@ -302,7 +303,7 @@ system.time({
 Here is the plot of saturated hydraulic conductivity as an example:
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../man/figures/data_ksat.png")
+knitr::include_graphics("../man/figures/data_ksat.jpg")
 ```
 
 ## Local Data
@@ -339,7 +340,7 @@ for (vpu in vpu_list) {
 We can then plot the average LAI:
 
 ```{r, echo = FALSE}
-knitr::include_graphics("../man/figures/data_LAI.png")
+knitr::include_graphics("../man/figures/data_LAI.jpg")
 ```
 
 # Conclusion

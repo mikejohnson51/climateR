@@ -12,6 +12,7 @@ getLOCA(
   startDate,
   endDate = NULL,
   verbose = FALSE,
+  ID = NULL,
   dryrun = FALSE
 )
 }
@@ -29,6 +30,8 @@ getLOCA(
 \item{endDate}{an end date given as "YYYY-MM-DD" to extract data for}
 
 \item{verbose}{Should messages be emited?}
+
+\item{ID}{a column of unique identifiers}
 
 \item{dryrun}{Return summary of data prior to retrieving it}
 }
@@ -49,6 +52,7 @@ Other shortcuts:
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLivneh_fluxes}()},

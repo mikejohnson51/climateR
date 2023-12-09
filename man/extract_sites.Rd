@@ -4,14 +4,14 @@
 \alias{extract_sites}
 \title{Extract Sites}
 \usage{
-extract_sites(r, pts, id)
+extract_sites(r, pts, ID = NULL)
 }
 \arguments{
 \item{r}{a SpatRaster object}
 
 \item{pts}{point to extract from}
 
-\item{id}{the unique identifier of each point (column name from pts)}
+\item{ID}{the unique identifier of each point (column name from pts)}
 }
 \value{
 a data.frame with columes representing points, and rows time periods

@@ -2,7 +2,7 @@
 % Please edit documentation in R/shortcuts.R
 \name{getTerraClimNormals}
 \alias{getTerraClimNormals}
-\title{Get Terra Climate Normals for an Area of Interest}
+\title{Get TerraClimate Normals for an Area of Interest}
 \usage{
 getTerraClimNormals(
   AOI,
@@ -10,6 +10,7 @@ getTerraClimNormals(
   scenario = "19812010",
   month = 1:12,
   verbose = FALSE,
+  ID = NULL,
   dryrun = FALSE
 )
 }
@@ -23,6 +24,8 @@ getTerraClimNormals(
 \item{month}{numeric. and month or vector of months to access. Default is 1:12}
 
 \item{verbose}{Should messages be emited?}
+
+\item{ID}{a column of unique identifiers}
 
 \item{dryrun}{Return summary of data prior to retrieving it}
 }
@@ -40,6 +43,7 @@ Other shortcuts:
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},
+\code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
 \code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},
