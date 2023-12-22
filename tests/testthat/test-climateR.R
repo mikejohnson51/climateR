@@ -449,15 +449,22 @@ test_that("CHIRPS", {
 
 })
 
-test_that("piping AOI", {
+test_that("piping", {
   
-  xx = bb %>%
+ xx = bb %>%
     getCHIRPS(startDate = "2011-11-29", endDate = "2011-12-03")
   
   expect_true(class(xx) == "list")
   expect_true(class(xx[[1]]) == "SpatRaster")
   expect_true(names(xx)[1] == "precip")
   expect_true(nlyr(xx[[1]]) == 5)
+  
+  AOI = bb %>% 
+    getNLCD() %>% 
+    get3DEP() %>% 
+    getTerraClimNormals(varname = "ppt")
+  
+  
   
 })
 
@@ -475,13 +482,14 @@ test_that("dap_xyzv", {
   
   expect_error(dap_xyzv(f, varname = "BLAH"))
   
-  URL = "https://gpm1.gesdisc.eosdis.nasa.gov/opendap/hyrax/GPM_L3/GPM_3IMERGHH.06/2021/001/3B-HHR.MS.MRG.3IMERG.20210101-S000000-E002959.0000.V06B.HDF5"
+  URL = 'http://thredds.northwestknowledge.net:8080/thredds/dodsC/agg_terraclimate_srad_1958_CurrentYear_GLOBE.nc'
+    #"https://gpm1.gesdisc.eosdis.nasa.gov/opendap/hyrax/GPM_L3/GPM_3IMERGHH.06/2021/001/3B-HHR.MS.MRG.3IMERG.20210101-S000000-E002959.0000.V06B.HDF5"
   
   dap = dap_xyzv(URL)
   times = .resource_time(URL, T_name = dap$T_name[1])
   xy = .resource_grid(URL, X_name = dap$X_name[1], Y_name = dap$Y_name[1])
   
-  expect_true(nrow(dap) == 10)
+  expect_true(nrow(dap) == 1)
   expect_true(length(times) == 3)
   expect_true(nrow(xy) == 1)
   

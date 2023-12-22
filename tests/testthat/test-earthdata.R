@@ -1,3 +1,14 @@
+library(AOI)
+library(terra)
+library(climateR)
+
+cities =  geocode(c("Fort Collins, CO", 
+                    "Durham, NC", 
+                    "Raleigh, NC"), 
+                  pt = TRUE)
+
+bb     =  geocode("Fort Collins, CO", bb = TRUE)
+
 
 test_that("NLDAS", {
   # skip on CI - no netrc/dodsrc
