@@ -69,6 +69,8 @@ dap <- function(URL = NULL,
   
   if(inherits(AOI, "list")){
     aoi = AOI[[1]]
+  } else if(inherits(AOI, "sfc")){
+    aoi = vect(AOI)
   } else {
     aoi = AOI
   }

@@ -111,6 +111,10 @@ climater_filter <- function(id = NULL,
 
   ### ---- AOI filter
   if(!is.null(AOI)){
+    
+    if(inherits(AOI, "sfc")){
+      AOI = vect(AOI)
+    }
   
     gid = sapply(1:nrow(catalog), function(x) {
       suppressWarnings({
