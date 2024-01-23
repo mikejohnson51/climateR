@@ -1,5 +1,5 @@
-library(AOI)
-library(terra)
+suppressWarnings({ library(AOI) })
+suppressWarnings({ library(terra) })
 library(climateR)
 
 cities =  geocode(c("Fort Collins, CO", 
