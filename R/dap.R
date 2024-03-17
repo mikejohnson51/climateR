@@ -115,7 +115,7 @@ dap <- function(URL = NULL,
     }
   }
   
-  if(all(sapply(AOI, class) == "SpatRaster")){
+  if(class(AOI)[1] == "SpatRaster"){
 
     l = unlist(list(AOI,x), recursive = TRUE)
     
