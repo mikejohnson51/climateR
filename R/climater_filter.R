@@ -43,8 +43,6 @@ climater_filter <- function(id = NULL,
     stop("no data to filter.", call. = FALSE)
   }
   
-
-  
   if(inherits(AOI, "list")){
     AOI = AOI[[1]]
   }

@@ -582,11 +582,33 @@ getISRIC_soils = function(AOI = NULL, varname = NULL, verbose = TRUE, ID = NULL)
   }
 }
 
+#' @title Get California Basin Characterization Model (CABCM) historical and projected climate and hydrology data.
+#' @description The California Basin Characterization Model (CABCM) dataset provides historical and projected climate and hydrology data at a 270 meter resolution, which is relevant for watershed-scale evaluation and planning. 
+#' @inheritParams climater_filter
+#' @inheritParams climater_dap
+#' @inheritParams getTerraClim
+#' @inherit getTerraClim return
+#' @family shortcuts
+#' @export
+
+getCABCM = function(AOI = NULL, varname = NULL, model = 'CNRM', scenario = NULL, 
+                    startDate, endDate = NULL, 
+                    verbose = FALSE, ID = NULL, dryrun = FALSE){
+  
+ model = c("HST", model)
+ 
+ climater_dap('cabcm', 
+               as.list(environment()), 
+               verbose, dryrun)
+ 
+}
+
+
 #' @title Get MERRA2
 #' @description MERRA2
 #' @inheritParams climater_filter
 #' @param year Land cover product year 1985 - 2019 (default = 2019)
-#' @param type product type (primary landcover (default), secondary landcover, primary confidence, secondary confidence, cover change, change day, change magniture, model cquality, spectral stability, spectral lastchance)
+#' @param type product type (primary landcover (default), secondary landcover, primary confidence, secondary confidence, cover change, change day, change magnitude, model quality, spectral stability, spectral lastchance)
 #' @inherit getTerraClim return
 #' @family shortcuts
 #' @export
