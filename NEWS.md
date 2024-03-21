@@ -1,3 +1,8 @@
+# climateR 0.3.5
+
+* Added getCABCM
+* Added fix for terra AOIs
+
 # climateR 0.3.4
 
 * Add catch for XY rather then YX arrays

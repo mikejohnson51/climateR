@@ -22,6 +22,7 @@ Get USGS 3DEP DEMs
 \seealso{
 Other shortcuts: 
 \code{\link{getBCCA}()},
+\code{\link{getCABCM}()},
 \code{\link{getCHIRPS}()},
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},

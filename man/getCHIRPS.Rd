@@ -42,6 +42,7 @@ Get CHIRPS data
 Other shortcuts: 
 \code{\link{get3DEP}()},
 \code{\link{getBCCA}()},
+\code{\link{getCABCM}()},
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
 \code{\link{getGridMET}()},

@@ -21,6 +21,7 @@ Get NASA Global DEM
 Other shortcuts: 
 \code{\link{get3DEP}()},
 \code{\link{getBCCA}()},
+\code{\link{getCABCM}()},
 \code{\link{getCHIRPS}()},
 \code{\link{getDaymet}()},
 \code{\link{getGLDAS}()},
