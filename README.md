@@ -1,8 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Welcome!
-
+# Welcome! <a href="https://github.com/mikejohnson51/climateR"><img src="man/figures/logo.png" align="right" height="139"/></a>
 <!-- badges: start -->
 
 [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
