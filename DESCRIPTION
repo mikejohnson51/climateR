@@ -5,11 +5,11 @@ Description: Find, subset, and retrive geospatial data by AOI.
 Version: 0.3.6
 Authors@R: c(person("Mike", "Johnson", 
              role = c("aut", "cre"), 
-             email = "mike.johnson@nooa.gov"),
+             email = "mike.johnson@noaa.gov"),
              person("Justin", "Singh",  role = "ctb"),
              person("ESIP", role = "fnd"),
              person("NOAA OWP", role = "fnd"))
-Maintainer: Mike Johnson <mike.johnson@nooa.gov>
+Maintainer: Mike Johnson <mike.johnson@noaa.gov>
 BugReports: https://github.com/mikejohnson51/climateR/issues
 URL: https://github.com/mikejohnson51/climateR
 Depends: 
