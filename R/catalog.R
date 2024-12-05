@@ -17,6 +17,7 @@ NULL
 #' @importFrom methods formalArgs
 #' @importFrom stats complete.cases
 #' @importFrom grDevices blues9
+#' @importFrom rnz open_nz close_nz inq_var get_att get_var inq_dim
 
 
 #' @export

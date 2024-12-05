@@ -2,6 +2,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # Welcome! <a href="https://github.com/mikejohnson51/climateR"><img src="man/figures/logo.png" align="right" height="139"/></a>
+
 <!-- badges: start -->
 
 [![DOI](https://zenodo.org/badge/158620263.svg)](https://zenodo.org/badge/latestdoi/158620263)
@@ -18,7 +19,7 @@ Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repost
 `climateR` simplifies the steps needed to get gridded geospatial data
 into R. At its core, it provides three main things:
 
-1.  A catalog of 108106 geospatial climate, land cover, and soils
+1.  A catalog of 112398 geospatial climate, land cover, and soils
     resources from 3477 collections. See (`climateR::catalog`)
 
 This catalog is an [evolving, federated collection of
@@ -47,6 +48,10 @@ accurate, while continuously growing based on user requests.
 ``` r
 remotes::install_github("mikejohnson51/AOI") # suggested!
 remotes::install_github("mikejohnson51/climateR")
+```
+
+``` r
+library(climateR)
 ```
 
 # Basic Usage
@@ -79,7 +84,7 @@ colorado = aoi_get(state = "CO", county = "all")
 cities = readRDS(system.file("co/cities_colorado.rds", package = "climateR"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.jpeg" width="100%" />
+<img src="man/figures/README-unnamed-chunk-5-1.jpeg" width="100%" />
 
 ## Extent extraction
 
@@ -100,29 +105,22 @@ system.time({
                  endDate  = "1991-11-06")
 })
 #>    user  system elapsed 
-#>   0.221   0.038   1.416
+#>   0.195   0.021   1.266
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.jpeg" width="100%" />
+<img src="man/figures/README-unnamed-chunk-7-1.jpeg" width="100%" />
 
 #### POINTS(s) act as a single extent
 
 ``` r
 # Request data using cities (POINTs)
-
-checkNetrc()
-#> [1] TRUE
-writeDodsrc()
-#> [1] ".dodsrc"
-
-modis_pet = getMODIS(
+pr = getGridMET(
     AOI       = cities,
-    asset    = 'MOD16A3GF.061',
-    varname   = "PET_500m",
+    varname   = "pr",
     startDate = "2020-10-29")
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.jpeg" width="100%" />
+<img src="man/figures/README-unnamed-chunk-9-1.jpeg" width="100%" />
 
 #### Single POINT(s) act as an extent
 
@@ -139,7 +137,7 @@ system.time({
                         endDate  = "2050-11-06")
 })
 #>    user  system elapsed 
-#>   0.130   0.012   1.229
+#>   0.203   0.005   0.547
 ```
 
 ``` r
@@ -165,21 +163,17 @@ together using either the base R or dplyr piping syntax.
 ``` r
 pipes = aoi_ext("Fort Collins", wh = c(10, 20), units = "km", bbox = TRUE)|>
   getNLCD() |>
-  get3DEP() %>% 
   getTerraClimNormals(varname = c("tmax", "ppt"))
 
 lapply(pipes, dim)
 #> $`2019 Land Cover L48`
-#> [1] 1401  786    1
-#> 
-#> $`30m CONUS DEM`
-#> [1] 1417 1179    1
+#> [1] 1402  786    1
 #> 
 #> $tmax
-#> [1] 10  9 12
+#> [1] 10  8 12
 #> 
 #> $ppt
-#> [1] 10  9 12
+#> [1] 10  8 12
 ```
 
 ### Extract timeseries from exisitng objects:
@@ -230,7 +224,7 @@ names(chirps_pts)[1:5]
 #> [1] "date"      "ADAMSCITY" "AGATE"     "AGUILAR"   "AKRON"
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.jpeg" width="100%" />
+<img src="man/figures/README-unnamed-chunk-15-1.jpeg" width="100%" />
 
 ### Integration with `zonal`
 
@@ -253,10 +247,10 @@ system.time({
                          ID = "fip_code")
 })
 #>    user  system elapsed 
-#>   0.216   0.021   1.546
+#>   0.174   0.012   1.245
 ```
 
-<img src="man/figures/README-unnamed-chunk-16-1.jpeg" width="100%" />
+<img src="man/figures/README-unnamed-chunk-17-1.jpeg" width="100%" />
 
 ## Basic Animation
 

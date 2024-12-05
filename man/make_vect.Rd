@@ -7,7 +7,7 @@
 make_vect(cat)
 }
 \arguments{
-\item{cat}{catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})}
+\item{cat}{catalog entry (data.frame with an c(Xn, X1, Yn, Y1, crs))}
 }
 \value{
 SpatVect
@@ -21,13 +21,13 @@ Other dap:
 \code{\link{.resource_time}()},
 \code{\link{climater_dap}()},
 \code{\link{climater_filter}()},
+\code{\link{dap}()},
 \code{\link{dap_crop}()},
 \code{\link{dap_get}()},
 \code{\link{dap_meta}()},
 \code{\link{dap_summary}()},
 \code{\link{dap_to_local}()},
 \code{\link{dap_xyzv}()},
-\code{\link{dap}()},
 \code{\link{extract_sites}()},
 \code{\link{get_data}()},
 \code{\link{go_get_dap_data}()},

@@ -3,7 +3,7 @@ title: "Welcome to climateR"
 author:
   - name: "Mike Johnson"
     url: https://github.com/mikejohnson51
-    affiliation: Lynker
+    affiliation: NOAA-OWP
     affiliation_url: https://lynker.com
 output: distill::distill_article
 vignette: >
@@ -52,8 +52,8 @@ With an AOI, we can construct a call to a dataset for a parameter(s) and date(s)
 
 ```{r}
 system.time({
- p = getPRISM(AOI, 
-              varname = c('tmax','tmin'), 
+ p = getGridMET(AOI, 
+              varname = c('tmmx','tmmn'), 
               startDate = "2018-10-29")
 })
 ```
@@ -123,8 +123,6 @@ m = getMACA(AOI = aoi_get(state = "FL"),
             scenario = c('rcp45', 'rcp85'), 
             startDate = "2080-06-29", endDate = "2080-06-30")
 })
-
-
 ```
 
 ```{r, echo = FALSE, fig.width = 15}
@@ -164,6 +162,7 @@ ggplot() +
   ) + 
   theme_minimal()
 ```
+
 If you don't know your models, you can always grab a random set by specifying a number:
 
 ```{r, fig.width= 15}

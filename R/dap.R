@@ -87,6 +87,23 @@ dap <- function(URL = NULL,
       toptobottom = toptobottom,
       verbose = verbose
     )
+   
+  } else if(any(getExtension(urls) %in% 'zarr')) {
+    
+    zarr <- zarr_crop(
+      URL = URL,
+      catalog = catalog,
+      AOI = aoi,
+      startDate = startDate,
+      endDate = endDate,
+      start = start,
+      end = end,
+      varname = varname,
+      verbose = verbose
+    )
+    
+    x = zarr_get(zarr)
+    
   } else {
     dap <- dap_crop(
       URL = URL,
@@ -278,7 +295,7 @@ dap_crop <- function(URL = NULL,
     
     if (grepl("hour", catalog$interval[1])) {
       startDate <- paste(startDate, "00:00:00")
-      endDate <- paste(endDate, "23:00:00")
+      endDate   <- paste(endDate,   "23:00:00")
     }
     
     startDate <- as.POSIXct(as.character(startDate), tz = "UTC")

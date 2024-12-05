@@ -23,7 +23,7 @@ Animate a SpatRaster object as a gif.
 }
 \seealso{
 Other viz: 
-\code{\link{animation_vector}()},
-\code{\link{animation}()}
+\code{\link{animation}()},
+\code{\link{animation_vector}()}
 }
 \concept{viz}

@@ -18,3 +18,4 @@
 ^\.dodsrc$
 \.urs_cookies$
 ^stac_testing$
+^LICENSE\.md$

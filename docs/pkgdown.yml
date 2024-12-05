@@ -1,12 +1,11 @@
-pandoc: 3.1.1
-pkgdown: 2.0.6
+pandoc: '3.2'
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  01-intro: 01-intro.html
-  02-catalogs: 02-catalogs.html
-  03-intro-climatepy: 03-intro-climatepy.html
-  04-stream-morph: 04-stream-morph.html
-  05-mros-climateR: 05-mros-climateR.html
+  catalogs: catalogs.html
+  intro-climatepy: intro-climatepy.html
+  intro: intro.html
+  mros-climateR: mros-climateR.html
   schema: schema.html
-last_built: 2023-12-09T00:13Z
-
+  stream-morph: stream-morph.html
+last_built: 2024-12-05T06:10Z

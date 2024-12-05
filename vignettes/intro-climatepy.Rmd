@@ -10,6 +10,10 @@ author:
     affiliation: Lynker
     affiliation_url: https://lynker.com
 output: distill::distill_article
+vignette: >
+  %\VignetteIndexEntry{Welcome to climatePy}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}

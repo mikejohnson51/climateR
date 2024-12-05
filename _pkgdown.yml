@@ -19,18 +19,18 @@ articles:
 - title: Quick Start
   desc: Data access in R and Python
   contents: 
-  - 01-intro
-  - 03-intro-climatepy
+  - intro
+  - intro-climatepy
   
 - title: Data Catalogs
   contents:
   - schema
-  - 02-catalogs
+  - catalogs
   
 - title: Use Cases
   contents:
-  - 05-mros-climateR
-  - 04-stream-morph
+  - mros-climateR
+  - stream-morph
 
 reference:
 - title: 
@@ -42,6 +42,10 @@ reference:
   desc: General tools for data access
   contents:
   - has_concept("dap")
+- subtitle: Zarr Access
+  desc: General tools for zarr access
+  contents:
+  - has_concept("zarr")
 - subtitle: EarthData Access
   desc: General tools for configuring NASA EarthData Access
   contents:

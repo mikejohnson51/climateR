@@ -1,225 +1,93 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/articles/00-geopiper.html</loc>
-  </url>
-  <url>
-    <loc>/articles/01-intro.html</loc>
-  </url>
-  <url>
-    <loc>/articles/02-catalogs.html</loc>
-  </url>
-  <url>
-    <loc>/articles/03-intro-climatepy.html</loc>
-  </url>
-  <url>
-    <loc>/articles/04-stream-morph.html</loc>
-  </url>
-  <url>
-    <loc>/articles/05-mros-climateR.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/schema.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/animation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/animation_raster.html</loc>
-  </url>
-  <url>
-    <loc>/reference/animation_vector.html</loc>
-  </url>
-  <url>
-    <loc>/reference/catalog.html</loc>
-  </url>
-  <url>
-    <loc>/reference/checkDodsrc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/checkNetrc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/climater_dap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/climater_filter.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap_crop.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap_get.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap_meta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap_summary.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap_to_local.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dap_xyzv.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-resource_grid.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-resource_time.html</loc>
-  </url>
-  <url>
-    <loc>/reference/extract_sites.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get3DEP.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getBCCA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCHIRPS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getDaymet.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getDodsrcPath.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGLDAS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getGridMET.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getISRIC_soils.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getLCMAP.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getLOCA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getLOCA_hydro.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getLivneh.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getLivneh_fluxes.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getMACA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getMODIS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getNASADEM.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getNLCD.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getNLDAS.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getNetrcPath.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getPRISM.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getTerraClim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getTerraClimNormals.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getVIC.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getWorldClim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/go_get_dap_data.html</loc>
-  </url>
-  <url>
-    <loc>/reference/grid_meta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_ext.html</loc>
-  </url>
-  <url>
-    <loc>/reference/make_vect.html</loc>
-  </url>
-  <url>
-    <loc>/reference/merge_across_time.html</loc>
-  </url>
-  <url>
-    <loc>/reference/params.html</loc>
-  </url>
-  <url>
-    <loc>/reference/parse_date.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_dap_file.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_ftp.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_live_catalog.html</loc>
-  </url>
-  <url>
-    <loc>/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>/reference/time_meta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/try_att.html</loc>
-  </url>
-  <url>
-    <loc>/reference/var_to_terra.html</loc>
-  </url>
-  <url>
-    <loc>/reference/variable_meta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/vrt_crop_get.html</loc>
-  </url>
-  <url>
-    <loc>/reference/writeDodsrc.html</loc>
-  </url>
-  <url>
-    <loc>/reference/writeNetrc.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/LICENSE-text.html</loc></url>
+<url><loc>/LICENSE.html</loc></url>
+<url><loc>/articles/00-geopiper.html</loc></url>
+<url><loc>/articles/01-intro.html</loc></url>
+<url><loc>/articles/02-catalogs.html</loc></url>
+<url><loc>/articles/03-intro-climatepy.html</loc></url>
+<url><loc>/articles/04-stream-morph.html</loc></url>
+<url><loc>/articles/05-mros-climateR.html</loc></url>
+<url><loc>/articles/catalogs.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/intro-climatepy.html</loc></url>
+<url><loc>/articles/intro.html</loc></url>
+<url><loc>/articles/mros-climateR.html</loc></url>
+<url><loc>/articles/schema.html</loc></url>
+<url><loc>/articles/stream-morph.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/animation.html</loc></url>
+<url><loc>/reference/animation_raster.html</loc></url>
+<url><loc>/reference/animation_vector.html</loc></url>
+<url><loc>/reference/catalog.html</loc></url>
+<url><loc>/reference/checkDodsrc.html</loc></url>
+<url><loc>/reference/checkNetrc.html</loc></url>
+<url><loc>/reference/climater_dap.html</loc></url>
+<url><loc>/reference/climater_filter.html</loc></url>
+<url><loc>/reference/dap.html</loc></url>
+<url><loc>/reference/dap_crop.html</loc></url>
+<url><loc>/reference/dap_get.html</loc></url>
+<url><loc>/reference/dap_meta.html</loc></url>
+<url><loc>/reference/dap_summary.html</loc></url>
+<url><loc>/reference/dap_to_local.html</loc></url>
+<url><loc>/reference/dap_xyzv.html</loc></url>
+<url><loc>/reference/dot-resource_grid.html</loc></url>
+<url><loc>/reference/dot-resource_grid_zarr.html</loc></url>
+<url><loc>/reference/dot-resource_time.html</loc></url>
+<url><loc>/reference/dot-resource_time_zarr.html</loc></url>
+<url><loc>/reference/extract_sites.html</loc></url>
+<url><loc>/reference/get3DEP.html</loc></url>
+<url><loc>/reference/getBCCA.html</loc></url>
+<url><loc>/reference/getCABCM.html</loc></url>
+<url><loc>/reference/getCHIRPS.html</loc></url>
+<url><loc>/reference/getDaymet.html</loc></url>
+<url><loc>/reference/getDodsrcPath.html</loc></url>
+<url><loc>/reference/getGLDAS.html</loc></url>
+<url><loc>/reference/getGridMET.html</loc></url>
+<url><loc>/reference/getISRIC_soils.html</loc></url>
+<url><loc>/reference/getLCMAP.html</loc></url>
+<url><loc>/reference/getLOCA.html</loc></url>
+<url><loc>/reference/getLOCA_hydro.html</loc></url>
+<url><loc>/reference/getLivneh.html</loc></url>
+<url><loc>/reference/getLivneh_fluxes.html</loc></url>
+<url><loc>/reference/getMACA.html</loc></url>
+<url><loc>/reference/getMODIS.html</loc></url>
+<url><loc>/reference/getNASADEM.html</loc></url>
+<url><loc>/reference/getNLCD.html</loc></url>
+<url><loc>/reference/getNLDAS.html</loc></url>
+<url><loc>/reference/getNetrcPath.html</loc></url>
+<url><loc>/reference/getPRISM.html</loc></url>
+<url><loc>/reference/getTerraClim.html</loc></url>
+<url><loc>/reference/getTerraClimNormals.html</loc></url>
+<url><loc>/reference/getVIC.html</loc></url>
+<url><loc>/reference/getWorldClim.html</loc></url>
+<url><loc>/reference/get_data.html</loc></url>
+<url><loc>/reference/go_get_dap_data.html</loc></url>
+<url><loc>/reference/go_get_zarr.html</loc></url>
+<url><loc>/reference/grid_meta.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/make_ext.html</loc></url>
+<url><loc>/reference/make_vect.html</loc></url>
+<url><loc>/reference/merge_across_time.html</loc></url>
+<url><loc>/reference/params.html</loc></url>
+<url><loc>/reference/parse_date.html</loc></url>
+<url><loc>/reference/read_dap_file.html</loc></url>
+<url><loc>/reference/read_ftp.html</loc></url>
+<url><loc>/reference/read_live_catalog.html</loc></url>
+<url><loc>/reference/read_zarr_file.html</loc></url>
+<url><loc>/reference/reexports.html</loc></url>
+<url><loc>/reference/time_meta.html</loc></url>
+<url><loc>/reference/try_att.html</loc></url>
+<url><loc>/reference/var_to_terra.html</loc></url>
+<url><loc>/reference/variable_meta.html</loc></url>
+<url><loc>/reference/vrt_crop_get.html</loc></url>
+<url><loc>/reference/writeDodsrc.html</loc></url>
+<url><loc>/reference/writeNetrc.html</loc></url>
+<url><loc>/reference/zarr_crop.html</loc></url>
+<url><loc>/reference/zarr_get.html</loc></url>
+<url><loc>/reference/zarr_to_terra.html</loc></url>
+<url><loc>/reference/zarr_xyzv.html</loc></url>
 </urlset>
+

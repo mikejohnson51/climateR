@@ -22,6 +22,7 @@ Imports:
     gifski,
     ncmeta,
     RNetCDF,
+    rnz,
     terra,
     utils,
     methods,
@@ -30,7 +31,7 @@ Imports:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests:
     httr,
     AOI,
@@ -39,8 +40,16 @@ Suggests:
     rmarkdown,
     knitr,
     kableExtra,
-    distill
+    distill,
+    ggplot2,
+    patchwork,
+    sf,
+    tidyr,
+    tidyterra,
+    reticulate
 Remotes:
-    mikejohnson51/AOI
+    mikejohnson51/AOI,
+    dblodgett-usgs/ncmeta,
+    usgs-doi/rnz
 Config/testthat/edition: 3
 VignetteBuilder: knitr

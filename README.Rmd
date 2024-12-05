@@ -16,7 +16,6 @@ knitr::opts_chunk$set(
 )
 
 library(AOI)
-devtools::load_all()
 library(dplyr)
 library(ggplot2)
 library(tidyterra)
@@ -53,6 +52,9 @@ remotes::install_github("mikejohnson51/AOI") # suggested!
 remotes::install_github("mikejohnson51/climateR")
 ```
 
+```{r}
+library(climateR)
+```
 # Basic Usage
 
 The examples used here call upon the following shortcuts:
@@ -129,21 +131,16 @@ ggplot() +
 
 ```{r}
 # Request data using cities (POINTs)
-
-checkNetrc()
-writeDodsrc()
-
-modis_pet = getMODIS(
+pr = getGridMET(
     AOI       = cities,
-    asset    = 'MOD16A3GF.061',
-    varname   = "PET_500m",
+    varname   = "pr",
     startDate = "2020-10-29")
 ```
 
 
 ```{r, echo = FALSE}
 ggplot() +
-  geom_spatraster(data = modis_pet$PET_500m) +
+  geom_spatraster(data = pr$precipitation_amount) +
   geom_spatvector(data = cities, color = "black", fill = NA, size = .01) +
   facet_wrap(~lyr) +
   scale_fill_hypso_c(
@@ -186,7 +183,6 @@ All `climateR` functions treat the extent of the AOI and the default extraction 
 ```{r}
 pipes = aoi_ext("Fort Collins", wh = c(10, 20), units = "km", bbox = TRUE)|>
   getNLCD() |>
-  get3DEP() %>% 
   getTerraClimNormals(varname = c("tmax", "ppt"))
 
 lapply(pipes, dim)

@@ -49,8 +49,8 @@ Other shortcuts:
 \code{\link{getGridMET}()},
 \code{\link{getISRIC_soils}()},
 \code{\link{getLCMAP}()},
-\code{\link{getLOCA_hydro}()},
 \code{\link{getLOCA}()},
+\code{\link{getLOCA_hydro}()},
 \code{\link{getLivneh_fluxes}()},
 \code{\link{getMACA}()},
 \code{\link{getMODIS}()},
@@ -58,8 +58,8 @@ Other shortcuts:
 \code{\link{getNLCD}()},
 \code{\link{getNLDAS}()},
 \code{\link{getPRISM}()},
-\code{\link{getTerraClimNormals}()},
 \code{\link{getTerraClim}()},
+\code{\link{getTerraClimNormals}()},
 \code{\link{getVIC}()},
 \code{\link{getWorldClim}()}
 }

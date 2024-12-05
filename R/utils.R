@@ -416,7 +416,7 @@ go_get_dap_data <- function(dap) {
 }
 
 #' Convert catalog entry to extent
-#' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})
+#' @param cat catalog entry (data.frame with an (Xn, X1, Yn, Y1, crs)
 #' @return SpatExtent 
 #' @family dap
 #' @export
@@ -432,7 +432,7 @@ make_ext <-
   }
 
 #' Make Vector
-#' @param cat catalog entry (data.frame with an {Xn, X1, Yn, Y1, crs})
+#' @param cat catalog entry (data.frame with an c(Xn, X1, Yn, Y1, crs))
 #' @return SpatVect
 #' @family dap
 #' @export

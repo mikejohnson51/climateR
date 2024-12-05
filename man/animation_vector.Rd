@@ -23,7 +23,7 @@ Animate a sf or SpatVect object as a gif.
 }
 \seealso{
 Other viz: 
-\code{\link{animation_raster}()},
-\code{\link{animation}()}
+\code{\link{animation}()},
+\code{\link{animation_raster}()}
 }
 \concept{viz}
