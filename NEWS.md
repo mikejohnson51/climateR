@@ -1,3 +1,7 @@
+# climateR 0.3.7
+
+* Added barebones zarr support
+
 # climateR 0.3.5
 
 * Added getCABCM
