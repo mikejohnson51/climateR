@@ -50,6 +50,6 @@ Suggests:
 Remotes:
     mikejohnson51/AOI,
     dblodgett-usgs/ncmeta,
-    usgs-doi/rnz
+    DOI-USGS/rnz
 Config/testthat/edition: 3
 VignetteBuilder: knitr
