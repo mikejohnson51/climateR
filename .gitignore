@@ -9,3 +9,5 @@ data_backup.DS_Store
 .dodsrc
 .urs_cookies
 stac_testing
+/.DS_Store
+.DS_Store

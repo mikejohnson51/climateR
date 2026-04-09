@@ -75,9 +75,7 @@ zarr_xyzv <- function(obj, varname = NULL, varmeta = FALSE) {
   }
   
   
-  raw <- raw[!apply(raw, 1, function(x) {
-    sum(!is.na(x)) <= 3
-  }), ]
+  raw <- raw[!apply(raw, 1, function(x) { sum(!is.na(x)) <= 3}), ]
   
   
   raw$dim_order = NA
@@ -588,7 +586,7 @@ go_get_zarr = function(zarr, get = TRUE) {
   T_var_info  <- rnz::inq_var(nz, zarr$T_name)$dimids
   
   o = if(zarr$dim_order == "XYT") {
-    c(zarr$X1, zarr$Y1, zarr$T)
+    #c(zarr$X1, zarr$Y1, zarr$T)
     c(X_var_info, Y_var_info, T_var_info)
   } else if ( zarr$dim_order == "XTY" ){
     c(X_var_info, T_var_info, Y_var_info)
@@ -612,13 +610,15 @@ go_get_zarr = function(zarr, get = TRUE) {
   count <- (c(zarr$Tdim, zarr$nrows, zarr$ncols))[dimid_order]
   
   if (get) {
-    rnz::get_var(nz,
+    xx <- rnz::get_var(nz,
                   zarr$varname,
                   start = start,
                   count = count,
                   unpack = TRUE) 
+    
+    xxx <-  array(xx, count[c(Y_var_info, X_var_info, T_var_info) + 1])
   } else {
-    data.frame(
+   xxx =  data.frame(
       file = sub("\\?.*", "", zarr$URL),
       variable = zarr$varname,
       start = I(list(start)),
@@ -626,6 +626,9 @@ go_get_zarr = function(zarr, get = TRUE) {
       unpack = TRUE
     )
   }
+  
+  xxx
+  
 }
 
 
@@ -666,7 +669,7 @@ zarr_get <- function(zarr, varname = NULL) {
   out <- future_lapply(
     1:nrow(zarr),
     FUN = function(x) {
-      zarr_to_terra(go_get_zarr(zarr = zarr[x,]), zarr = zarr[x,])
+      zarr_to_terra(var = go_get_zarr(zarr = zarr[x,]), zarr = zarr[x,])
     }
   )
   
@@ -726,7 +729,7 @@ zarr_to_terra = function(var, zarr) {
   }
   
   
-  name <-  gsub("_NA", "",paste(zarr$variable, 
+  name <-  gsub("_NA", "", paste(zarr$variable, 
                                 dates,
                                 zarr$model, 
                                 zarr$ensemble, 
@@ -766,6 +769,7 @@ zarr_to_terra = function(var, zarr) {
     dim(var) <- c(dim(var), 1)
   }
   
+  rast(var) |> plot()
   r = rast(nrows = zarr$nrows,
            ncols = zarr$ncols,
            crs = zarr$crs,
